@@ -23,6 +23,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [categories, setCategories] = useState<DisplayCategory[]>([]);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -78,87 +79,103 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">
-          <img src="/logo.jpeg" alt="BLVZEUNIT" className="navbar-logo-img" />
-        </Link>
+        <div className="navbar-top">
+          <Link to="/" className="navbar-logo">
+            <img src="/logo.jpeg" alt="BLVZEUNIT" className="navbar-logo-img" />
+          </Link>
 
-        <ul className="navbar-menu">
-          <li className="navbar-item">
-            <Link to="/" className="navbar-link">
-              Anasayfa
-            </Link>
-          </li>
-          <li className="navbar-item navbar-item-dropdown">
-            <Link to="/categories" className="navbar-link">
-              Kategorİler
-            </Link>
-            {categories.length > 0 && (
-              <ul className="navbar-dropdown">
-                <li>
-                  <Link to="/categories/all" className="navbar-dropdown-link">
-                    Tüm Ürünler
-                  </Link>
-                </li>
-                {categories.map((category) => (
-                  <li key={category.id}>
-                    <Link
-                      to={`/categories/${category.slug}`}
-                      className="navbar-dropdown-link"
-                    >
-                      {category.name}
+          {/* Burger Menu Button - Sadece mobilde görünür */}
+          <button
+            className="navbar-burger"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span className={isMobileMenuOpen ? 'active' : ''}></span>
+            <span className={isMobileMenuOpen ? 'active' : ''}></span>
+            <span className={isMobileMenuOpen ? 'active' : ''}></span>
+          </button>
+        </div>
+
+        <div className={`navbar-content ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+          <ul className="navbar-menu">
+            <li className="navbar-item">
+              <Link to="/" className="navbar-link" onClick={() => setIsMobileMenuOpen(false)}>
+                Anasayfa
+              </Link>
+            </li>
+            <li className="navbar-item navbar-item-dropdown">
+              <Link to="/categories" className="navbar-link">
+                Kategorİler
+              </Link>
+              {categories.length > 0 && (
+                <ul className="navbar-dropdown">
+                  <li>
+                    <Link to="/categories/all" className="navbar-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>
+                      Tüm Ürünler
                     </Link>
                   </li>
-                ))}
-              </ul>
-            )}
-          </li>
-          <li className="navbar-item">
-            <Link to="/categories/all" className="navbar-link">
-              Tüm Ürünler
-            </Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/about" className="navbar-link">
-              Hakkımızda
-            </Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/contact" className="navbar-link">
-              İletİşİm
-            </Link>
-          </li>
-        </ul>
-
-        <form className="navbar-search-form" onSubmit={handleSearchSubmit}>
-          <input
-            type="text"
-            placeholder="ARA..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="navbar-search-input"
-          />
-          <button type="submit" className="navbar-search-btn">
-            🔍
-          </button>
-        </form>
-
-        <div className="navbar-actions">
-          <button className="navbar-cart" onClick={() => navigate('/cart')}>
-            Sepet ({cartCount})
-          </button>
-          {user ? (
-            <div className="navbar-user">
-              <Link to="/account" className="navbar-account-link">
-                {/* Giriş yapılmışsa: Hesabım */}
-                HESABIM
+                  {categories.map((category) => (
+                    <li key={category.id}>
+                      <Link
+                        to={`/categories/${category.slug}`}
+                        className="navbar-dropdown-link"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {category.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+            <li className="navbar-item">
+              <Link to="/categories/all" className="navbar-link" onClick={() => setIsMobileMenuOpen(false)}>
+                Tüm Ürünler
               </Link>
-            </div>
-          ) : (
-            <Link to="/login" className="navbar-account">
-              {/* Giriş yapılmamışsa: Giriş Yap */}
-              GİRİŞ YAP
-            </Link>
-          )}
+            </li>
+            <li className="navbar-item">
+              <Link to="/about" className="navbar-link" onClick={() => setIsMobileMenuOpen(false)}>
+                Hakkımızda
+              </Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/contact" className="navbar-link" onClick={() => setIsMobileMenuOpen(false)}>
+                İletİşİm
+              </Link>
+            </li>
+          </ul>
+
+          <form className="navbar-search-form" onSubmit={handleSearchSubmit}>
+            <input
+              type="text"
+              placeholder="ARA..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="navbar-search-input"
+            />
+            <button type="submit" className="navbar-search-btn">
+              🔍
+            </button>
+          </form>
+
+          <div className="navbar-actions">
+            <button className="navbar-cart" onClick={() => { navigate('/cart'); setIsMobileMenuOpen(false); }}>
+              Sepet ({cartCount})
+            </button>
+            {user ? (
+              <div className="navbar-user">
+                <Link to="/account" className="navbar-account-link" onClick={() => setIsMobileMenuOpen(false)}>
+                  {/* Giriş yapılmışsa: Hesabım */}
+                  HESABIM
+                </Link>
+              </div>
+            ) : (
+              <Link to="/login" className="navbar-account" onClick={() => setIsMobileMenuOpen(false)}>
+                {/* Giriş yapılmamışsa: Giriş Yap */}
+                GİRİŞ YAP
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </nav>
