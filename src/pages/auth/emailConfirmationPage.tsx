@@ -10,17 +10,17 @@ export default function EmailConfirmationPage() {
   const [success, setSuccess] = useState('');
   const [resending, setResending] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
-  
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { user, isEmailConfirmed, sendEmailConfirmation } = useAuth();
+  const { user } = useAuth();
 
   // TEST: Hemen confirmed göster
   useEffect(() => {
     console.log('🔍 EmailConfirmationPage mounted');
     console.log('🔍 User:', user);
     console.log('🔍 Search params:', Object.fromEntries([...searchParams]));
-    
+
     // Test için hemen başarılı göster
     if (user) {
       console.log('✅ Test: Showing confirmed for user:', user.email);
@@ -29,7 +29,7 @@ export default function EmailConfirmationPage() {
       setLoading(false);
       return;
     }
-    
+
     setLoading(false);
   }, []);
 
@@ -48,7 +48,7 @@ export default function EmailConfirmationPage() {
 
           if (confirmError) {
             console.error('Email confirmation error:', confirmError);
-            
+
             if (confirmError.message.includes('already confirmed')) {
               setSuccess('Email adresiniz zaten onaylanmış.');
               setConfirmed(true);
@@ -60,7 +60,7 @@ export default function EmailConfirmationPage() {
           } else {
             setSuccess('Email adresiniz başarıyla onaylandı! Yönlendiriliyorsunuz...');
             setConfirmed(true);
-            
+
             // 3 saniye sonra ana sayfaya yönlendir
             setTimeout(() => {
               navigate('/', { replace: true });
@@ -69,6 +69,8 @@ export default function EmailConfirmationPage() {
         } else {
           // Kullanıcı zaten giriş yapmış ve onay durumunu kontrol et
           if (user) {
+            // Check if email is confirmed via user metadata
+            const isEmailConfirmed = user.email_confirmed_at !== null;
             if (isEmailConfirmed) {
               setConfirmed(true);
               setSuccess('Email adresiniz zaten onaylanmış.');
@@ -86,19 +88,27 @@ export default function EmailConfirmationPage() {
     };
 
     handleEmailConfirmation();
-  }, [searchParams, navigate, user, isEmailConfirmed]);
+  }, [searchParams, navigate, user]);
 
   const handleResendConfirmation = async () => {
     setResending(true);
     setError('');
-    
+
     try {
-      const { error: resendError, success } = await sendEmailConfirmation();
-      
-      if (!success || resendError) {
-        throw new Error(resendError || 'Onay maili gönderilemedi');
+      if (!user?.email) {
+        throw new Error('Kullanıcı email adresi bulunamadı');
       }
-      
+
+      // Resend confirmation email using Supabase
+      const { error: resendError } = await supabase.auth.resend({
+        type: 'signup',
+        email: user.email,
+      });
+
+      if (resendError) {
+        throw new Error(resendError.message || 'Onay maili gönderilemedi');
+      }
+
       setSuccess('Yeni onay maili gönderildi! Lütfen e-postanızı kontrol edin.');
     } catch (err: any) {
       setError(err.message || 'Onay maili gönderilemedi.');
@@ -186,7 +196,7 @@ export default function EmailConfirmationPage() {
               <li>Maildeki "Hesabı Onayla" butonuna tıklayın</li>
               <li>E-postayı görmediyseniz spam klasörünüze bakın</li>
             </ol>
-            
+
             <div className="confirmation-actions">
               <button
                 onClick={handleResendConfirmation}
@@ -202,7 +212,7 @@ export default function EmailConfirmationPage() {
                   'Yeni Onay Maili Gönder'
                 )}
               </button>
-              
+
               <button
                 onClick={() => navigate('/account')}
                 className="submit-btn secondary"
@@ -217,12 +227,12 @@ export default function EmailConfirmationPage() {
           <div className="email-confirmation-success">
             <div className="success-icon">
               <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#38a169" strokeWidth="2">
-                <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
             <h3>Hesabınız Aktif!</h3>
             <p>Artık tüm özelliklerimizden faydalanabilirsiniz.</p>
-            
+
             <div className="success-actions">
               <Link to="/" className="submit-btn primary">
                 Ana Sayfaya Git

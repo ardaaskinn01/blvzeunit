@@ -20,7 +20,7 @@ interface GeneratedCategory {
 type DisplayCategory = Category | GeneratedCategory;
 
 export default function CategoryPage() {
-  const { slug } = useParams<{ slug: string }>();
+  const { slug: _slug } = useParams<{ slug: string }>();
   const [categories, setCategories] = useState<DisplayCategory[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -47,7 +47,7 @@ export default function CategoryPage() {
       }
 
       console.log('ℹ️ Categories tablosu boş, products tablosundan kategoriler oluşturuluyor...');
-      
+
       // Eğer categories tablosu boşsa, products tablosundan benzersiz kategorileri al
       const { data: productsData, error: productsError } = await supabase
         .from('products')
@@ -137,15 +137,15 @@ export default function CategoryPage() {
 
               {/* Kategori kartları */}
               {categories.map((category) => (
-                <Link 
-                  key={category.id} 
+                <Link
+                  key={category.id}
                   to={`/categories/${category.slug}`}
                   className="category-card"
                 >
                   <div className="category-image">
                     {category.image_url ? (
-                      <img 
-                        src={category.image_url} 
+                      <img
+                        src={category.image_url}
                         alt={category.name}
                         loading="lazy"
                       />

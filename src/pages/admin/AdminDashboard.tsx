@@ -20,7 +20,7 @@ interface ProfileRow {
 type Tab = 'stats' | 'products' | 'categories' | 'users' | 'discounts';
 
 export default function AdminDashboard() {
-  const { isAdmin, user, loading: authLoading, profile } = useAuth();
+  const { isAdmin, user, loading: authLoading, profile: _profile } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>('stats');
   const initialLoadRef = useRef(false);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
 import './Auth.css';
@@ -16,7 +16,6 @@ export default function ResetPasswordPage() {
   const [isValidSession, setIsValidSession] = useState(false);
 
   const navigate = useNavigate();
-  const location = useLocation();
   const { user, signOut } = useAuth();
 
   // URL'den token kontrolü

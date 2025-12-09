@@ -47,7 +47,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         }
     }, []);
 
-    const login = async (email: string, password: string) => {
+    const login = async (email: string, _password: string) => {
         // API çağrısı yapılacak
         // Örnek kullanıcı
         const mockUser: User = {

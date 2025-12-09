@@ -1,5 +1,3 @@
-import type { Tables } from '../types/database.types';
-
 // Veritabanı tiplerini genişletiyoruz çünkü henüz generate edilmemiş olabilir
 export interface Discount {
     id: string;

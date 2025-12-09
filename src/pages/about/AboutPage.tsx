@@ -7,9 +7,6 @@ export default function AboutPage() {
     { title: 'Güven', description: 'Müşteri memnuniyeti bizim önceliğimiz' },
   ];
 
-  const team: { name: string; role: string }[] = [
-  ];
-
   return (
     <div className="about-page">
       <div className="about-container">
