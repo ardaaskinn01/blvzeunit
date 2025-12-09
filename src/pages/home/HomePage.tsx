@@ -235,6 +235,18 @@ export default function HomePage() {
           <div className="marquee-content">{marqueeText.repeat(5)}</div>
         </div>
 
+        <section className="lookbook-section" style={{ backgroundImage: `url(${lookbookData.imageUrl})` }}>
+          <div className="lookbook-overlay">
+            <div className="lookbook-content">
+              <h2>{lookbookData.title}</h2>
+              <p>{lookbookData.subtitle}</p>
+              <Link to="/categories/all" className="cta-button lookbook-cta">
+                {lookbookData.cta}
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Hero Section: Slogan Devrede */}
         <section className="hero-section">
           <h1>BLVZEUNIT</h1>
@@ -313,18 +325,6 @@ export default function HomePage() {
           </section>
         )}
 
-        {/* YENİ: Lookbook Banner Bölümü */}
-        <section className="lookbook-section" style={{ backgroundImage: `url(${lookbookData.imageUrl})` }}>
-          <div className="lookbook-overlay">
-            <div className="lookbook-content">
-              <h2>{lookbookData.title}</h2>
-              <p>{lookbookData.subtitle}</p>
-              <Link to="/categories/all" className="cta-button lookbook-cta">
-                {lookbookData.cta}
-              </Link>
-            </div>
-          </div>
-        </section>
 
         {/* YENİ: New Drops / Bestsellers Section (Eski Products Preview yerine) */}
         <section className="new-drops-section products-preview-section">
@@ -343,25 +343,6 @@ export default function HomePage() {
               TÜM ÜRÜNLERİ GÖR
             </Link>
           </div>
-        </section>
-
-        {/* YENİ: Social Proof / Reviews Bölümü */}
-        <section className="reviews-section">
-          <h2 className="section-title">VİBE CHECK: MÜŞTERİ YORUMLARI</h2>
-          <div className="reviews-grid">
-            {mockReviews.map(review => (
-              <div key={review.id} className="review-card">
-                <p className="review-text">"{review.review}"</p>
-                <p className="review-author">-- {review.author}</p>
-                <div className="review-rating">
-                  {'★'.repeat(review.rating) + '☆'.repeat(5 - review.rating)}
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="more-reviews-text">
-            Siz de ruhunuzu yansıtan yorumunuzu paylaşın.
-          </p>
         </section>
 
       </div>

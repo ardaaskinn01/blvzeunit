@@ -44,9 +44,8 @@ export default function Footer() {
           {/* Contact */}
           <div className="footer-section">
             <h4>İLETİŞİM</h4>
-            <p>Email: info@blvzeunit.com</p>
-            <p>Telefon: </p>
-            <p>Adres: Karabağlar, İzmir</p>
+            <p>Email: blvzeunit@gmail.com</p>
+            <p>Adres: 4562 sokak no:31 kat:2 daire:2 Sevgi Mahallesi / Karabağlar İzmir</p>
           </div>
         </div>
 

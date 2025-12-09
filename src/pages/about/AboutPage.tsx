@@ -46,9 +46,8 @@ export default function AboutPage() {
         {/* İletişim Bilgileri */}
         <div className="about-section">
           <h2>İletişim</h2>
-          <p>Email: info@blvzeunit.com</p>
-          <p>Telefon: </p>
-          <p>Adres: Karabağlar, İzmir</p>
+          <p>Email: blvzeunit@gmail.com</p>
+          <p>Adres: 4562 sokak no:31 kat:2 daire:2 Sevgi Mahallesi / Karabağlar İzmir</p>
         </div>
       </div>
     </div>
