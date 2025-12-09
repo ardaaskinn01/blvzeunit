@@ -23,7 +23,7 @@ import ResetPasswordPage from './pages/auth/ResetPassword';
 import AuthCallbackPage from './pages/auth/AuthCallback';
 import EmailConfirmationPage from './pages/auth/emailConfirmationPage';
 import { useEffect, useState } from 'react';
-import SearchPage from './pages/search/searchPage';
+import SearchPage from './pages/search/SearchPage';
 import CategoryProductsPage from './pages/categories/CategoryProductsPage';
 import CartPage from './pages/cart/CartPage';
 import CheckoutPage from './pages/checkout/CheckoutPage';
