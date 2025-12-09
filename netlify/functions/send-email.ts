@@ -1,7 +1,7 @@
 import { Handler } from '@netlify/functions';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.VITE_RESEND_API_KEY);
 
 interface ContactFormData {
   name: string;
@@ -36,7 +36,7 @@ const handler: Handler = async (event) => {
     // E-posta gönder
     const response = await resend.emails.send({
       from: 'noreply@myshop.com', // Resend'de doğrulanmış domain kullan
-      to: process.env.CONTACT_EMAIL || 'admin@myshop.com',
+      to: process.env.VITE_CONTACT_EMAIL || 'admin@myshop.com',
       reply_to: email,
       subject: `Yeni İletişim: ${subject}`,
       html: `

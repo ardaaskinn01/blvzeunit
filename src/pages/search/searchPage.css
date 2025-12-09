@@ -1,0 +1,195 @@
+/* src/pages/search/SearchPage.css */
+
+.search-page {
+    min-height: calc(100vh - 80px);
+    background: var(--color-white);
+    color: var(--color-black);
+    padding: 4rem 2rem;
+}
+
+.search-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.search-page h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-black);
+    font-weight: 700;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.search-subtitle {
+    color: var(--color-medium-gray);
+    margin-bottom: 3rem;
+    font-size: 1rem;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Ürün Kartı Stili (HomePage.css'teki .product-card ile aynı) */
+.search-result-card {
+    background: var(--color-white);
+    border: 2px solid var(--color-dark-gray);
+    border-radius: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--color-black);
+    box-shadow: 4px 4px 0 var(--color-light-gray);
+    display: block;
+    /* a etiketi olduğu için */
+}
+
+.search-result-card:hover {
+    border-color: var(--color-black);
+    box-shadow: 6px 6px 0 var(--color-medium-gray);
+    transform: translate(-1px, -1px);
+}
+
+.card-image {
+    width: 100%;
+    height: 200px;
+    background: var(--color-light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--color-dark-gray);
+    border-bottom: 2px solid var(--color-dark-gray);
+}
+
+.card-info {
+    padding: 1.5rem 1rem;
+}
+
+.card-info h4 {
+    color: var(--color-black);
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card-price {
+    color: var(--color-black);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card-desc {
+    color: var(--color-medium-gray);
+    font-size: 0.85rem;
+    margin-bottom: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.no-results-message {
+    text-align: center;
+    padding: 3rem;
+    border: 3px solid var(--color-black);
+    background: var(--color-light-gray);
+    border-radius: 0;
+    box-shadow: 8px 8px 0 var(--color-dark-gray);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.no-results-message p {
+    color: var(--color-medium-gray);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Error Message */
+.error-message {
+    background: #fee;
+    border: 2px solid #c00;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #c00;
+    font-weight: 600;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-medium-gray);
+}
+
+/* Card Image with actual image */
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-light-gray);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--color-dark-gray);
+}
+
+/* Card Category */
+.card-category {
+    display: inline-block;
+    background: var(--color-black);
+    color: var(--color-white);
+    padding: 0.3rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Browse All Link */
+.browse-all-link {
+    display: inline-block;
+    background: var(--color-black);
+    color: var(--color-white);
+    padding: 0.8rem 2rem;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    border: 2px solid var(--color-black);
+    margin-top: 1rem;
+}
+
+.browse-all-link:hover {
+    background: var(--color-white);
+    color: var(--color-black);
+}
+
+@media (max-width: 768px) {
+    .search-page {
+        padding: 2rem 1rem;
+    }
+
+    .search-results-grid {
+        gap: 1.5rem;
+    }
+}

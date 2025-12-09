@@ -1,13 +1,80 @@
+/*
+ * NAVBAR CSS: Auth.css ile uyumlu, marjinal ve Roboto Mono teması.
+ */
+
+/* Auth.css'ten renk değişkenlerini dahil et */
+:root {
+  --color-black: #000000;
+  --color-dark-gray: #a9a9a9;
+  --color-medium-gray: #333333;
+  --color-light-gray: #dddddd;
+  --color-white: #ffffff;
+}
+
 .navbar {
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* Arka plan rengi */
+  background: var(--color-white); 
+  /* Kalın, yüksek kontrastlı alt çizgi */
+  border-bottom: 3px solid var(--color-black); 
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
+  /* Yumuşak gölgeyi kaldır */
+  box-shadow: none; 
+  /* Tüm yazıları temaya uygun yap */
+  font-family: 'Roboto Mono', monospace;
+}
+
+.navbar-search-form {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--color-black); /* Kalın çerçeve */
+  border-radius: 0;
+  overflow: hidden;
+  height: 40px; /* Sabit yükseklik */
+  margin-right: 1.5rem; /* Sepet düğmesi öncesi boşluk */
+  transition: all 0.2s ease;
+}
+
+.navbar-search-form:focus-within {
+  box-shadow: 4px 4px 0 var(--color-medium-gray); /* Odaklandığında hafif gölge */
+  transform: translate(-1px, -1px);
+}
+
+.navbar-search-input {
+  padding: 0 0.75rem;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 0.9rem;
+  color: var(--color-black);
+  background: var(--color-white);
+  font-family: 'Roboto Mono', monospace;
+  width: 200px; /* Arama çubuğu varsayılan genişliği */
+}
+
+.navbar-search-input::placeholder {
+  color: var(--color-dark-gray);
+  font-weight: 500;
+}
+
+.navbar-search-btn {
+  height: 100%;
+  padding: 0 0.75rem;
+  background: var(--color-black);
+  color: var(--color-white);
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.navbar-search-btn:hover {
+  background: var(--color-medium-gray);
 }
 
 .navbar-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 1rem 2rem;
   display: flex;
@@ -15,64 +82,298 @@
   align-items: center;
 }
 
+/* --- LOGO STİLLERİ --- */
 .navbar-logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   text-decoration: none;
-  margin-right: 2rem;
+  transition: all 0.2s ease;
+  
+  /* Logoya marjinal çerçeve ve gölge ekle */
+  padding: 5px; 
+  border: 3px solid var(--color-black); 
+  border-radius: 0;
+  box-shadow: 6px 6px 0 var(--color-medium-gray);
 }
 
 .navbar-logo:hover {
-  color: #0066cc;
+  /* Hover efekti (Auth.css buton stili) */
+  box-shadow: 8px 8px 0 var(--color-black);
+  transform: translate(-1px, -1px);
 }
 
+.navbar-logo-img {
+  /* Önceki istekteki büyük boyutu koru */
+  height: 50px; 
+  width: auto;
+  object-fit: contain;
+}
+
+.navbar-brand {
+  font-size: 1.5rem; /* Daha belirgin */
+  font-weight: 900; /* Ekstra kalın */
+  color: var(--color-black);
+  letter-spacing: -1px; /* Daha sıkışık, agresif harfler */
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+}
+
+/* --- MENÜ LİNKLERİ --- */
 .navbar-menu {
   display: flex;
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 2rem;
+  gap: 2.5rem; /* Boşlukları biraz açtık */
 }
 
 .navbar-item {
   margin: 0;
+  position: relative;
+}
+
+.navbar-item-dropdown {
+  position: relative;
 }
 
 .navbar-link {
-  color: #333;
+  color: var(--color-medium-gray);
   text-decoration: none;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  font-weight: 700; /* Daha kalın font */
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  /* Kalın alt çizgi efekti */
+  border-bottom: 3px solid transparent; 
+  transition: all 0.2s ease;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .navbar-link:hover {
-  background-color: #f0f0f0;
-  color: #0066cc;
+  color: var(--color-black);
+  border-bottom-color: var(--color-black);
 }
 
-/* Mobile Responsiveness */
+/* --- DROPDOWN MENÜ --- */
+.navbar-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--color-white);
+  border: 3px solid var(--color-black);
+  border-top: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 600px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
+  z-index: 1000;
+  box-shadow: 4px 4px 0 var(--color-medium-gray);
+}
+
+.navbar-item-dropdown:hover .navbar-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.navbar-dropdown li {
+  border-right: 2px solid var(--color-light-gray);
+  border-bottom: 2px solid var(--color-light-gray);
+}
+
+.navbar-dropdown li:nth-child(4n) {
+  border-right: none;
+}
+
+.navbar-dropdown-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--color-medium-gray);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+  text-align: center;
+}
+
+.navbar-dropdown-link:hover {
+  color: var(--color-black);
+  background: var(--color-light-gray);
+  border-bottom-color: var(--color-black);
+}
+
+/* --- EYLEM BUTONLARI --- */
+.navbar-actions {
+  display: flex;
+  gap: 1.5rem; /* Butonlar arası boşluk */
+  align-items: center;
+}
+
+.navbar-cart,
+.navbar-account,
+.navbar-account-link,
+.navbar-logout {
+  padding: 0.75rem 1.5rem; /* Daha büyük butonlar */
+  background: var(--color-black);
+  color: var(--color-white);
+  /* Butonlara marjinal stil uygulama */
+  border: 2px solid var(--color-black); 
+  border-radius: 0;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Roboto Mono', monospace;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  /* Auth.css'teki imza box-shadow */
+  box-shadow: 4px 4px 0 var(--color-medium-gray); 
+}
+
+.navbar-cart:hover,
+.navbar-account:hover,
+.navbar-account-link:hover,
+.navbar-logout:hover {
+  background: var(--color-black); /* Siyah kalır */
+  /* Hover efekti (Auth.css buton stili) */
+  transform: translate(-2px, -2px); 
+  box-shadow: 6px 6px 0 var(--color-black);
+}
+
+.navbar-cart:active,
+.navbar-account:active,
+.navbar-account-link:active,
+.navbar-logout:active {
+  transform: translate(0, 0);
+  box-shadow: 4px 4px 0 var(--color-medium-gray);
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar-user-email {
+  font-size: 0.9rem;
+  color: var(--color-medium-gray);
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 500;
+}
+
+/* --- Mobile Responsiveness (Stil korundu) --- */
+@media (max-width: 1024px) {
+  .navbar-menu {
+    gap: 1.5rem;
+  }
+
+  .navbar-dropdown {
+    min-width: 500px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .navbar-dropdown li:nth-child(4n) {
+    border-right: 2px solid var(--color-light-gray);
+  }
+
+  .navbar-dropdown li:nth-child(3n) {
+    border-right: none;
+  }
+}
+
 @media (max-width: 768px) {
   .navbar-container {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem; 
+    padding: 1rem;
   }
 
-  .navbar-logo {
-    margin-right: 0;
+  .navbar-brand {
+    font-size: 1.3rem;
   }
 
   .navbar-menu {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem; 
     width: 100%;
     text-align: center;
   }
 
   .navbar-link {
     display: block;
-    padding: 0.75rem;
+    padding: 0.75rem 0;
+    /* Mobil menüde linklerin altındaki çizgi kaldırılabilir (opsiyonel) */
+    /* border-bottom: none; */ 
+  }
+
+  .navbar-dropdown {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    border: none;
+    border-top: 2px solid var(--color-light-gray);
+    margin-top: 0.5rem;
+    padding-left: 0;
+    box-shadow: none;
+    min-width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .navbar-item-dropdown:hover .navbar-dropdown {
+    transform: none;
+  }
+
+  .navbar-dropdown li {
+    border-right: 2px solid var(--color-light-gray);
+    border-bottom: 2px solid var(--color-light-gray);
+  }
+
+  .navbar-dropdown li:nth-child(2n) {
+    border-right: none;
+  }
+
+  .navbar-dropdown-link {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .navbar-actions {
+    width: 100%;
+    gap: 1rem; 
+  }
+
+  .navbar-search-form {
+    width: 100%;
+    margin-right: 0;
+    order: 3; /* Mobil düzende en alta itme */
+  }
+
+  .navbar-search-input {
+    width: 100%;
+  }
+
+  /* Mobil butonları Auth.css stiline uygun esnek */
+  .navbar-cart,
+  .navbar-account,
+  .navbar-account-link,
+  .navbar-logout {
+    flex: 1;
+    text-align: center;
   }
 }

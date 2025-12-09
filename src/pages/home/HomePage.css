@@ -1,0 +1,644 @@
+:root {
+  --color-black: #000000;
+  --color-dark-gray: #a9a9a9;
+  --color-medium-gray: #333333;
+  --color-light-gray: #dddddd;
+  --color-white: #ffffff;
+  --color-accent: #ff4500;
+  /* İndirim/Vurgu için turuncu (isteğe bağlı) */
+}
+
+.home-page {
+  min-height: calc(100vh - 80px);
+  background: var(--color-white);
+  color: var(--color-black);
+  padding: 4rem 2rem;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.home-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* --- YENİ: Marquee (Kayan Yazı) Section --- */
+.marquee-section {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  margin-bottom: 4rem;
+  /* Brütalist Çerçeve */
+  border-top: 3px solid var(--color-black);
+  border-bottom: 3px solid var(--color-black);
+  padding: 0.5rem 0;
+  background: var(--color-light-gray);
+}
+
+.marquee-content {
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  animation: marquee 30s linear infinite;
+  /* Kayan yazı animasyonu */
+  padding-left: 100%;
+  /* Başlangıçta ekran dışından başla */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+
+/* --- Hero Section: Slogan ve Başlık --- */
+.hero-section {
+  text-align: center;
+  margin-bottom: 6rem;
+  padding: 4rem 2rem;
+  background: var(--color-light-gray);
+  border: 3px solid var(--color-black);
+  border-radius: 0;
+  box-shadow: 10px 10px 0 var(--color-black);
+  transition: all 0.3s ease;
+}
+
+.hero-section:hover {
+  box-shadow: 12px 12px 0 var(--color-black);
+  transform: translate(-2px, -2px);
+}
+
+.hero-section h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--color-black);
+  letter-spacing: -1px;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+}
+
+.hero-section h1::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: var(--color-black);
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+  color: var(--color-medium-gray);
+  margin-bottom: 3rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+  font-family: 'Roboto Mono', monospace;
+  font-style: italic;
+}
+
+/* --- CTA Button: Auth.css Submit Butonu Stili --- */
+.cta-button {
+  display: inline-block;
+  padding: 1.25rem 2.5rem;
+  background: var(--color-black);
+  color: var(--color-white);
+  text-decoration: none;
+  border-radius: 0;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  border: 3px solid var(--color-black);
+  cursor: pointer;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  position: relative;
+  box-shadow: 6px 6px 0 var(--color-medium-gray);
+}
+
+.cta-button:hover {
+  background: var(--color-black);
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--color-medium-gray);
+}
+
+.cta-button:active {
+  transform: translate(0, 0);
+  box-shadow: 4px 4px 0 var(--color-medium-gray);
+}
+
+/* Sekonder Buton (Tüm Ürünleri Gör) */
+.secondary-cta {
+  background: var(--color-white);
+  color: var(--color-black);
+  box-shadow: 6px 6px 0 var(--color-black);
+}
+
+.secondary-cta:hover {
+  box-shadow: 8px 8px 0 var(--color-black);
+}
+
+/* Lookbook CTA */
+.lookbook-cta {
+  background: var(--color-white);
+  color: var(--color-black);
+  border: 3px solid var(--color-black);
+  box-shadow: 6px 6px 0 var(--color-black);
+}
+
+.lookbook-cta:hover {
+  background: var(--color-black);
+  color: var(--color-white);
+  box-shadow: 8px 8px 0 var(--color-black);
+}
+
+/* --- Features Section --- */
+.features-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 3rem;
+  margin-bottom: 6rem;
+}
+
+.feature-card {
+  background: var(--color-white);
+  border: 2px solid var(--color-dark-gray);
+  border-radius: 0;
+  padding: 2.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 4px 4px 0 var(--color-light-gray);
+}
+
+.feature-card:hover {
+  border-color: var(--color-black);
+  box-shadow: 6px 6px 0 var(--color-black);
+  transform: translate(-2px, -2px);
+}
+
+.feature-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-black);
+  font-weight: 700;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.feature-card p {
+  color: var(--color-medium-gray);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  font-family: 'Roboto Mono', monospace;
+}
+
+/* --- Section Titles --- */
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  text-align: center;
+  color: var(--color-black);
+  font-weight: 900;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+}
+
+/* --- Categories Scroll Section --- */
+.categories-scroll-section {
+  margin-bottom: 6rem;
+}
+
+.categories-scroll-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.categories-scroll {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+  padding: 1rem 0;
+}
+
+.categories-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.category-scroll-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-black);
+  min-width: 150px;
+  transition: all 0.3s ease;
+}
+
+.category-scroll-item:hover {
+  transform: translateY(-5px);
+}
+
+.category-scroll-image {
+  width: 150px;
+  height: 150px;
+  border: 3px solid var(--color-black);
+  border-radius: 0;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background: var(--color-light-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 4px 0 var(--color-medium-gray);
+  transition: all 0.3s ease;
+}
+
+.category-scroll-item:hover .category-scroll-image {
+  box-shadow: 6px 6px 0 var(--color-black);
+  transform: translate(-2px, -2px);
+}
+
+.category-scroll-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.category-scroll-placeholder {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--color-black);
+  font-family: 'Roboto Mono', monospace;
+}
+
+.category-scroll-item span {
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.scroll-button {
+  background: var(--color-black);
+  color: var(--color-white);
+  border: 3px solid var(--color-black);
+  border-radius: 0;
+  width: 50px;
+  height: 50px;
+  font-size: 2rem;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 4px 4px 0 var(--color-medium-gray);
+  font-family: 'Roboto Mono', monospace;
+  flex-shrink: 0;
+}
+
+.scroll-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--color-black);
+}
+
+.scroll-button:active {
+  transform: translate(0, 0);
+  box-shadow: 4px 4px 0 var(--color-medium-gray);
+}
+
+/* --- Discounted Products Section --- */
+.discounted-products-section {
+  margin-bottom: 6rem;
+  background: var(--color-light-gray);
+  padding: 3rem 2rem;
+  border: 3px solid var(--color-black);
+  box-shadow: 8px 8px 0 var(--color-medium-gray);
+}
+
+.discounted-products-section .section-title {
+  color: var(--color-black);
+}
+
+/* --- Products Preview Section (New Drops için de kullanılır) --- */
+.products-preview-section {
+  margin-bottom: 4rem;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.product-card {
+  background: var(--color-white);
+  border: 2px solid var(--color-dark-gray);
+  border-radius: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--color-black);
+  box-shadow: 4px 4px 0 var(--color-light-gray);
+}
+
+.product-card:hover {
+  border-color: var(--color-black);
+  box-shadow: 6px 6px 0 var(--color-medium-gray);
+  transform: translate(-1px, -1px);
+}
+
+.product-image {
+  width: 100%;
+  height: 300px;
+  background: var(--color-light-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: var(--color-dark-gray);
+  border-bottom: 2px solid var(--color-dark-gray);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--color-black);
+  font-family: 'Roboto Mono', monospace;
+  background: linear-gradient(135deg, var(--color-light-gray) 0%, var(--color-dark-gray) 100%);
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--color-black);
+  color: var(--color-white);
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  border: 2px solid var(--color-white);
+  box-shadow: 3px 3px 0 var(--color-medium-gray);
+}
+
+.product-info {
+  padding: 1.5rem 1rem;
+}
+
+.product-info h4 {
+  color: var(--color-black);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+}
+
+.product-info p {
+  color: var(--color-medium-gray);
+  font-size: 0.9rem;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.product-price {
+  color: var(--color-black) !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+}
+
+.loading-message,
+.no-products-message {
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-medium-gray);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.1rem;
+}
+
+/* Tüm Ürünleri Gör Linki */
+.all-products-link-container {
+  text-align: center;
+  margin-top: -1rem;
+}
+
+/* --- YENİ: Lookbook Banner Section --- */
+.lookbook-section {
+  margin-bottom: 6rem;
+  height: 800px;
+  /* Büyük bir banner */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 3px solid var(--color-black);
+  box-shadow: 10px 10px 0 var(--color-black);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lookbook-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  /* Okunurluğu artırmak için yarı saydam siyah katman */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lookbook-content {
+  text-align: center;
+  color: var(--color-white);
+  padding: 2rem;
+  max-width: 800px;
+}
+
+.lookbook-content h2 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+
+.lookbook-content p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+
+/* --- YENİ: Social Proof / Reviews Section --- */
+.reviews-section {
+  margin-bottom: 6rem;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.review-card {
+  background: var(--color-white);
+  padding: 2.5rem;
+  border: 2px solid var(--color-black);
+  border-radius: 0;
+  box-shadow: 6px 6px 0 var(--color-light-gray);
+  transition: all 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 8px 8px 0 var(--color-medium-gray);
+}
+
+.review-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  color: var(--color-medium-gray);
+}
+
+.review-author {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: right;
+  text-transform: uppercase;
+  color: var(--color-black);
+}
+
+.review-rating {
+  text-align: right;
+  color: var(--color-accent);
+  /* Vurgu rengi ile yıldızlar */
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.more-reviews-text {
+  text-align: center;
+  color: var(--color-medium-gray);
+  font-style: italic;
+  font-size: 1rem;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .home-page {
+    padding: 2rem 1rem;
+  }
+
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-section p {
+    font-size: 1rem;
+  }
+
+  .features-section {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .lookbook-section {
+    height: 300px;
+    margin-bottom: 4rem;
+  }
+
+  .lookbook-content h2 {
+    font-size: 2rem;
+  }
+
+  .lookbook-content p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .categories-scroll-container {
+    gap: 0.5rem;
+  }
+
+  .scroll-button {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+
+  .category-scroll-item {
+    min-width: 120px;
+  }
+
+  .category-scroll-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .discounted-products-section {
+    padding: 2rem 1rem;
+  }
+
+  .marquee-content {
+    font-size: 1.2rem;
+  }
+
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}

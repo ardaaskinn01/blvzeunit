@@ -1,0 +1,279 @@
+/*
+ * AccountPage.css: Auth.css ve genel tema ile uyumlu, marjinal stil.
+ */
+
+/* Auth.css'ten renk değişkenlerini dahil et */
+:root {
+  --color-black: #000000;
+  --color-dark-gray: #a9a9a9;
+  --color-medium-gray: #333333;
+  --color-light-gray: #dddddd;
+  --color-white: #ffffff;
+}
+
+.account-page {
+  min-height: calc(100vh - 80px);
+  background: var(--color-white);
+  color: var(--color-black);
+  padding: 4rem 2rem;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.account-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.account-page h1 {
+  font-size: 2.5rem;
+  /* Daha büyük başlık */
+  margin-bottom: 2.5rem;
+  color: var(--color-black);
+  font-weight: 900;
+  /* Ekstra kalın */
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  text-align: center;
+  position: relative;
+}
+
+.account-page h1::after {
+  /* Başlık altına çizgi */
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 4px;
+  background: var(--color-black);
+}
+
+/* --- Yönetici (Admin) Uyarısı Stili --- */
+.admin-badge {
+  /* Yüksek kontrastlı uyarı */
+  background: var(--color-light-gray);
+  border: 3px solid var(--color-black);
+  border-radius: 0;
+  padding: 1.5rem;
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: var(--color-black);
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  /* Eskiz efekti */
+  box-shadow: 6px 6px 0 var(--color-medium-gray);
+}
+
+.admin-link {
+  /* Buton stili */
+  background: var(--color-black);
+  color: var(--color-white);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  border: 2px solid var(--color-black);
+  box-shadow: 3px 3px 0 var(--color-medium-gray);
+}
+
+.admin-link:hover {
+  background: var(--color-black);
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--color-black);
+}
+
+.info-item p.role-admin {
+  /* Admin rolü için yüksek kontrast */
+  color: var(--color-black);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.info-item p.role-guest {
+  color: var(--color-medium-gray);
+}
+
+/* --- Bilgi Kartları (Info Sections) --- */
+.account-info {
+  display: grid;
+  gap: 3rem;
+}
+
+.info-section {
+  background: var(--color-white);
+  border: 2px solid var(--color-dark-gray);
+  border-radius: 0;
+  padding: 2.5rem;
+  /* Hafif eskiz efekti */
+  box-shadow: 4px 4px 0 var(--color-light-gray);
+  transition: all 0.3s ease;
+}
+
+.info-section:hover {
+  border-color: var(--color-black);
+  box-shadow: 6px 6px 0 var(--color-medium-gray);
+}
+
+.info-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: var(--color-black);
+  font-weight: 700;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--color-dark-gray);
+  padding-bottom: 0.5rem;
+}
+
+.info-item {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item label {
+  font-weight: 700;
+  color: var(--color-medium-gray);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+}
+
+.info-item p {
+  color: var(--color-black);
+  font-size: 1rem;
+  margin: 0;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.session-note {
+  /* Tematik not stili */
+  background: var(--color-light-gray);
+  color: var(--color-black);
+  border: 2px solid var(--color-black);
+  padding: 1rem;
+  border-radius: 0;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  font-family: 'Roboto Mono', monospace;
+  font-style: italic;
+  box-shadow: 3px 3px 0 var(--color-dark-gray);
+}
+
+/* --- Hesap Aksiyonları (Buttons) --- */
+.account-actions {
+  display: flex;
+  gap: 1.5rem;
+  padding-top: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Yenileme ve Çıkış butonları için standart Auth.css stilini kullan */
+.refresh-btn,
+.logout-btn {
+  padding: 1rem 2rem;
+  background: var(--color-black);
+  /* Birincil aksiyon için siyah */
+  color: var(--color-white);
+  border: 2px solid var(--color-black);
+  border-radius: 0;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  /* Auth.css imzası */
+  box-shadow: 4px 4px 0 var(--color-medium-gray);
+}
+
+.refresh-btn:hover:not(:disabled),
+.logout-btn:hover {
+  background: var(--color-black);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--color-black);
+}
+
+.refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--color-dark-gray);
+  /* Disabled için gri */
+  box-shadow: none;
+}
+
+.refresh-success {
+  color: var(--color-black);
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin: 0;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .account-page {
+    padding: 2rem 1rem;
+  }
+
+  .account-page h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .info-section {
+    padding: 1.5rem;
+  }
+
+  .admin-badge {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .role-admin {
+    color: #e74c3c;
+    font-weight: bold;
+    background: linear-gradient(135deg, #ffeaa7 0%, #ffd700 100%);
+    padding: 8px 20px;
+    border-radius: 25px;
+    display: inline-block;
+    box-shadow: 0 4px 10px rgba(255, 165, 0, 0.2);
+  }
+
+  .role-guest {
+    color: #27ae60;
+    font-weight: bold;
+    background: linear-gradient(135deg, #d5f4e6 0%, #a3e4d7 100%);
+    padding: 8px 20px;
+    border-radius: 25px;
+    display: inline-block;
+    box-shadow: 0 4px 10px rgba(39, 174, 96, 0.2);
+  }
+
+  /* Profil yenile butonu */
+  button[style*="background-color: #2ecc71"] {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%) !important;
+    color: white !important;
+    border: none !important;
+  }
+
+  button[style*="background-color: #2ecc71"]:hover {
+    background: linear-gradient(135deg, #27ae60 0%, #219653 100%) !important;
+    transform: translateY(-2px) !important;
+  }
+}

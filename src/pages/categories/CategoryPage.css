@@ -1,0 +1,169 @@
+/* Auth.css'ten renk değişkenlerini dahil et (Global CSS'de yoksa) */
+:root {
+  --color-black: #000000;
+  --color-dark-gray: #a9a9a9;
+  --color-medium-gray: #333333;
+  --color-light-gray: #dddddd;
+  --color-white: #ffffff;
+}
+
+.category-page {
+  min-height: calc(100vh - 80px);
+  background: var(--color-white);
+  color: var(--color-black);
+  padding: 3rem 2rem;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.category-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* --- Başlık ve Açıklama Stilleri --- */
+.category-page h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-black);
+  font-weight: 900;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  text-align: center;
+}
+
+.category-page > .category-container > p {
+  color: var(--color-medium-gray);
+  margin-bottom: 3rem;
+  font-size: 1rem;
+  font-family: 'Roboto Mono', monospace;
+  font-style: italic;
+  text-align: center;
+}
+
+/* --- Kategoriler Izgarası --- */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.category-card {
+  position: relative;
+  background: var(--color-white);
+  border: 2px solid var(--color-dark-gray);
+  border-radius: 0;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--color-black);
+  height: 320px;
+  transition: all 0.3s ease;
+  box-shadow: 4px 4px 0 var(--color-light-gray);
+}
+
+.category-card:hover {
+  border-color: var(--color-black);
+  box-shadow: 6px 6px 0 var(--color-black);
+  transform: translate(-2px, -2px);
+}
+
+.category-image {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.category-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.category-card:hover .category-image img {
+  transform: scale(1.05);
+}
+
+.category-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 1.5rem;
+  color: var(--color-white);
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+.category-card:hover .category-overlay {
+  background: rgba(0, 0, 0, 0.95);
+}
+
+.category-overlay h3 {
+  font-size: 1.4rem;
+  margin: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.category-description {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-light-gray);
+  font-family: 'Roboto Mono', monospace;
+  opacity: 0.9;
+}
+
+/* --- Tüm Kategoriler Linki --- */
+.all-categories-link {
+  display: inline-block;
+  margin: 2rem auto 0;
+  padding: 0.75rem 2rem;
+  background: var(--color-black);
+  color: var(--color-white);
+  border: 2px solid var(--color-black);
+  border-radius: 0;
+  text-decoration: none;
+  font-weight: 700;
+  font-family: 'Roboto Mono', monospace;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  box-shadow: 4px 4px 0 var(--color-medium-gray);
+}
+
+.all-categories-link:hover {
+  background: var(--color-medium-gray);
+  border-color: var(--color-medium-gray);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--color-black);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .category-page {
+    padding: 2rem 1rem;
+  }
+
+  .category-page h1 {
+    font-size: 1.8rem;
+  }
+
+  .categories-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .category-card {
+    height: 250px;
+  }
+
+  .category-overlay h3 {
+    font-size: 1.1rem;
+  }
+}

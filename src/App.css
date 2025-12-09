@@ -1,42 +1,156 @@
+/*
+* Global CSS: Auth.css stiliyle uyumlu, Roboto Mono fontunu ve
+* marjinal/eskiz defteri estetiğini destekleyen global kurallar.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+:root {
+  /* Auth.css'ten renkler */
+  --color-black: #000000;
+  --color-dark-gray: #a9a9a9;
+  --color-medium-gray: #333333;
+  --color-light-gray: #dddddd;
+  --color-white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  /* Auth.css'deki kutu gölgelerinin (box-shadow) doğru çalışması için */
+  box-sizing: border-box;
+}
+
+html,
+body,
 #root {
-  max-width: 1280px;
+  width: 100%;
+  min-height: 100%;
+  /* Sayfanın yüksekliğini koru */
+}
+
+body {
+  /* Auth.css'teki input ve başlıklarla uyumlu olarak Roboto Mono kullan */
+  font-family: 'Roboto Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Arka plan rengini Auth.css'ten al, böylece tutarlılık sağlanır */
+  background: var(--color-white);
+  color: var(--color-black);
+}
+
+/* Scrollbar Styling (Marjinal/Eskiz temasına uygun basit ve kontrastlı) */
+::-webkit-scrollbar {
+  width: 12px;
+  /* Biraz daha kalın */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-light-gray);
+  border: 1px solid var(--color-dark-gray);
+  /* Çizilmiş görünüm */
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-medium-gray);
+  border-radius: 0;
+  /* Köşesiz, Auth.css'e uygun */
+  border: 1px solid var(--color-black);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-black);
+}
+
+/* Global Button Reset */
+button {
+  font-family: 'Roboto Mono', monospace;
+  cursor: pointer;
+  /* Global düğmelerde de Auth.css'teki gibi düz stiller tercih edilebilir */
+  border-radius: 0;
+}
+
+/* Global Link Styling */
+a {
+  text-decoration: none;
+  color: var(--color-black);
+  font-weight: 700;
+  transition: all 0.2s ease;
+  /* Altı çizili vurgu için transparent border */
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+}
+
+a:hover {
+  /* Auth.css'teki link hover stili */
+  border-bottom: 2px solid var(--color-black);
+  color: var(--color-black);
+}
+
+/* Remove default input styling */
+input,
+textarea,
+select {
+  font-family: 'Roboto Mono', monospace;
+  /* Auth.css'teki input stillerine genel bir yaklaşım */
+  border-radius: 0;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--color-dark-gray);
+  background: var(--color-white);
+  color: var(--color-black);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-black);
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 0 2rem;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
 }
 
-@keyframes logo-spin {
+/* Animasyonlar: Auth.css'tekilerle aynı isimleri koruyarak global kullanılabilir */
+@keyframes fadeIn {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
   }
+
   to {
-    transform: rotate(360deg);
+    opacity: 1;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@keyframes slideIn {
+  from {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
-.card {
-  padding: 2em;
-}
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
 
-.read-the-docs {
-  color: #888;
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
