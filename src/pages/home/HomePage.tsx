@@ -17,40 +17,16 @@ interface GeneratedCategory {
 
 type DisplayCategory = Category | GeneratedCategory;
 
-// --- YENİ MOCK VE SABİT VERİLER ---
-
 // Kayan Yazı (Marquee) verisi
 const marqueeText = "BLVZEUNIT | WHERE STREET MEETS SOUL | ";
 
 // Lookbook verisi (public/images/banner.jpg varsayılarak)
 const lookbookData = {
-  title: "SON BAHAR / KIŞ LOOKBOOK",
-  subtitle: "Sokağın ruhunu yansıtan en yeni stiller keşfedilmeyi bekliyor.",
+  title: "MONEY TALKS",
+  subtitle: "'WHERE STREET MEETS SOUL'",
   imageUrl: "/banner.png", // public klasöründeki görsel
   cta: "KOLEKSİYONU GÖR"
 };
-
-// Social Proof (Reviews) mock verileri
-const mockReviews = [
-  {
-    id: 1,
-    author: "Gizem A.",
-    review: "Ceket kalitesi harika. Tam beklediğim gibi bir duruşu var. Kesinlikle bir Vibe Check!",
-    rating: 5,
-  },
-  {
-    id: 2,
-    author: "Can B.",
-    review: "Tişörtün pamuğu ve dikişleri mükemmel. Tasarım zaten efsane, hemen yenilerini sipariş ettim.",
-    rating: 4,
-  },
-  {
-    id: 3,
-    author: "Eren D.",
-    review: "Hızlı kargo ve özenli paketleme. BLVZEUNIT, sözünün eri bir marka. Tavsiye ederim.",
-    rating: 5,
-  },
-];
 
 // --- SAYFA KOMPONENTİ ---
 
@@ -61,21 +37,6 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const categoriesScrollRef = useRef<HTMLDivElement>(null);
 
-  // Özellikleri (Manifesto), "street meets soul" temasına uygun, daha çarpıcı ifadelerle güncelleyelim
-  const features = [
-    {
-      title: 'ÇİZGİ DIŞI TASARIM',
-      description: 'Klasik kuralları zorlayan, sokak ruhunu yansıtan benzersiz koleksiyonlar.'
-    },
-    {
-      title: 'GERÇEK HİKAYELER',
-      description: 'Sadece kıyafet değil; her parça, bir şehir efsanesini veya grafiti izini taşır.'
-    },
-    {
-      title: 'KALİTE VE DURUŞ',
-      description: 'Uzun ömürlü, rahat ve sokağın enerjisine ayak uyduran sağlam kumaşlar.'
-    },
-  ];
 
   useEffect(() => {
     fetchCategories();
@@ -254,16 +215,6 @@ export default function HomePage() {
           <Link to="/categories/all" className="cta-button">
             ÜRÜNLERİ KEŞFET
           </Link>
-        </section>
-
-        {/* Features Section: Güncellenmiş temaya uygun özellikler (Manifesto) */}
-        <section className="features-section">
-          {features.map((feature, idx) => (
-            <div key={idx} className="feature-card">
-              <h3>{feature.title}</h3>
-              <p>{feature.description}</p>
-            </div>
-          ))}
         </section>
 
         {/* Categories Scroll Section */}
