@@ -1,11 +1,6 @@
 import './AboutPage.css';
 
 export default function AboutPage() {
-  const values = [
-    { title: 'Kalite', description: 'En iyi ürünleri sunmayı taahhüt ediyoruz' },
-    { title: 'Hız', description: 'Hızlı teslimat ve müşteri hizmeti' },
-    { title: 'Güven', description: 'Müşteri memnuniyeti bizim önceliğimiz' },
-  ];
 
   return (
     <div className="about-page">
