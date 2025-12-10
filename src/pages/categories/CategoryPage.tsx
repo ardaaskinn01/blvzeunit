@@ -94,17 +94,17 @@ export default function CategoryPage() {
   return (
     <div className="category-page">
       <div className="category-container">
-        <h1>KATEGORİLER</h1>
+        <h1>KOLEKSİYONLAR</h1>
         <p>BLVZEUNIT - STİLİNİZİ KEŞFEDİN</p>
 
         {loading ? (
           <div style={{ textAlign: 'center', padding: '3rem' }}>
-            <p>Kategoriler yükleniyor...</p>
+            <p>Koleksiyonlar yükleniyor...</p>
           </div>
         ) : categories.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '3rem' }}>
-            <h3>Henüz kategori bulunmuyor.</h3>
-            <p>Ürünler eklendikçe kategoriler görünecektir.</p>
+            <h3>Henüz koleksiyon bulunmuyor.</h3>
+            <p>Ürünler eklendikçe koleksiyonlar görünecektir.</p>
           </div>
         ) : (
           <>
@@ -179,7 +179,7 @@ export default function CategoryPage() {
 
             {/* Sayfa altı açıklama */}
             <div style={{ textAlign: 'center', marginTop: '4rem', color: 'var(--color-medium-gray)' }}>
-              <p>Her kategori için özel tasarlanmış ürünlerimizi keşfedin. Streetwear ruhunu yaşayın.</p>
+              <p>Her koleksiyon için özel tasarlanmış ürünlerimizi keşfedin. Streetwear ruhunu yaşayın.</p>
               <Link to="/" className="all-categories-link">
                 Ana Sayfaya Dön
               </Link>

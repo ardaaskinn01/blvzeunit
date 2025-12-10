@@ -1,47 +1,92 @@
-/* Ana Tema Değişkenleri (Global CSS'ten veya HomePage.css'ten alınmıştır) */
-/*
-:root {
-  --color-black: #000000;
-  --color-dark-gray: #a9a9a9;
-  --color-medium-gray: #333333;
-  --color-light-gray: #dddddd;
-  --color-white: #ffffff;
-}
-*/
+/* Global variables assumed to be set in index.css */
 
 .contact-page {
   min-height: calc(100vh - 80px);
   background: var(--color-white);
   padding: 4rem 2rem;
   color: var(--color-black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.contact-container {
-  max-width: 700px;
+/* Wrapper for the side-by-side layout */
+.contact-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  /* Info takes less space, form takes more */
+  gap: 4rem;
+  max-width: 1100px;
+  width: 100%;
   margin: 0 auto;
-  
-  /* Ana Tema Stili: Kalın Siyah Çerçeve ve Gölge (Auth/About ile benzer) */
+  align-items: start;
+}
+
+/* --- Left Side: Contact Info --- */
+.about-section {
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.about-section h2 {
+  font-family: 'Anton', 'Impact', sans-serif;
+  font-size: 3.5rem;
+  text-transform: uppercase;
+  color: var(--color-black);
+  line-height: 0.9;
+  letter-spacing: -1px;
+  margin-bottom: 1rem;
+}
+
+.contact-info-item h3 {
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  border-left: 3px solid var(--color-black);
+  padding-left: 0.8rem;
+}
+
+.contact-info-item p {
+  font-size: 1.1rem;
+  color: var(--color-medium-gray);
+  line-height: 1.5;
+  padding-left: 1.1rem;
+  /* Indent to align with border */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* --- Right Side: Form Container --- */
+.contact-container {
+  /* Keep original colors as requested */
   background: var(--color-light-gray);
   border: 3px solid var(--color-black);
-  padding: 2.5rem;
-  border-radius: 0; /* Köşesiz */
-  box-shadow: 8px 8px 0 var(--color-dark-gray);
+  box-shadow: 12px 12px 0 var(--color-dark-gray);
+
+  padding: 3rem;
+  border-radius: 0;
+  /* Brutalist sharp corners */
 }
 
-.contact-page h1 {
+.contact-container h1 {
   color: var(--color-black);
   margin-bottom: 0.5rem;
   font-size: 2rem;
-  text-align: center;
-  font-weight: 700;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: left;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 1px;
 }
 
-.contact-page > .contact-container > p {
+.contact-container>p {
   color: var(--color-medium-gray);
   margin-bottom: 2rem;
   font-size: 1rem;
-  text-align: center;
+  text-align: left;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -54,41 +99,45 @@
 .form-group {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 
 .form-group label {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-black);
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* --- Form Alanları Stili --- */
+/* --- Form Fields --- */
 .form-group input,
 .form-group textarea {
-  padding: 0.9rem;
-  border: 2px solid var(--color-dark-gray); /* Çerçeve biraz kalınlaştırıldı */
-  border-radius: 0; /* Köşesiz */
+  padding: 1rem;
+  border: 2px solid var(--color-black);
+  /* Bolder border */
+  border-radius: 0;
   font-family: inherit;
   font-size: 1rem;
   background: var(--color-white);
   color: var(--color-black);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
   color: var(--color-dark-gray);
+  opacity: 0.7;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--color-black);
   background: var(--color-white);
-  /* Sadece siyah border/gölge odak efekti */
-  box-shadow: 4px 4px 0 var(--color-light-gray); 
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.1);
+  /* Subtle shadow on focus */
+  transform: translate(-2px, -2px);
 }
 
 .form-group textarea {
@@ -96,63 +145,57 @@
   min-height: 140px;
 }
 
-/* --- Gönder Butonu Stili (Add to Cart benzeri) --- */
+/* --- Submit Button --- */
 .submit-btn {
-  padding: 1rem 1.5rem;
+  padding: 1.2rem;
   background: var(--color-black);
   color: var(--color-white);
   border: none;
-  border-radius: 0; /* Köşesiz */
+  border-radius: 0;
   font-size: 1rem;
-  font-weight: 700; /* Daha belirgin */
+  font-weight: 800;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  
-  /* Eskiz gölgesi eklendi */
-  box-shadow: 4px 4px 0 var(--color-medium-gray); 
+  letter-spacing: 1px;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 6px 6px 0 var(--color-dark-gray);
 }
 
 .submit-btn:hover:not(:disabled) {
   background: var(--color-medium-gray);
-  box-shadow: 6px 6px 0 var(--color-dark-gray);
-  transform: translateY(-2px); /* Hafif yukarı kayma */
+  box-shadow: 8px 8px 0 var(--color-dark-gray);
+  transform: translate(-2px, -2px);
 }
 
 .submit-btn:disabled {
   background: var(--color-dark-gray);
-  color: var(--color-white);
   cursor: not-allowed;
-  box-shadow: none; /* Disabled durumunda gölge yok */
+  box-shadow: none;
   transform: none;
 }
 
-/* --- Mesaj Stilleri --- */
+/* --- Messages --- */
 .response-message {
-  padding: 1.2rem;
-  border-radius: 0; /* Köşesiz */
+  padding: 1rem;
+  border-radius: 0;
   text-align: center;
   font-weight: 600;
-  margin-top: 1.5rem;
-  /* Animasyon korunabilir veya kaldırılabilir, temaya uyumlu olması için korunmuştur. */
-  animation: slideIn 0.3s ease; 
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* Standart uyarı kartı stiline benzetildi */
+  margin-top: 2rem;
+  animation: slideIn 0.3s ease;
+  font-family: 'Segoe UI', sans-serif;
   border: 2px solid;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1); 
 }
 
 .response-message.success {
-  background: #f0fff0; /* Çok açık yeşil */
-  color: #2e7d32;
-  border-color: #2e7d32;
+  background: #e8f5e9;
+  color: #1b5e20;
+  border-color: #1b5e20;
 }
 
 .response-message.error {
-  background: #fff0f0; /* Çok açık kırmızı */
+  background: #ffebee;
   color: #c62828;
   border-color: #c62828;
 }
@@ -162,22 +205,48 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+  .contact-wrapper {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .about-section {
+    padding: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .about-section h2 {
+    font-size: 2.5rem;
+  }
+
+  .contact-info-item h3 {
+    border-left: none;
+    padding-left: 0;
+    border-bottom: 2px solid var(--color-black);
+    display: inline-block;
+    padding-bottom: 0.2rem;
+  }
+
+  .contact-info-item p {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
   .contact-page {
     padding: 2rem 1rem;
   }
 
   .contact-container {
     padding: 1.5rem;
-  }
-
-  .contact-page h1 {
-    font-size: 1.5rem;
   }
 }

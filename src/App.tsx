@@ -28,6 +28,13 @@ import CategoryProductsPage from './pages/categories/CategoryProductsPage';
 import CartPage from './pages/cart/CartPage';
 import CheckoutPage from './pages/checkout/CheckoutPage';
 
+// Legal Pages
+import PrivacyPolicyPage from './pages/legal/PrivacyPolicyPage';
+import RefundPolicyPage from './pages/legal/RefundPolicyPage';
+import ShippingPolicyPage from './pages/legal/ShippingPolicyPage';
+import TermsOfServicePage from './pages/legal/TermsOfServicePage';
+import LegalNoticePage from './pages/legal/LegalNoticePage';
+
 // Minimal Loading Component
 function GlobalLoading() {
   return (
@@ -99,6 +106,13 @@ function AppContent() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+
+        {/* Legal Pages */}
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/refund-policy" element={<RefundPolicyPage />} />
+        <Route path="/shipping-policy" element={<ShippingPolicyPage />} />
+        <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+        <Route path="/legal-notice" element={<LegalNoticePage />} />
       </Route>
 
       {/* (auth) GRUBU */}

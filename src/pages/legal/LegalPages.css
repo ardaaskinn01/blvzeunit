@@ -1,0 +1,458 @@
+.legal-page-container {
+    padding: 4rem 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    min-height: 60vh;
+}
+
+.legal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.legal-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 700;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.5rem;
+}
+
+.last-updated {
+    color: #666;
+    font-style: italic;
+    margin-bottom: 3rem;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+/* BÖLÜM 1: Ana yapı */
+.legal-content section {
+    margin-bottom: 2.5rem;
+}
+
+/* Sayfaya özel başlık numaralandırma - Terms of Service için */
+.terms-page .legal-content {
+    counter-reset: section;
+}
+
+.terms-page .legal-content h2 {
+    counter-increment: section;
+    counter-reset: subsection;
+    position: relative;
+    padding-left: 2.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #444;
+    font-weight: 600;
+}
+
+.terms-page .legal-content h2:before {
+    content: counter(section) ". ";
+    position: absolute;
+    left: 0;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.terms-page .legal-content h3 {
+    counter-increment: subsection;
+    position: relative;
+    padding-left: 3rem;
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #495057;
+}
+
+.terms-page .legal-content h3:before {
+    content: counter(section) "." counter(subsection) ". ";
+    position: absolute;
+    left: 1.5rem;
+    color: #6c757d;
+    font-weight: bold;
+}
+
+/* Diğer sayfalar için normal stil */
+.legal-content h2:not(.terms-page h2) {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #444;
+    font-weight: 600;
+}
+
+.legal-content h3:not(.terms-page h3) {
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #495057;
+}
+
+.legal-content p {
+    line-height: 1.7;
+    color: #444;
+    margin-bottom: 1rem;
+}
+
+.legal-content ul,
+.legal-content ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.legal-content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+/* Link stilleri */
+.legal-content a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.legal-content a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Özel bileşenler için stiller */
+.policy-intro {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border-left: 4px solid #007bff;
+}
+
+.agreement-intro {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.agreement-intro strong {
+    color: #d32f2f;
+}
+
+.definitions {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+}
+
+.definitions p {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.definitions p:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.detailed-list {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.detailed-list li {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.detailed-list strong {
+    color: #333;
+    display: inline-block;
+    min-width: 150px;
+}
+
+.data-table {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+.data-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.data-table th {
+    background: #007bff;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.data-table td {
+    padding: 12px;
+    border: 1px solid #dee2e6;
+    vertical-align: top;
+}
+
+.data-table tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.note {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}
+
+.cookie-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.cookie-type {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.cookie-type h3 {
+    color: #495057;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.rights-list {
+    column-count: 2;
+    column-gap: 2rem;
+}
+
+.rights-list li {
+    margin-bottom: 0.75rem;
+    break-inside: avoid;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.rights-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #28a745;
+    font-weight: bold;
+}
+
+.contact-section {
+    background: #e8f4fd;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.contact-details,
+.company-details {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+.contact-details p,
+.company-details p {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+}
+
+.contact-details strong {
+    min-width: 120px;
+    color: #333;
+}
+
+.company-details strong {
+    min-width: 180px;
+    color: #333;
+}
+
+.important-note {
+    background-color: #fff8e1;
+    padding: 1.5rem;
+    border-radius: 6px;
+    border-left: 4px solid #ffc107;
+    margin: 2rem 0;
+}
+
+.important-note h2 {
+    color: #d32f2f;
+}
+
+.legal-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+}
+
+.signature {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #dee2e6;
+    text-align: right;
+    font-style: italic;
+}
+
+/* Bölümlere özel stiller */
+.payment-details,
+.shipping-details,
+.return-policy,
+.warranty-terms,
+.ip-rights,
+.third-party,
+.termination-terms,
+.dispute-resolution,
+.effective-terms {
+    margin: 1.5rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .legal-page-container {
+        margin: 1rem auto;
+        padding: 2rem 0.5rem;
+    }
+
+    .legal-content {
+        padding: 1.5rem;
+    }
+
+    .legal-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .legal-content h2 {
+        font-size: 1.3rem;
+    }
+
+    .terms-page .legal-content h2 {
+        font-size: 1.3rem;
+        padding-left: 2rem;
+    }
+
+    .terms-page .legal-content h3 {
+        font-size: 1.1rem;
+        padding-left: 2.5rem;
+    }
+
+    .terms-page .legal-content h3:before {
+        left: 1rem;
+    }
+
+    .detailed-list li {
+        margin-bottom: 0.75rem;
+    }
+
+    .detailed-list strong {
+        min-width: 120px;
+    }
+
+    .company-details p,
+    .contact-details p {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .company-details strong,
+    .contact-details strong {
+        margin-bottom: 0.25rem;
+    }
+
+    .data-table {
+        font-size: 0.9rem;
+    }
+
+    .rights-list {
+        column-count: 1;
+    }
+
+    .cookie-types {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .legal-content {
+        background: #1a1a1a;
+        color: #e0e0e0;
+    }
+
+    .legal-content h1,
+    .legal-content h2,
+    .legal-content h3 {
+        color: #ffffff;
+    }
+
+    .legal-content p {
+        color: #b0b0b0;
+    }
+
+    .policy-intro,
+    .definitions {
+        background: #2a2a2a;
+    }
+
+    .agreement-intro,
+    .note,
+    .important-note {
+        background: #332b00;
+        border-color: #665800;
+    }
+
+    .contact-section {
+        background: #0a2940;
+    }
+
+    .contact-details,
+    .company-details,
+    .cookie-type {
+        background: #2a2a2a;
+        border-color: #3a3a3a;
+    }
+
+    .data-table th {
+        background: #0056b3;
+    }
+
+    .data-table tr:nth-child(even) {
+        background: #2a2a2a;
+    }
+
+    .data-table td {
+        border-color: #3a3a3a;
+    }
+
+    .legal-footer {
+        border-color: #3a3a3a;
+        color: #888;
+    }
+}

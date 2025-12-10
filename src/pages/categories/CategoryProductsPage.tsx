@@ -233,7 +233,7 @@ export default function CategoryProductsPage() {
         {/* Filters */}
         <div className="filters-section">
           <div className="filter-group">
-            <label>KATEGORİ</label>
+            <label>K0LEKSİYON</label>
             <select
               value={selectedCategory}
               onChange={(e) => handleCategoryChange(e.target.value)}
@@ -271,7 +271,7 @@ export default function CategoryProductsPage() {
           </div>
         ) : products.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '3rem' }}>
-            <h3>Bu kategoride ürün bulunamadı.</h3>
+            <h3>Bu koleksiyonda ürün bulunamadı.</h3>
             <Link to="/categories/all" style={{
               display: 'inline-block',
               marginTop: '1rem',

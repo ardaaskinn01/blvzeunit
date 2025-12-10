@@ -104,33 +104,12 @@ export default function Navbar() {
               </Link>
             </li>
             <li className="navbar-item navbar-item-dropdown">
-              <Link to="/categories" className="navbar-link">
-                Kategorİler
-              </Link>
-              {categories.length > 0 && (
-                <ul className="navbar-dropdown">
-                  <li>
-                    <Link to="/categories/all" className="navbar-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>
-                      Tüm Ürünler
-                    </Link>
-                  </li>
-                  {categories.map((category) => (
-                    <li key={category.id}>
-                      <Link
-                        to={`/categories/${category.slug}`}
-                        className="navbar-dropdown-link"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {category.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-            <li className="navbar-item">
-              <Link to="/categories/all" className="navbar-link" onClick={() => setIsMobileMenuOpen(false)}>
-                Tüm Ürünler
+              <Link
+                to={categories.length === 1 ? `/categories/${categories[0].slug}` : "/categories"}
+                className="navbar-link"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Koleksİyonlar
               </Link>
             </li>
             <li className="navbar-item">

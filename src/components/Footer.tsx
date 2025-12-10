@@ -33,11 +33,11 @@ export default function Footer() {
           <div className="footer-section">
             <h4>POLİTİKALAR</h4>
             <ul>
-              <li><a href="#privacy">Gizlilik Politikası</a></li>
-              <li><a href="#refund">Para İade Politikası</a></li>
-              <li><a href="#shipping">Kargo Politikası</a></li>
-              <li><a href="#terms">Hizmet Şartları</a></li>
-              <li><a href="#legal">Yasal Bildirim</a></li>
+              <li><Link to="/privacy-policy">Gizlilik Politikası</Link></li>
+              <li><Link to="/refund-policy">Para İade Politikası</Link></li>
+              <li><Link to="/shipping-policy">Kargo Politikası</Link></li>
+              <li><Link to="/terms-of-service">Hizmet Şartları</Link></li>
+              <li><Link to="/legal-notice">Yasal Bildirim</Link></li>
             </ul>
           </div>
 
@@ -45,7 +45,7 @@ export default function Footer() {
           <div className="footer-section">
             <h4>İLETİŞİM</h4>
             <p>Email: blvzeunit@gmail.com</p>
-            <p>Adres: 4562 sokak no:31 kat:2 daire:2 Sevgi Mahallesi / Karabağlar İzmir</p>
+            <p>Adres: 4562 Sokak No:31 Kat:2 Daire:2 Sevgi Mahallesi Karabağlar/İzmir</p>
           </div>
         </div>
 

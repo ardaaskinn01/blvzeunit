@@ -63,73 +63,87 @@ export default function ContactPage() {
 
   return (
     <div className="contact-page">
-      <div className="contact-container">
-        <h1>İletişim</h1>
-        <p>Bize yazın, en kısa sürede cevap vereceğiz.</p>
-
-        <form onSubmit={handleSubmit} className="contact-form">
-          <div className="form-group">
-            <label htmlFor="name">İsim *</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              placeholder="Adınız"
-            />
+      <div className="contact-wrapper">
+        <div className="about-section">
+          <h2>İLETİŞİM</h2>
+          <div className="contact-info-item">
+            <h3>E-POSTA</h3>
+            <p>blvzeunit@gmail.com</p>
           </div>
-
-          <div className="form-group">
-            <label htmlFor="email">E-posta *</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              placeholder="E-posta adresiniz"
-            />
+          <div className="contact-info-item">
+            <h3>ADRES</h3>
+            <p>4562 Sokak No:31 Kat:2 Daire:2<br />Sevgi Mahallesi<br />Karabağlar/İzmir</p>
           </div>
+        </div>
 
-          <div className="form-group">
-            <label htmlFor="subject">Konu *</label>
-            <input
-              type="text"
-              id="subject"
-              name="subject"
-              value={formData.subject}
-              onChange={handleChange}
-              required
-              placeholder="Mesaj konusu"
-            />
-          </div>
+        <div className="contact-container">
+          <h1>BİZE ULAŞIN</h1>
+          <p>Sorularınız için aşağıdaki formu doldurabilirsiniz.</p>
 
-          <div className="form-group">
-            <label htmlFor="message">Mesaj *</label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-              rows={6}
-              placeholder="Mesajınız"
-            ></textarea>
-          </div>
+          <form onSubmit={handleSubmit} className="contact-form">
+            <div className="form-group">
+              <label htmlFor="name">İSİM</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                placeholder="Adınız Soyadınız"
+              />
+            </div>
 
-          <button type="submit" disabled={isLoading} className="submit-btn">
-            {isLoading ? 'Gönderiliyor...' : 'Gönder'}
-          </button>
-        </form>
+            <div className="form-group">
+              <label htmlFor="email">E-POSTA</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                placeholder="ornek@email.com"
+              />
+            </div>
 
-        {responseMessage && (
-          <div className={`response-message ${isError ? 'error' : 'success'}`}>
-            {responseMessage}
-          </div>
-        )}
+            <div className="form-group">
+              <label htmlFor="subject">KONU</label>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+                required
+                placeholder="Mesajınızın konusu"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="message">MESAJ</label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+                rows={6}
+                placeholder="İletmek istediğiniz mesaj..."
+              ></textarea>
+            </div>
+
+            <button type="submit" disabled={isLoading} className="submit-btn">
+              {isLoading ? 'GÖNDERİLİYOR...' : 'GÖNDER'}
+            </button>
+          </form>
+
+          {responseMessage && (
+            <div className={`response-message ${isError ? 'error' : 'success'}`}>
+              {responseMessage}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

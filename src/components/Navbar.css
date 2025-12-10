@@ -54,7 +54,7 @@
   color: var(--color-black);
   background: var(--color-white);
   font-family: 'Roboto Mono', monospace;
-  width: 200px;
+  width: 240px;
   /* Arama çubuğu varsayılan genişliği */
 }
 
@@ -95,11 +95,6 @@
   text-decoration: none;
   transition: all 0.2s ease;
 
-  /* Logoya marjinal çerçeve ve gölge ekle */
-  padding: 5px;
-  border: 3px solid var(--color-black);
-  border-radius: 0;
-  box-shadow: 6px 6px 0 var(--color-medium-gray);
 }
 
 .navbar-logo:hover {
@@ -110,7 +105,7 @@
 
 .navbar-logo-img {
   /* Önceki istekteki büyük boyutu koru */
-  height: 50px;
+  height: 80px;
   width: auto;
   object-fit: contain;
 }
