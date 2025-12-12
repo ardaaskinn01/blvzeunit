@@ -95,7 +95,9 @@
   border: 1px solid var(--color-gray-200);
   font-size: 1rem;
 
+  /* Font ailesini normal bir font olan Roboto Mono olarak atadık */
   font-family: 'Roboto Mono', monospace;
+  /* FONT AĞIRLIĞI DÜZELTME: Normal (Bold olmayan) */
   font-weight: 400;
 
   cursor: pointer;
@@ -105,12 +107,12 @@
   position: relative;
   overflow: hidden;
 
-  /* HİZALAMA DÜZELTMESİ: İçeriklerin merkezlenmesini sağlar */
+  /* GENİŞLİK DÜZELTMESİ: Kısa kalma sorununu çözer */
+  width: 100%;
+  /* HİZALAMA: İçeriklerin merkezlenmesini sağlar */
   display: flex;
   align-items: center;
-  /* Dikey hizalama */
   justify-content: center;
-  /* Yatay hizalama */
   gap: 0.5rem;
 }
 
