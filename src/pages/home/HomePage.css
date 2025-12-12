@@ -728,6 +728,11 @@
 @media (max-width: 768px) {
   .home-page {
     padding: 2rem 1rem;
+    /* Mobilde background'u sola hizala ve cover yerine contain kullan */
+    /* Yükseklik %100, genişlik otomatik */
+    background-position: 20% 50%;
+    background-repeat: repeat;
+    /* Fixed'ı kaldır, daha iyi performans */
   }
 
   .hero-section h1 {

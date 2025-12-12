@@ -225,44 +225,62 @@
 /* --- EYLEM BUTONLARI --- */
 .navbar-actions {
   display: flex;
-  gap: 2rem;
-  /* Butonlar arası boşluk */
   align-items: center;
+  gap: 1rem;
 }
 
+/* Sepet ve Kullanıcı/Giriş Düğmeleri için Ortak Stil */
 .navbar-cart,
 .navbar-account,
-.navbar-account-link,
-.navbar-logout {
-  padding: 0.2rem 1.5rem;
-  /* Daha büyük butonlar */
-  background: var(--color-black);
-  color: var(--color-white);
-  /* Butonlara marjinal stil uygulama */
-  border: 2px solid var(--color-black);
-  border-radius: 0;
+.navbar-account-link {
+  /* Brutalist Buton Temeli */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  padding: 0.2rem 0.5rem;
+  /* İç dolguyu azaltıp metnin yayılmasını sağla */
+  border: 2px solid var(--color-black);
+  background: var(--color-white);
+  color: var(--color-black);
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: 'Bebas Neue', monospace;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  text-decoration: none;
-  display: inline-block;
-  /* Auth.css'teki imza box-shadow */
-  box-shadow: 4px 4px 0 var(--color-medium-gray);
+
+  /* Sabit Boyutlandırma ve İki Satır Görünümü */
+  width: 70px;
+  /* Sabit Genişlik */
+  height: 50px;
+  /* Sabit Yükseklik */
+  line-height: 1.2;
+  /* Satır aralığını daralt */
+  white-space: normal;
+  /* Metnin normal akmasını sağla */
+  word-break: break-word;
+  /* Kelimeyi gerektiğinde böl */
 }
 
-.navbar-cart:hover,
-.navbar-account:hover,
-.navbar-account-link:hover,
-.navbar-logout:hover {
+/* Sepet Düğmesi için Özel Ayar */
+.navbar-cart {
   background: var(--color-black);
-  /* Siyah kalır */
-  /* Hover efekti (Auth.css buton stili) */
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 var(--color-black);
+  color: var(--color-white);
+  box-shadow: 3px 3px 0 var(--color-medium-gray);
+}
+
+.navbar-cart:hover {
+  background: var(--color-dark-gray);
+  box-shadow: 5px 5px 0 var(--color-black);
+}
+
+/* Hesap/Giriş Düğmesi Hover */
+.navbar-account:hover,
+.navbar-account-link:hover {
+  background: var(--color-light-gray);
+  box-shadow: 3px 3px 0 var(--color-medium-gray);
 }
 
 .navbar-cart:active,

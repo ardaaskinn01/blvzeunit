@@ -88,51 +88,93 @@
   color: var(--color-gray-800);
 }
 
-
-/* Birincil Buton */
-.submit-btn.primary {
-  background: var(--color-white);
-  color: var(--color-black);
+.submit-btn,
+.social-btn {
+  padding: 1rem;
+  /* Tüm butonlar için ince çerçeve */
   border: 1px solid var(--color-gray-200);
+  font-size: 1rem;
+
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 400;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+
+  /* HİZALAMA DÜZELTMESİ: İçeriklerin merkezlenmesini sağlar */
+  display: flex;
+  align-items: center;
+  /* Dikey hizalama */
+  justify-content: center;
+  /* Yatay hizalama */
+  gap: 0.5rem;
+}
+
+
+/* --- Birincil Buton (Login/Signup) Stilleri (.submit-btn.primary) --- */
+.submit-btn.primary {
+  background: var(--color-black);
+  /* Ana buton siyah */
+  color: var(--color-white);
+  /* Yazı beyaz */
+  border-color: var(--color-black);
+  /* Çerçeve siyah */
   box-shadow: none;
   margin-top: 0;
   width: 100%;
 }
 
+/* Birincil Buton Hover Durumu */
 .submit-btn.primary:hover:not(:disabled) {
-  background: var(--color-gray-50);
-  border-color: var(--color-gray-300);
+  background: var(--color-gray-800);
+  /* Hafifçe koyu griye döner */
+  border-color: var(--color-gray-800);
   box-shadow: none;
   transform: none;
 }
 
+/* Birincil Buton Disabled Durumu */
 .submit-btn.primary:disabled {
   background: var(--color-gray-200);
-  color: var(--color-gray-800);
+  color: var(--color-medium-gray);
   cursor: not-allowed;
+  border-color: var(--color-gray-200);
 }
 
-/* Sosyal Buton */
-.social-login {
-  margin-top: 1rem;
-  /* "Giriş Yap" butonu ile arasında boşluk */
-}
 
-/* Sosyal Buton - Tamamen gölgesiz ve açık */
+/* --- Sosyal Buton (Google) Stilleri (.social-btn) --- */
 .social-btn {
   background: var(--color-white);
+  /* Arkaplan beyaz */
   color: var(--color-black);
-  border: 1px solid var(--color-gray-200);
-  box-shadow: none;
-  margin-top: 0;
-  width: 100%;
+  /* Yazı siyah */
+  border-color: var(--color-gray-200);
+  /* İnce gri çerçeve */
 }
 
+/* Sosyal Buton Hover Durumu */
 .social-btn:hover:not(:disabled) {
   background: var(--color-gray-50);
   border-color: var(--color-gray-300);
   box-shadow: none;
   transform: none;
+}
+
+/* Sosyal Buton Disabled Durumu */
+.social-btn:disabled {
+  background: var(--color-gray-200);
+  color: var(--color-gray-800);
+  cursor: not-allowed;
+  border-color: var(--color-gray-200);
+}
+
+/* --- Ek Yapısal Stiller --- */
+.social-login {
+  margin-top: 1rem;
 }
 
 .auth-divider {
