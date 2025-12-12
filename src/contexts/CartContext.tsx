@@ -11,7 +11,6 @@ export interface CartItem {
     size: string;
     quantity: number;
     slug: string;      // Ürün linkine gitmek için
-    maxStock: number;  // Stok kontrolü için
 }
 
 // Adres tipi
@@ -96,8 +95,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 image_url: product.image_url || null,
                 size,
                 quantity,
-                slug: product.slug,
-                maxStock: 50
+                slug: product.slug
             };
 
             return [...prevItems, newItem];

@@ -53,14 +53,6 @@ export default function LegalNoticePage() {
                     </p>
                 </section>
 
-                <section>
-                    <h2>Uyuşmazlık Çözümü</h2>
-                    <p>
-                        Bu siteden kaynaklanan uyuşmazlıklarda İzmir Mahkemeleri ve İcra Daireleri yetkilidir. Tüketici sıfatını haiz müşterilerimiz,
-                        satın alma anındaki parasal sınırlar dahilinde Tüketici Hakem Heyetlerine başvurabilirler.
-                    </p>
-                </section>
-
                 {/* ⚠️ Şart ve Koşullar (Link zorunludur) */}
                 <section>
                     <h2>Diğer Yasal Metinler</h2>

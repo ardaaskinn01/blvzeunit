@@ -16,7 +16,7 @@
   background: var(--color-white);
   color: var(--color-black);
   padding: 4rem 2rem;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
 }
 
 .account-container {
@@ -31,7 +31,7 @@
   color: var(--color-black);
   font-weight: 900;
   /* Ekstra kalın */
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   letter-spacing: -1px;
   text-align: center;
@@ -63,7 +63,7 @@
   align-items: center;
   font-weight: 700;
   color: var(--color-black);
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   /* Eskiz efekti */
   box-shadow: 6px 6px 0 var(--color-medium-gray);
@@ -79,7 +79,7 @@
   font-weight: 700;
   font-size: 0.85rem;
   transition: all 0.2s ease;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   border: 2px solid var(--color-black);
   box-shadow: 3px 3px 0 var(--color-medium-gray);
@@ -129,7 +129,7 @@
   margin-bottom: 2rem;
   color: var(--color-black);
   font-weight: 700;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   border-bottom: 2px solid var(--color-dark-gray);
   padding-bottom: 0.5rem;
@@ -146,7 +146,7 @@
   color: var(--color-medium-gray);
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
 }
 
@@ -154,7 +154,7 @@
   color: var(--color-black);
   font-size: 1rem;
   margin: 0;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
 }
 
 .session-note {
@@ -166,7 +166,7 @@
   border-radius: 0;
   font-size: 0.9rem;
   margin-top: 2rem;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   font-style: italic;
   box-shadow: 3px 3px 0 var(--color-dark-gray);
 }
@@ -193,7 +193,7 @@
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   /* Auth.css imzası */
@@ -220,7 +220,7 @@
   font-weight: 700;
   font-size: 0.9rem;
   margin: 0;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
 }
 

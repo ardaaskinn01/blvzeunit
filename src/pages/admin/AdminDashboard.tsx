@@ -505,7 +505,7 @@ export default function AdminDashboard() {
             desi: newProduct.desi,          // Yeni alan
             weight_kg: newProduct.weight_kg, // Yeni alan
             slug: slug,
-            stock_quantity: 0
+            stock_quantity: 999999
           })
           .select()
           .single();
@@ -517,7 +517,7 @@ export default function AdminDashboard() {
           const variants = newProduct.size_options.map(size => ({
             product_id: newProductData.id,
             size: size,
-            stock_quantity: 0
+            stock_quantity: 999999
           }));
 
           const { error: variantsError } = await supabase
@@ -607,7 +607,7 @@ export default function AdminDashboard() {
         .insert({
           product_id: productId,
           size: size,
-          stock_quantity: 0
+          stock_quantity: 999999
         })
         .select()
         .single();
@@ -643,25 +643,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleUpdateVariantStock = async (variantId: string, newStock: number) => {
-    try {
-      const { error } = await supabase
-        .from('product_variants')
-        .update({ stock_quantity: newStock })
-        .eq('id', variantId);
 
-      if (error) throw error;
-
-      // Sadece local state'i güncelle, gereksiz yenileme yapma
-      setProductVariants(prevVariants =>
-        prevVariants.map(v =>
-          v.id === variantId ? { ...v, stock_quantity: newStock } : v
-        )
-      );
-    } catch (err: any) {
-      setError(err.message || 'Stok güncellenemedi');
-    }
-  };
 
   // Category functions
   const handleSaveCategory = async () => {
@@ -1032,20 +1014,12 @@ export default function AdminDashboard() {
 
             {editingProduct && showProductForm && (
               <div className="variants-section">
-                <h4>Beden ve Stok Yönetimi</h4>
+                <h4>Beden Yönetimi</h4>
                 <div className="variants-list">
                   {productVariants.map(variant => (
                     <div key={variant.id} className="variant-item">
                       <span className="variant-size">{variant.size}</span>
-                      <input
-                        type="number"
-                        value={variant.stock_quantity}
-                        onChange={(e) => handleUpdateVariantStock(
-                          variant.id,
-                          parseInt(e.target.value) || 0
-                        )}
-                        className="stock-input"
-                      />
+
                       <button
                         className="remove-btn"
                         onClick={() => handleRemoveVariant(variant.id)}

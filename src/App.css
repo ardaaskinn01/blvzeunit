@@ -3,7 +3,7 @@
 * marjinal/eskiz defteri estetiğini destekleyen global kurallar.
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
 :root {
   /* Auth.css'ten renkler */
@@ -31,7 +31,7 @@ body,
 
 body {
   /* Auth.css'teki input ve başlıklarla uyumlu olarak Roboto Mono kullan */
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Arka plan rengini Auth.css'ten al, böylece tutarlılık sağlanır */
@@ -64,7 +64,7 @@ body {
 
 /* Global Button Reset */
 button {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   cursor: pointer;
   /* Global düğmelerde de Auth.css'teki gibi düz stiller tercih edilebilir */
   border-radius: 0;
@@ -91,7 +91,7 @@ a:hover {
 input,
 textarea,
 select {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   /* Auth.css'teki input stillerine genel bir yaklaşım */
   border-radius: 0;
   padding: 0.5rem 0.75rem;

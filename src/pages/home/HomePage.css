@@ -9,16 +9,65 @@
 }
 
 .home-page {
-  min-height: calc(100vh - 80px);
-  background: var(--color-white);
-  color: var(--color-black);
+  background-color: #999999;
+  color: #fff;
   padding: 4rem 2rem;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
+  background-image: url('/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  opacity: 1;
 }
 
 .home-container {
   max-width: 1400px;
   margin: 0 auto;
+}
+
+.categories-scroll-section {
+  padding: 2rem 0;
+  text-align: center;
+  /* Başlık ve kaydırma konteynerini ortalar */
+}
+
+/* categories-scroll-container (okları ve listeyi saran div) */
+.categories-scroll-container {
+  position: relative;
+  max-width: 1200px;
+  /* Genişliği sınırlayın */
+  margin: 0 auto;
+  /* Auto margin ile yatayda ortala */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Ok düğmeleri dahil tüm içeriği ortalar */
+  padding: 0 40px;
+  /* Ok düğmeleri için kenar boşluğu bırakın */
+}
+
+.categories-scroll {
+  display: flex;
+  overflow-x: auto;
+  /* Kaydırmayı varsayılan olarak aktif tut */
+  gap: 20px;
+  padding-bottom: 10px;
+  /* Kaydırma çubuğu için boşluk */
+  justify-content: flex-start;
+  /* Varsayılan olarak sola dayalı başlar */
+  flex-wrap: nowrap;
+  width: 100%;
+  /* Konteynerin tam genişliğini kullan */
+}
+
+/* JS ile tetiklenen sınıf: Koleksiyon sayısı azken ortalamak için */
+.categories-scroll.center-items {
+  justify-content: center;
+  /* Öğeleri yatayda ortalar */
+  overflow-x: hidden;
+  /* Kaydırma çubuğunu gizler (çünkü kaydırmaya gerek kalmadı) */
 }
 
 /* --- YENİ: Marquee (Kayan Yazı) Section --- */
@@ -29,10 +78,11 @@
   box-sizing: border-box;
   margin-bottom: 4rem;
   /* Brütalist Çerçeve */
-  border-top: 3px solid var(--color-black);
-  border-bottom: 3px solid var(--color-black);
-  padding: 0.5rem 0;
-  background: var(--color-light-gray);
+  border-top: 3px solid var(--color-white);
+  border-bottom: 3px solid var(--color-white);
+  padding: 0.8rem 0;
+  background: var(--color-black);
+  color: var(--color-white);
 }
 
 .marquee-content {
@@ -63,10 +113,10 @@
   text-align: center;
   margin-bottom: 6rem;
   padding: 4rem 2rem;
-  background: var(--color-light-gray);
+  background: rgba(255, 255, 255, 0.95);
   border: 3px solid var(--color-black);
   border-radius: 0;
-  box-shadow: 10px 10px 0 var(--color-black);
+  box-shadow: 10px 10px 0 rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }
 
@@ -81,7 +131,7 @@
   margin-bottom: 0.5rem;
   color: var(--color-black);
   letter-spacing: -1px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   position: relative;
   display: inline-block;
@@ -106,7 +156,7 @@
   margin-left: auto;
   margin-right: auto;
   line-height: 1.6;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   font-style: italic;
 }
 
@@ -124,7 +174,7 @@
   cursor: pointer;
   font-size: 1rem;
   letter-spacing: 1px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   position: relative;
   box-shadow: 6px 6px 0 var(--color-medium-gray);
@@ -196,7 +246,7 @@
   margin-bottom: 0.75rem;
   color: var(--color-black);
   font-weight: 700;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -205,7 +255,7 @@
   color: var(--color-medium-gray);
   font-size: 0.95rem;
   line-height: 1.8;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
 }
 
 /* --- Section Titles --- */
@@ -213,11 +263,12 @@
   font-size: 2.5rem;
   margin-bottom: 3rem;
   text-align: center;
-  color: var(--color-black);
+  color: var(--color-white);
   font-weight: 900;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
-  letter-spacing: -0.5px;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 #000;
 }
 
 /* --- Categories Scroll Section --- */
@@ -252,7 +303,7 @@
   flex-direction: column;
   align-items: center;
   text-decoration: none;
-  color: var(--color-black);
+  color: var(--color-white);
   min-width: 150px;
   transition: all 0.3s ease;
 }
@@ -264,11 +315,11 @@
 .category-scroll-image {
   width: 150px;
   height: 150px;
-  border: 3px solid var(--color-black);
+  border: 3px solid var(--color-white);
   border-radius: 0;
   overflow: hidden;
   margin-bottom: 1rem;
-  background: var(--color-light-gray);
+  background: var(--color-black);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -291,21 +342,21 @@
   font-size: 3rem;
   font-weight: 900;
   color: var(--color-black);
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
 }
 
 .category-scroll-item span {
   font-size: 0.9rem;
   font-weight: 700;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   text-align: center;
 }
 
 .scroll-button {
-  background: var(--color-black);
-  color: var(--color-white);
-  border: 3px solid var(--color-black);
+  background: var(--color-white);
+  color: var(--color-black);
+  border: 3px solid var(--color-white);
   border-radius: 0;
   width: 50px;
   height: 50px;
@@ -317,7 +368,7 @@
   justify-content: center;
   transition: all 0.2s ease;
   box-shadow: 4px 4px 0 var(--color-medium-gray);
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   flex-shrink: 0;
 }
 
@@ -334,15 +385,14 @@
 /* --- Discounted Products Section --- */
 .discounted-products-section {
   margin-bottom: 6rem;
-  background: var(--color-light-gray);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
   padding: 3rem 2rem;
-  border: 3px solid var(--color-black);
-  box-shadow: 8px 8px 0 var(--color-medium-gray);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: none;
 }
 
-.discounted-products-section .section-title {
-  color: var(--color-black);
-}
+
 
 /* --- Products Preview Section (New Drops için de kullanılır) --- */
 .products-preview-section {
@@ -357,16 +407,11 @@
 }
 
 .product-card {
-  background: var(--color-white);
-  border: 2px solid var(--color-dark-gray);
-  border-radius: 0;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  text-decoration: none;
-  color: var(--color-black);
-  box-shadow: 4px 4px 0 var(--color-light-gray);
+  background: #f7f7f7;
+  border: 2px solid #000;
+  box-shadow: 6px 6px 0 #000;
 }
+
 
 .product-card:hover {
   border-color: var(--color-black);
@@ -403,7 +448,7 @@
   font-size: 4rem;
   font-weight: 900;
   color: var(--color-black);
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   background: linear-gradient(135deg, var(--color-light-gray) 0%, var(--color-dark-gray) 100%);
 }
 
@@ -416,7 +461,7 @@
   padding: 0.5rem 1rem;
   font-size: 0.8rem;
   font-weight: 700;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   border: 2px solid var(--color-white);
   box-shadow: 3px 3px 0 var(--color-medium-gray);
@@ -431,14 +476,14 @@
   margin-bottom: 0.5rem;
   font-size: 1rem;
   font-weight: 700;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
 }
 
 .product-info p {
   color: var(--color-medium-gray);
   font-size: 0.9rem;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
 }
 
 .product-price {
@@ -451,8 +496,8 @@
 .no-products-message {
   text-align: center;
   padding: 3rem;
-  color: var(--color-medium-gray);
-  font-family: 'Roboto Mono', monospace;
+  color: var(--color-white);
+  font-family: 'Bebas Neue', monospace;
   font-size: 1.1rem;
 }
 
@@ -465,34 +510,52 @@
 /* --- YENİ: Lookbook Banner Section --- */
 .lookbook-section {
   margin-bottom: 6rem;
-  height: 800px;
+  height: 475px;
   /* Büyük bir banner */
   background-size: cover;
+  /* contain yerine cover yaparak alanı daha iyi kaplamasını sağladım */
   background-position: center;
   background-repeat: no-repeat;
-  border: 3px solid var(--color-black);
-  box-shadow: 10px 10px 0 var(--color-black);
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.lookbook-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Daha yumuşak ve okunabilir bir gradient */
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.7) 100%);
+  pointer-events: none;
+}
+
 .lookbook-overlay {
-  background: rgba(0, 0, 0, 0.5);
-  /* Okunurluğu artırmak için yarı saydam siyah katman */
+  position: relative;
+  /* Gradient'in üstünde görünmesi için */
+  z-index: 1;
+  /* ::after gradient'in üstünde olması için */
   width: 100%;
   height: 100%;
+  /* .lookbook-section ile aynı yükseklik */
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Arka planı kaldırdım çünkü gradient ile çakışıyordu */
 }
 
 .lookbook-content {
   text-align: center;
   color: var(--color-white);
   padding: 2rem;
-  max-width: 800px;
+  max-width: 400px;
+  max-height: 300px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  /* Okunabilirliği artırmak için */
 }
 
 .lookbook-content h2 {
@@ -641,4 +704,98 @@
   .reviews-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.manifesto-overlay {
+  /* Metin okunurluğunu artırmak için yarı saydam katman */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  /* Koyu yarı saydam katman */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.manifesto-content {
+  padding: 4rem 2rem;
+  max-width: 800px;
+  color: var(--color-white);
+  /* Metin rengi beyaz */
+  text-align: center;
+}
+
+.manifesto-content h2 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  color: var(--color-white);
+  /* Başlık rengi beyaz */
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.manifesto-content p {
+  font-size: 1.5rem;
+  /* Daha büyük font */
+  line-height: 1.5;
+  color: var(--color-white);
+  margin-bottom: 0;
+  font-style: italic;
+  font-weight: 700;
+}
+
+/* --- Hızlı Yazı Yüklenme (Reveal) Animasyonu --- */
+.manifesto-text-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  /* 0.5 saniye gecikmeyle başla, 1 saniye sürsün */
+  animation: textReveal 1s ease-out 0.5s forwards;
+}
+
+@keyframes textReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Manifesto */
+@media (max-width: 768px) {
+  .manifesto-section {
+    height: 400px;
+    box-shadow: 6px 6px 0 var(--color-black);
+  }
+
+  .manifesto-content {
+    padding: 2rem;
+  }
+
+  .manifesto-content h2 {
+    font-size: 2rem;
+  }
+
+  .manifesto-content p {
+    font-size: 1.1rem;
+  }
+}
+
+
+/* --- Scroll Reveal Animations --- */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20vh);
+  visibility: hidden;
+  transition: opacity 0.8s ease-out, transform 1.2s ease-out;
+  will-change: opacity, visibility;
+}
+
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
 }

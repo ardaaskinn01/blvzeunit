@@ -167,7 +167,8 @@ export default function CategoryProductsPage() {
     e.preventDefault();
     e.stopPropagation();
 
-    if (product.stock_quantity === 0) return;
+    // Updated: Stock check removed
+    // if (product.stock_quantity === 0) return;
 
     setQuickAddProduct(product);
     setLoadingVariants(true);
@@ -354,9 +355,8 @@ export default function CategoryProductsPage() {
                     <button
                       className="add-to-cart-btn"
                       onClick={(e) => handleQuickAdd(product, e)}
-                      disabled={product.stock_quantity === 0}
                     >
-                      {product.stock_quantity > 0 ? 'Sepete Ekle' : 'STOK YOK'}
+                      Sepete Ekle
                     </button>
                   </div>
                 );
@@ -442,19 +442,16 @@ export default function CategoryProductsPage() {
                         <button
                           key={variant.id}
                           onClick={() => confirmVariantAdd(variant)}
-                          disabled={variant.stock_quantity === 0}
                           style={{
                             padding: '1rem',
                             border: '2px solid black',
-                            background: variant.stock_quantity === 0 ? '#f0f0f0' : 'white',
-                            cursor: variant.stock_quantity === 0 ? 'not-allowed' : 'pointer',
+                            background: 'white',
+                            cursor: 'pointer',
                             fontWeight: 'bold',
                             fontSize: '1rem',
-                            opacity: variant.stock_quantity === 0 ? 0.5 : 1,
                           }}
                         >
                           {variant.size}
-                          {variant.stock_quantity === 0 && <div style={{ fontSize: '0.7rem' }}>Tükendi</div>}
                         </button>
                       ))}
                     </div>

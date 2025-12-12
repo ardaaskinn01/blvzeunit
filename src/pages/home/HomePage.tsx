@@ -36,19 +36,60 @@ export default function HomePage() {
   const [categories, setCategories] = useState<DisplayCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const categoriesScrollRef = useRef<HTMLDivElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const lookbookRef = useRef<HTMLElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
+  const categoriesRef = useRef<HTMLElement>(null);
+  const discountedRef = useRef<HTMLElement>(null);
+  const newDropsRef = useRef<HTMLElement>(null);
+  const manifestoRef = useRef<HTMLElement>(null);
 
 
   useEffect(() => {
     fetchCategories();
-    fetchCategories();
     fetchDiscountsAndProducts();
   }, []);
 
-  // ... (fetchCategories fonksiyonu değişmedi)
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15, // %15'i görünür olduğunda tetikle
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          // Bir kere tetiklendikten sonra izlemeyi bırakabiliriz (performans için)
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const sections = [
+      marqueeRef.current,
+      manifestoRef.current,
+      lookbookRef.current,
+      heroRef.current,
+      categoriesRef.current,
+      discountedRef.current,
+      newDropsRef.current,
+    ];
+
+    sections.forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    return () => {
+      sections.forEach((section) => {
+        if (section) observer.unobserve(section);
+      });
+    };
+  }, [categories, products, discounts]);
 
   async function fetchCategories() {
     try {
-      // İlk olarak categories tablosundan dene
       const { data: categoriesData, error: categoriesError } = await supabase
         .from('categories')
         .select('*')
@@ -59,7 +100,6 @@ export default function HomePage() {
         return;
       }
 
-      // Eğer categories tablosu boşsa, products tablosundan benzersiz kategorileri al
       const { data: productsData, error: productsError } = await supabase
         .from('products')
         .select('category, image_url')
@@ -67,13 +107,11 @@ export default function HomePage() {
 
       if (productsError) throw productsError;
 
-      // Benzersiz kategorileri oluştur
       const uniqueCategories = Array.from(
         new Set(productsData?.map(item => item.category).filter(Boolean) || [])
       );
 
       const generatedCategories: GeneratedCategory[] = uniqueCategories.map((categoryName, i) => {
-        // Her kategori için bir görsel al (ilk ürünün görselini kullan)
         const categoryProduct = productsData?.find(p => p.category === categoryName);
         return {
           id: i + 1,
@@ -93,7 +131,6 @@ export default function HomePage() {
     try {
       setLoading(true);
 
-      // 1. Aktif indirimleri çek
       const { data: discountData } = await supabase
         .from('discounts')
         .select('*')
@@ -102,18 +139,16 @@ export default function HomePage() {
       const activeDiscounts = (discountData as unknown as Discount[]) || [];
       setDiscounts(activeDiscounts);
 
-      // 2. Ürünleri çek
       const { data: productData, error } = await supabase
         .from('products')
         .select('*')
-        // En yeni ürünleri almak için created_at'e göre sırala
         .order('created_at', { ascending: false })
         .limit(20);
 
       if (error) throw error;
 
       const allProducts = productData || [];
-      setProducts(allProducts); // Tümünü çekip aşağıda filtreleyelim
+      setProducts(allProducts);
 
     } catch (error) {
       console.error('❌ Veriler yüklenirken hata:', error);
@@ -122,19 +157,19 @@ export default function HomePage() {
     }
   }
 
-  // Helper to calculate price stats for a product
   const getProductPriceInfo = (product: Product) => {
     const validDiscounts = getActiveDiscounts(discounts, product.id, product.category);
     return calculateDiscountedPrice(product.price, validDiscounts);
   };
 
-  // İndirimli ürünleri filtrele (activeDiscounts kullanarak)
+  const manifestoText = "'WHERE STREET MEETS SOUL'";
+  const animatedManifesto = manifestoText;
+
   const discountedProductsList = products.filter(p => {
     const { discount } = getProductPriceInfo(p);
     return discount !== null;
   });
 
-  // * YENİ: En yeni 8 ürünü al - New Drops için kullanılacak *
   const newDropsProducts = products.slice(0, 8);
 
   const scrollCategories = (direction: 'left' | 'right') => {
@@ -192,11 +227,26 @@ export default function HomePage() {
       <div className="home-container">
 
         {/* YENİ: Marquee (Kayan Yazı) Bölümü */}
-        <div className="marquee-section">
+        <div className="marquee-section fade-in-section" ref={marqueeRef}>
           <div className="marquee-content">{marqueeText.repeat(5)}</div>
         </div>
 
-        <section className="lookbook-section" style={{ backgroundImage: `url(${lookbookData.imageUrl})` }}>
+        <section className="manifesto-section fade-in-section" ref={manifestoRef}>
+          <div className="manifesto-overlay">
+            <div className="manifesto-content">
+              <p className="manifesto-text-reveal">
+                {animatedManifesto}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section
+          className="lookbook-section fade-in-section"
+          /* ... */
+          style={{ backgroundImage: `url(${lookbookData.imageUrl})` }}
+          ref={lookbookRef}
+        >
           <div className="lookbook-overlay">
             <div className="lookbook-content">
               <h2>{lookbookData.title}</h2>
@@ -208,19 +258,12 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Hero Section: Slogan Devrede */}
-        <section className="hero-section">
-          <h1>BLVZEUNIT</h1>
-          <p>"Where street meets soul." </p>
-          <Link to="/categories/all" className="cta-button">
-            ÜRÜNLERİ KEŞFET
-          </Link>
-        </section>
+
 
         {/* Categories Scroll Section */}
         {categories.length > 0 && (
-          <section className="categories-scroll-section">
-            <h2 className="section-title">KATEGORİLER</h2>
+          <section className="categories-scroll-section fade-in-section" ref={categoriesRef}>
+            <h2 className="section-title">KOLEKSİYONLAR</h2>
             <div className="categories-scroll-container">
               <button
                 className="scroll-button scroll-left"
@@ -229,13 +272,11 @@ export default function HomePage() {
               >
                 ‹
               </button>
-              <div className="categories-scroll" ref={categoriesScrollRef}>
-                <Link to="/categories/all" className="category-scroll-item">
-                  <div className="category-scroll-image">
-                    <div className="category-scroll-placeholder">ALL</div>
-                  </div>
-                  <span>Tüm Ürünler</span>
-                </Link>
+              <div
+                className={`categories-scroll ${categories.length <= 3 ? 'center-items' : ''}`}
+                ref={categoriesScrollRef}
+              >
+
                 {categories.map((category) => (
                   <Link
                     key={category.id}
@@ -268,7 +309,7 @@ export default function HomePage() {
 
         {/* YENİ: Discounted Products Section (İndirimli Fırsatlar) - Konumu Korundu */}
         {discountedProductsList.length > 0 && (
-          <section className="discounted-products-section">
+          <section className="discounted-products-section fade-in-section" ref={discountedRef}>
             <h2 className="section-title">İNDİRİMLİ FIRSATLAR</h2>
             <div className="products-grid">
               {discountedProductsList.slice(0, 4).map((product) => renderProductCard(product))}
@@ -276,9 +317,8 @@ export default function HomePage() {
           </section>
         )}
 
-
         {/* YENİ: New Drops / Bestsellers Section (Eski Products Preview yerine) */}
-        <section className="new-drops-section products-preview-section">
+        <section className="new-drops-section products-preview-section fade-in-section" ref={newDropsRef}>
           <h2 className="section-title">YENİ DÜŞENLER (NEW DROPS)</h2>
           {loading ? (
             <div className="loading-message">Ürünler yükleniyor...</div>

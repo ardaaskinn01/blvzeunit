@@ -121,7 +121,7 @@ export default function CategoryPage() {
                     justifyContent: 'center',
                     color: 'var(--color-white)',
                     fontSize: '3rem',
-                    fontFamily: "'Roboto Mono', monospace",
+                    fontFamily: "'Bebas Neue', monospace",
                     fontWeight: 'bold'
                   }}>
                     ALL
@@ -159,7 +159,7 @@ export default function CategoryPage() {
                         justifyContent: 'center',
                         color: 'var(--color-black)',
                         fontSize: '2.5rem',
-                        fontFamily: "'Roboto Mono', monospace",
+                        fontFamily: "'Bebas Neue', monospace",
                         fontWeight: 'bold',
                         textTransform: 'uppercase'
                       }}>

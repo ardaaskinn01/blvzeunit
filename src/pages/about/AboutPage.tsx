@@ -13,7 +13,7 @@ export default function AboutPage() {
 
         {/* Hikaye */}
         <div className="about-section">
-          <h2>Bizim Hikayemiz</h2>
+          <h2>Bİzİm Hİkayemİz</h2>
           <p>
             BLVZEUNIT olarak misyonumuz; sokak kültürünün ham, filtresiz enerjisini çağdaş tasarımla birleştirerek kendi sesini arayan herkese bir kimlik alanı yaratmaktır. Biz, trendleri takip eden değil; kendi ateşini yakıp yolu aydınlatanların birliğiyiz.
 

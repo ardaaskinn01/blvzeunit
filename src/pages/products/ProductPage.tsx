@@ -166,10 +166,8 @@ export default function ProductPage() {
   }
 
   const handleSizeSelect = (variant: ProductVariant) => {
-    if (variant.stock_quantity > 0) {
-      setSelectedVariant(variant);
-      setQuantity(1);
-    }
+    setSelectedVariant(variant);
+    setQuantity(1);
   };
 
 
@@ -182,10 +180,9 @@ export default function ProductPage() {
       return;
     }
 
-    // Seçilen varyant yoksa (bedensiz ürün) ve stok yoksa
-    if (variants.length === 0 && product.stock_quantity === 0) {
-      alert('Üzgünüz, bu ürün stokta kalmadı.');
-      return;
+    // Seçilen varyant yoksa (bedensiz ürün) - stok kontrolü kaldırıldı
+    if (variants.length === 0) {
+      // Sadece 0 stok kontrolünü kaldırdık, ancak başka validasyonlar eklenebilir.
     }
 
     // İndirimli fiyat varsa onu kullan, yoksa normal fiyat
@@ -250,7 +247,7 @@ export default function ProductPage() {
     );
   }
 
-  const maxStock = selectedVariant ? selectedVariant.stock_quantity : product.stock_quantity;
+  const maxStock = 999;
 
   return (
     <div className="product-page">
@@ -317,9 +314,7 @@ export default function ProductPage() {
                     <button
                       key={variant.id}
                       className={`size-button ${selectedVariant?.id === variant.id ? 'active' : ''}`}
-                      disabled={variant.stock_quantity === 0}
                       onClick={() => handleSizeSelect(variant)}
-                      title={variant.stock_quantity === 0 ? 'Tükendi' : `Stok: ${variant.stock_quantity}`}
                     >
                       {variant.size}
                     </button>
@@ -329,23 +324,16 @@ export default function ProductPage() {
                 <div style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
                   {selectedVariant ? (
                     <span style={{ color: '#000', fontWeight: 'bold' }}>
-                      ✓ Stokta {selectedVariant.stock_quantity} adet kaldı.
+                      ✓ Stokta Var
                     </span>
                   ) : (
-                    variants.some(v => v.stock_quantity > 0) ? (
-                      <span style={{ color: '#666' }}>Lütfen stok durumunu görmek için beden seçin.</span>
-                    ) : (
-                      <span style={{ color: 'red', fontWeight: 'bold' }}>TÜKENDİ</span>
-                    )
+                    <span style={{ color: '#666' }}>Lütfen beden seçiniz.</span>
                   )}
                 </div>
               </div>
             ) : (
               <div className="product-stock">
-                {product.stock_quantity > 0
-                  ? `✓ Stokta Var (${product.stock_quantity} adet)`
-                  : <span style={{ color: 'red' }}>STOKTA YOK</span>
-                }
+                ✓ Stokta Var
               </div>
             )}
 
@@ -360,46 +348,36 @@ export default function ProductPage() {
                 <span className="spec-label">Renk</span>
                 <span className="spec-value">{product.color || '-'}</span>
               </div>
-              <div className="spec-item">
-                <span className="spec-label">Kargo</span>
-                <span className="spec-value">{product.shipping_info || 'Standart'}</span>
-              </div>
             </div>
 
             {/* Adet Seçimi */}
-            {((variants.length === 0 && product.stock_quantity > 0) || (selectedVariant && selectedVariant.stock_quantity > 0)) && (
-              <div className="quantity-selector">
-                <label>ADET:</label>
-                <input
-                  type="number"
-                  value={quantity}
-                  min="1"
-                  max={maxStock}
-                  onChange={(e) => {
-                    const val = parseInt(e.target.value);
-                    if (!isNaN(val) && val >= 1 && val <= maxStock) {
-                      setQuantity(val);
-                    }
-                  }}
-                  className="quantity-input"
-                />
-              </div>
-            )}
+            <div className="quantity-selector">
+              <label>ADET:</label>
+              <input
+                type="number"
+                value={quantity}
+                min="1"
+                max={maxStock}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value);
+                  if (!isNaN(val) && val >= 1 && val <= maxStock) {
+                    setQuantity(val);
+                  }
+                }}
+                className="quantity-input"
+              />
+            </div>
 
             {/* Butonlar */}
             <div className="action-buttons">
               <button
                 className="add-to-cart"
                 onClick={handleAddToCart}
-                disabled={
-                  (variants.length > 0 && !selectedVariant) ||
-                  (selectedVariant && selectedVariant.stock_quantity === 0) ||
-                  (variants.length === 0 && product.stock_quantity === 0)
-                }
+                disabled={variants.length > 0 && !selectedVariant}
               >
                 {variants.length > 0 && !selectedVariant
                   ? 'BEDEN SEÇİNİZ'
-                  : (maxStock === 0 ? 'TÜKENDİ' : 'SEPETE EKLE')
+                  : 'SEPETE EKLE'
                 }
               </button>
               <button className="add-to-wishlist">FAVORİ</button>

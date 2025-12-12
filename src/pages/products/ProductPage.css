@@ -14,7 +14,7 @@
   background: var(--color-white);
   color: var(--color-black);
   padding: 3rem 2rem;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   /* Temaya uygun font */
 }
 
@@ -132,16 +132,8 @@
   font-weight: 700;
   padding: 0.5rem 0;
   margin-bottom: 2rem;
-}
-
-.product-stock.in-stock {
   color: #008000;
-  /* Yeşil */
-}
-
-.product-stock.out-of-stock {
-  color: #ff0000;
-  /* Kırmızı */
+  /* Always green */
 }
 
 .product-description {

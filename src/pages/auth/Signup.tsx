@@ -140,7 +140,7 @@ export default function SignupPage() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-header">
-          <h1>Kayıt Ol</h1>
+          <h2>HESAP OLUŞTUR</h2>
         </div>
 
         {error && <div className="auth-error"><span>⚠️</span><p>{error}</p></div>}

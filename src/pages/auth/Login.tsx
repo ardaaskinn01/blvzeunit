@@ -73,7 +73,7 @@ export default function LoginPage() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-header">
-          <h1>Gİrİş Yap</h1>
+          <h2>GİRİŞ YAP</h2>
         </div>
 
         {error && (
@@ -112,9 +112,12 @@ export default function LoginPage() {
             <input type="password" name="password" value={formData.password} onChange={handleChange} disabled={loading} required className="form-input" />
           </div>
 
-          <Link to="/forgot-password" style={{ fontSize: '0.9rem', color: '#000000ff' }}>Şifremi Unuttum?</Link>
+          {/* YENİ LİNK STİLİ */}
+          <Link to="/forgot-password" className="auth-link" style={{ fontSize: '0.9rem', textAlign: 'right', display: 'block' }}>
+            Şifremi Unuttum?
+          </Link>
           <button type="submit" className="submit-btn primary" disabled={loading}>
-            {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
+            {loading ? 'Giriş yapılıyor...' : 'Gİrİş Yap'}
           </button>
         </form>
         <div className="social-login">

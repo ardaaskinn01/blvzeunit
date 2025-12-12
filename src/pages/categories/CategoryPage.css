@@ -12,7 +12,7 @@
   background: var(--color-white);
   color: var(--color-black);
   padding: 3rem 2rem;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
 }
 
 .category-container {
@@ -26,17 +26,17 @@
   margin-bottom: 0.5rem;
   color: var(--color-black);
   font-weight: 900;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   letter-spacing: -1px;
   text-align: center;
 }
 
-.category-page > .category-container > p {
+.category-page>.category-container>p {
   color: var(--color-medium-gray);
   margin-bottom: 3rem;
   font-size: 1rem;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   font-style: italic;
   text-align: center;
 }
@@ -109,14 +109,14 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
 }
 
 .category-description {
   margin-top: 0.5rem;
   font-size: 0.9rem;
   color: var(--color-light-gray);
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   opacity: 0.9;
 }
 
@@ -131,7 +131,7 @@
   border-radius: 0;
   text-decoration: none;
   font-weight: 700;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   transition: all 0.2s ease;
   box-shadow: 4px 4px 0 var(--color-medium-gray);
