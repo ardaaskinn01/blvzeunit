@@ -162,9 +162,6 @@ export default function HomePage() {
     return calculateDiscountedPrice(product.price, validDiscounts);
   };
 
-  const manifestoText = "'WHERE STREET MEETS SOUL'";
-  const animatedManifesto = manifestoText;
-
   const discountedProductsList = products.filter(p => {
     const { discount } = getProductPriceInfo(p);
     return discount !== null;
@@ -230,16 +227,6 @@ export default function HomePage() {
         <div className="marquee-section fade-in-section" ref={marqueeRef}>
           <div className="marquee-content">{marqueeText.repeat(5)}</div>
         </div>
-
-        <section className="manifesto-section fade-in-section" ref={manifestoRef}>
-          <div className="manifesto-overlay">
-            <div className="manifesto-content">
-              <p className="manifesto-text-reveal">
-                {animatedManifesto}
-              </p>
-            </div>
-          </div>
-        </section>
 
         <section
           className="lookbook-section fade-in-section"
