@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import type { Tables } from '../../types/database.types';
 import './AdminDashboard.css';
+import { jsPDF } from 'jspdf';
+import type { OrderWithItems } from '../../types/order.types';
 
 // Types
 type Product = Tables<'products'>;
@@ -17,7 +19,7 @@ interface ProfileRow {
   created_at: string;
 }
 
-type Tab = 'stats' | 'products' | 'categories' | 'users' | 'discounts';
+type Tab = 'stats' | 'products' | 'categories' | 'users' | 'discounts' | 'orders';
 
 export default function AdminDashboard() {
   const { isAdmin, user, loading: authLoading, profile: _profile } = useAuth();
@@ -42,6 +44,7 @@ export default function AdminDashboard() {
   // Tip hatasını geçmek için any, normalde Discount.
   // Gerçek tip: import { Discount } from '../../utils/discount-utils';
   const [discounts, setDiscounts] = useState<any[]>([]);
+  const [orders, setOrders] = useState<OrderWithItems[]>([]);
 
   // Loading & Error states
   const [loading, setLoading] = useState(false); // Başlangıçta false, sadece fetchAllData çağrıldığında true olacak
@@ -339,6 +342,20 @@ export default function AdminDashboard() {
       if (!discountError) {
         setDiscounts(discountData || []);
       }
+
+      // 5. Siparişleri çekme
+      const { data: ordersData, error: ordersError } = await (supabase as any)
+        .from('orders')
+        .select(`
+              *,
+              items:order_items(*)
+          `)
+        .order('created_at', { ascending: false });
+
+      if (!ordersError) {
+        setOrders(ordersData as OrderWithItems[]);
+      }
+
 
       setHasFetched(true); // ✅ Başarılıysa bu bayrağı ayarla!
     } catch (err: any) {
@@ -736,6 +753,73 @@ export default function AdminDashboard() {
     return category ? category.name : categorySlug;
   };
 
+  const handleDownloadLabel = (order: OrderWithItems) => {
+    const doc = new jsPDF();
+
+    // Title
+    doc.setFontSize(20);
+    doc.text('Kargo Etiketi', 105, 20, { align: 'center' });
+
+    doc.setFontSize(12);
+
+    // Sender Info (Firm)
+    doc.setFont('helvetica', 'bold');
+    doc.text('GÖNDERİCİ:', 20, 40);
+    doc.setFont('helvetica', 'normal');
+    doc.text('BLVZEUNIT (Hüseyin Ceylan)', 20, 50);
+    doc.text('4562 Sokak No:31 Kat:2 Daire:2', 20, 57);
+    doc.text('Sevgi Mahallesi Karabağlar/İzmir', 20, 64);
+    doc.text('Tel: +90 000 000 00 00', 20, 71);
+
+    // Line separator
+    doc.line(20, 80, 190, 80);
+
+    // Recipient Info
+    doc.setFont('helvetica', 'bold');
+    doc.text('ALICI:', 20, 95);
+    doc.setFont('helvetica', 'normal');
+    doc.text(order.shipping_address.full_name.toUpperCase(), 20, 105);
+
+    // Address wrapping
+    const addressLines = doc.splitTextToSize(order.shipping_address.address, 170);
+    doc.text(addressLines, 20, 112);
+
+    let currentY = 112 + (addressLines.length * 7);
+
+    doc.text(`${order.shipping_address.city} / Turkey`, 20, currentY);
+    currentY += 7;
+
+    if (order.shipping_address.zip_code) {
+      doc.text(`Posta Kodu: ${order.shipping_address.zip_code}`, 20, currentY);
+      currentY += 7;
+    }
+
+    doc.text(`Tel: ${order.contact_info.phone}`, 20, currentY);
+
+    // Line separator
+    currentY += 15;
+    doc.line(20, currentY, 190, currentY);
+
+    // Order Details
+    currentY += 15;
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Sipariş No: #${order.id.slice(0, 8)}`, 20, currentY);
+    doc.text(`Tarih: ${new Date(order.created_at).toLocaleDateString('tr-TR')}`, 140, currentY);
+
+    currentY += 15;
+    doc.text('İçerik:', 20, currentY);
+    doc.setFont('helvetica', 'normal');
+
+    order.items.forEach((item, index) => {
+      currentY += 7;
+      const itemText = `${index + 1}. ${item.product_name} (${item.size}) - ${item.quantity} Adet`;
+      doc.text(itemText, 25, currentY);
+    });
+
+    // Save PDF
+    doc.save(`Kargo-Etiketi-${order.id.slice(0, 8)}.pdf`);
+  };
+
   if (!isAdmin) {
     return null;
   }
@@ -777,6 +861,12 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('discounts')}
           >
             İndirimler
+          </button>
+          <button
+            className={`tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
+            onClick={() => setActiveTab('orders')}
+          >
+            Siparişler
           </button>
         </div>
 
@@ -1400,6 +1490,102 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+          </div>
+        )}
+        {activeTab === 'orders' && (
+          <div className="admin-orders">
+            <div className="section-header">
+              <h2>Sipariş Yönetimi</h2>
+              <div style={{ fontSize: '0.9rem', color: '#666' }}>
+                Toplam {orders.length} sipariş
+              </div>
+            </div>
+
+            {orders.length === 0 ? (
+              <div className="no-data">Henüz sipariş bulunmuyor.</div>
+            ) : (
+              <div className="orders-list">
+                {orders.map(order => (
+                  <div key={order.id} className="order-card" style={{
+                    background: 'white',
+                    padding: '1.5rem',
+                    borderRadius: '8px',
+                    marginBottom: '1rem',
+                    border: '1px solid #eee',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
+                      <div>
+                        <strong>Sipariş No:</strong> #{order.id.slice(0, 8)}
+                        <span style={{ marginLeft: '1rem', color: '#666', fontSize: '0.9rem' }}>
+                          {new Date(order.created_at).toLocaleString('tr-TR')}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <span style={{
+                          padding: '0.25rem 0.75rem',
+                          borderRadius: '20px',
+                          fontSize: '0.85rem',
+                          backgroundColor: order.status === 'pending' ? '#fff3cd' : '#d4edda',
+                          color: order.status === 'pending' ? '#856404' : '#155724'
+                        }}>
+                          {order.status === 'pending' ? 'Hazırlanıyor' : order.status}
+                        </span>
+                        <strong style={{ fontSize: '1.1rem' }}>{order.total_amount} TL</strong>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+                      <div>
+                        <h4 style={{ marginBottom: '0.5rem', color: '#444' }}>Müşteri Bilgileri</h4>
+                        <p><strong>Ad:</strong> {order.shipping_address.full_name}</p>
+                        <p><strong>Tel:</strong> {order.contact_info.phone}</p>
+                        <p><strong>Adres:</strong> {order.shipping_address.address} {order.shipping_address.city}/{order.shipping_address.country}</p>
+                        {order.shipping_address.zip_code && <p><strong>Posta Kodu:</strong> {order.shipping_address.zip_code}</p>}
+                      </div>
+
+                      <div>
+                        <h4 style={{ marginBottom: '0.5rem', color: '#444' }}>Ürünler</h4>
+                        <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+                          {order.items.map((item, idx) => (
+                            <div key={idx} style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem', alignItems: 'center' }}>
+                              {item.image_url && (
+                                <img src={item.image_url} alt="" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 4 }} />
+                              )}
+                              <div>
+                                <div>{item.product_name}</div>
+                                <div style={{ fontSize: '0.85rem', color: '#666' }}>
+                                  {item.size} - {item.quantity} adet
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <button
+                          onClick={() => handleDownloadLabel(order)}
+                          style={{
+                            marginTop: '1rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            padding: '0.5rem 1rem',
+                            backgroundColor: '#dc3545',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '0.9rem'
+                          }}
+                        >
+                          📄 Kargo Etiketi Oluştur
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

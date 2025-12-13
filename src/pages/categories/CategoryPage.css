@@ -33,6 +33,7 @@
 }
 
 .category-page>.category-container>p {
+  /* Açıklama metni, ana metinden ayrılması için gri kalabilir */
   color: var(--color-medium-gray);
   margin-bottom: 3rem;
   font-size: 1rem;
@@ -52,7 +53,8 @@
 .category-card {
   position: relative;
   background: var(--color-white);
-  border: 2px solid var(--color-dark-gray);
+  /* DEĞİŞİKLİK: Çerçeveyi Siyah (var(--color-black)) yaptık */
+  border: 2px solid var(--color-black);
   border-radius: 0;
   overflow: hidden;
   cursor: pointer;
@@ -60,12 +62,14 @@
   color: var(--color-black);
   height: 320px;
   transition: all 0.3s ease;
-  box-shadow: 4px 4px 0 var(--color-light-gray);
+  /* DEĞİŞİKLİK: Gölgeyi Siyah (var(--color-black)) yaptık (Gri kalktı) */
+  box-shadow: 4px 4px 0 var(--color-black);
 }
 
 .category-card:hover {
   border-color: var(--color-black);
-  box-shadow: 6px 6px 0 var(--color-black);
+  /* Hoverda daha şık bir kontrast için Beyaz/Açık Gri gölge */
+  box-shadow: 6px 6px 0 var(--color-light-gray);
   transform: translate(-2px, -2px);
 }
 
@@ -93,6 +97,7 @@
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.85);
+  /* Siyah arka plan (OK) */
   padding: 1.5rem;
   color: var(--color-white);
   transform: translateY(0);
@@ -134,13 +139,16 @@
   font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   transition: all 0.2s ease;
-  box-shadow: 4px 4px 0 var(--color-medium-gray);
+  /* DEĞİŞİKLİK: Gölgeyi Beyaz yaptık (Gri kalktı, Siyah butona Beyaz gölge) */
+  box-shadow: 4px 4px 0 var(--color-white);
 }
 
 .all-categories-link:hover {
-  background: var(--color-medium-gray);
-  border-color: var(--color-medium-gray);
+  background: var(--color-black);
+  /* Hoverda siyah kalır */
+  border-color: var(--color-black);
   transform: translate(-2px, -2px);
+  /* Hoverda Siyah Gölge */
   box-shadow: 6px 6px 0 var(--color-black);
 }
 

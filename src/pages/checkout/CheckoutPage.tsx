@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useCart } from '../../contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../contexts/AuthContext';
+import Modal from '../../components/Modal';
+import TermsOfServicePage from '../legal/TermsOfServicePage';
+import PreliminaryInformationForm from '../legal/PreliminaryInformationForm';
 
 // Türkiye'nin 81 ili
 const turkishCities = [
@@ -173,7 +178,9 @@ const styles = {
 
 export default function CheckoutPage() {
     const { items, cartTotal, clearCart, userAddress, saveAddressToStorage } = useCart();
+    const { user } = useAuth();
     const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [formData, setFormData] = useState({
         fullName: '',
@@ -185,6 +192,8 @@ export default function CheckoutPage() {
     });
 
     const [termsAccepted, setTermsAccepted] = useState(false);
+    const [showTerms, setShowTerms] = useState(false);
+    const [showPreliminary, setShowPreliminary] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [selectedCity, setSelectedCity] = useState('');
 
@@ -246,7 +255,7 @@ export default function CheckoutPage() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!validateForm()) {
@@ -254,28 +263,79 @@ export default function CheckoutPage() {
             return;
         }
 
-        // Adresi kaydet
-        const address = {
-            city: formData.city,
-            district: '',
-            neighborhood: '',
-            fullAddress: formData.fullAddress,
-            zipCode: formData.zipCode,
-            phone: formData.phone,
-            recipientName: formData.fullName,
-        };
+        setIsSubmitting(true);
 
-        saveAddressToStorage(address);
+        try {
+            // Adresi kaydet
+            const address = {
+                city: formData.city,
+                district: '',
+                neighborhood: '',
+                fullAddress: formData.fullAddress,
+                zipCode: formData.zipCode,
+                phone: formData.phone,
+                recipientName: formData.fullName,
+            };
 
-        // Simüle edilmiş sipariş işlemi
-        console.log('Sipariş Verildi:', { formData, items, total: cartTotal });
+            saveAddressToStorage(address);
 
-        // Sepeti temizle
-        clearCart();
+            // 1. Siparişi Oluştur
+            // 1. Siparişi Oluştur
+            const { data: orderData, error: orderError } = await (supabase as any)
+                .from('orders')
+                .insert({
+                    user_id: user?.id || null, // Giriş yapmışsa user id, yoksa null
+                    status: 'pending', // Sipariş alındı - Hazırlanacak
+                    total_amount: cartTotal,
+                    currency: 'TRY',
+                    shipping_address: {
+                        full_name: formData.fullName,
+                        address: formData.fullAddress,
+                        city: formData.city,
+                        zip_code: formData.zipCode,
+                        country: 'Turkey'
+                    },
+                    contact_info: {
+                        email: formData.email,
+                        phone: formData.phone
+                    }
+                })
+                .select()
+                .single();
 
-        // Başarı sayfasına yönlendir
-        alert('Siparişiniz başarıyla alındı! Teşekkür ederiz.');
-        navigate('/');
+            if (orderError) throw orderError;
+
+            if (!orderData) throw new Error('Sipariş oluşturulamadı.');
+
+            // 2. Sipariş Kalemlerini (Items) Oluştur
+            const orderItems = items.map(item => ({
+                order_id: orderData.id,
+                product_id: item.id,
+                quantity: item.quantity,
+                unit_price: item.price,
+                size: item.size,
+                product_name: item.name,
+                image_url: item.image_url
+            }));
+
+            const { error: itemsError } = await (supabase as any)
+                .from('order_items')
+                .insert(orderItems);
+
+            if (itemsError) throw itemsError;
+
+            // 3. Sepeti temizle ve yönlendir
+            console.log('Sipariş Başarıyla Kaydedildi:', orderData);
+            clearCart();
+            alert('Siparişiniz başarıyla alındı! Teşekkür ederiz.');
+            navigate('/');
+
+        } catch (error: any) {
+            console.error('Sipariş Hatası:', error);
+            alert('Sipariş oluşturulurken bir hata oluştu: ' + (error.message || 'Bilinmeyen hata'));
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -388,18 +448,31 @@ export default function CheckoutPage() {
 
                     {/* Sözleşme Onayı */}
                     <div style={styles.checkboxContainer}>
-                        <input
-                            type="checkbox"
-                            id="terms"
-                            checked={termsAccepted}
-                            onChange={(e) => setTermsAccepted(e.target.checked)}
-                            style={{ cursor: 'pointer' }}
-                        />
-                        <label htmlFor="terms" style={{ cursor: 'pointer' }}>
-                            <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ color: '#0066cc', textDecoration: 'underline' }}>
-                                Mesafeli Satış Sözleşmesi
-                            </a>'ni okudum ve kabul ediyorum.*
-                        </label>
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                            <input
+                                type="checkbox"
+                                id="terms"
+                                checked={termsAccepted}
+                                onChange={(e) => setTermsAccepted(e.target.checked)}
+                                style={{ cursor: 'pointer', marginTop: '0.3rem' }}
+                            />
+                            <label htmlFor="terms" style={{ cursor: 'pointer', lineHeight: '1.4', fontSize: '0.95rem' }}>
+                                <span
+                                    onClick={(e) => { e.preventDefault(); setShowPreliminary(true); }}
+                                    style={{ color: '#0066cc', textDecoration: 'underline', fontWeight: 500 }}
+                                >
+                                    Ön Bilgilendirme Formu
+                                </span>
+                                'nu ve{' '}
+                                <span
+                                    onClick={(e) => { e.preventDefault(); setShowTerms(true); }}
+                                    style={{ color: '#0066cc', textDecoration: 'underline', fontWeight: 500 }}
+                                >
+                                    Mesafeli Satış Sözleşmesi
+                                </span>
+                                'ni okudum, onaylıyorum.*
+                            </label>
+                        </div>
                     </div>
                     {errors.terms && <div style={styles.error}>{errors.terms}</div>}
 
@@ -450,9 +523,9 @@ export default function CheckoutPage() {
                             backgroundColor: termsAccepted ? 'black' : '#ccc',
                             cursor: termsAccepted ? 'pointer' : 'not-allowed',
                         }}
-                        disabled={!termsAccepted}
+                        disabled={!termsAccepted || isSubmitting}
                     >
-                        Siparişi Tamamla
+                        {isSubmitting ? 'İşleniyor...' : 'Siparişi Tamamla'}
                     </button>
 
                     <p style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#666', textAlign: 'center' }}>
@@ -460,6 +533,47 @@ export default function CheckoutPage() {
                     </p>
                 </div>
             </form>
+
+            <Modal
+                isOpen={showTerms}
+                onClose={() => setShowTerms(false)}
+                title="Mesafeli Satış Sözleşmesi"
+            >
+                {/* Modal içinde sayfa stilini biraz override ediyoruz */}
+                <div style={{ fontSize: '0.9rem' }}>
+                    <style>{`
+                        .legal-page-container {
+                            padding: 0 !important;
+                            min-height: auto !important;
+                        }
+                        .legal-content {
+                            box-shadow: none !important;
+                            padding: 0 !important;
+                        }
+                    `}</style>
+                    <TermsOfServicePage />
+                </div>
+            </Modal>
+
+            <Modal
+                isOpen={showPreliminary}
+                onClose={() => setShowPreliminary(false)}
+                title="Ön Bilgilendirme Formu"
+            >
+                <div style={{ fontSize: '0.9rem' }}>
+                    <style>{`
+                        .legal-page-container {
+                            padding: 0 !important;
+                            min-height: auto !important;
+                        }
+                        .legal-content {
+                            box-shadow: none !important;
+                            padding: 0 !important;
+                        }
+                    `}</style>
+                    <PreliminaryInformationForm />
+                </div>
+            </Modal>
         </div>
     );
 }

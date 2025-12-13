@@ -160,7 +160,6 @@
   font-style: italic;
 }
 
-/* --- CTA Button: Auth.css Submit Butonu Stili --- */
 .cta-button {
   display: inline-block;
   padding: 1.25rem 2.5rem;
@@ -169,21 +168,16 @@
   text-decoration: none;
   border-radius: 0;
   font-weight: 700;
-  transition: all 0.2s ease;
-  border: 3px solid var(--color-black);
-  cursor: pointer;
   font-size: 1rem;
   letter-spacing: 1px;
   font-family: 'Bebas Neue', monospace;
   text-transform: uppercase;
   position: relative;
-  box-shadow: 6px 6px 0 var(--color-medium-gray);
 }
 
 .cta-button:hover {
   background: var(--color-black);
   transform: translate(-2px, -2px);
-  box-shadow: 8px 8px 0 var(--color-medium-gray);
 }
 
 .cta-button:active {
@@ -195,25 +189,11 @@
 .secondary-cta {
   background: var(--color-white);
   color: var(--color-black);
-  box-shadow: 6px 6px 0 var(--color-black);
 }
 
 .secondary-cta:hover {
-  box-shadow: 8px 8px 0 var(--color-black);
-}
-
-/* Lookbook CTA */
-.lookbook-cta {
   background: var(--color-white);
   color: var(--color-black);
-  border: 3px solid var(--color-black);
-  box-shadow: 6px 6px 0 var(--color-black);
-}
-
-.lookbook-cta:hover {
-  background: var(--color-black);
-  color: var(--color-white);
-  box-shadow: 8px 8px 0 var(--color-black);
 }
 
 /* --- Features Section --- */
@@ -652,17 +632,15 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: all 0.3s ease;
-  box-shadow:
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    0 0 0 2px rgba(255, 255, 255, 0.5);
+  box-shadow: none;
+  text-shadow: none;
+  /* Metin gölgesini kaldır */
 }
 
 .lookbook-cta:hover {
   background: var(--color-white);
   transform: translateY(-3px);
-  box-shadow:
-    0 6px 20px rgba(255, 255, 255, 0.4),
-    0 0 0 2px rgba(255, 255, 255, 0.8);
+  box-shadow: none;
 }
 
 

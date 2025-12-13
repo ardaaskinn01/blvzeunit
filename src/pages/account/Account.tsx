@@ -2,11 +2,13 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Account.css';
+import OrderHistory from './OrderHistory';
 
 export default function AccountPage() {
   const { user, profile, isAdmin, signOut, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [activeTab, setActiveTab] = useState<'profile' | 'orders'>('profile');
 
   // Sadece auth loading kontrolü
   if (authLoading) {
@@ -77,55 +79,98 @@ export default function AccountPage() {
       <div className="account-container">
         <h1>HESABIM</h1>
 
-        {isAdmin && (
-          <div className="admin-badge">
-            <span>ADMİN</span>
+        <div className="account-tabs" style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', justifyContent: 'center' }}>
+          <button
+            onClick={() => setActiveTab('profile')}
+            style={{
+              padding: '0.75rem 1.5rem',
+              background: activeTab === 'profile' ? 'var(--color-black)' : 'transparent',
+              color: activeTab === 'profile' ? 'var(--color-white)' : 'var(--color-black)',
+              border: '2px solid var(--color-black)',
+              fontWeight: 'bold',
+              fontFamily: "'Bebas Neue', monospace",
+              cursor: 'pointer',
+              fontSize: '1.1rem',
+              letterSpacing: '1px'
+            }}
+          >
+            PROFİL
+          </button>
+          {!isAdmin && (
             <button
-              onClick={() => navigate('/admin')}
-              className="admin-link"
+              onClick={() => setActiveTab('orders')}
+              style={{
+                padding: '0.75rem 1.5rem',
+                background: activeTab === 'orders' ? 'var(--color-black)' : 'transparent',
+                color: activeTab === 'orders' ? 'var(--color-white)' : 'var(--color-black)',
+                border: '2px solid var(--color-black)',
+                fontWeight: 'bold',
+                fontFamily: "'Bebas Neue', monospace",
+                cursor: 'pointer',
+                fontSize: '1.1rem',
+                letterSpacing: '1px'
+              }}
             >
-              PANEL
+              SİPARİŞ GEÇMİŞİ
             </button>
-          </div>
-        )}
-
-        <div className="account-info">
-          <div className="info-section">
-            <h2>PROFİL BİLGİLERİ</h2>
-
-            <div className="info-item">
-              <label>E-POSTA:</label>
-              <p>{user.email}</p>
-            </div>
-
-            <div className="info-item">
-              <label>AD SOYAD:</label>
-              <p>
-                {profile?.full_name ||
-                  user.user_metadata?.full_name ||
-                  user.user_metadata?.name ||
-                  'İsimsiz'}
-              </p>
-            </div>
-          </div>
-
-          <div className="account-actions">
-            <button
-              onClick={() => navigate('/')}
-              className="secondary-btn"
-            >
-              Ana Sayfa
-            </button>
-
-            <button
-              onClick={handleLogout}
-              className="logout-btn"
-              disabled={isLoggingOut}
-            >
-              {isLoggingOut ? '...' : 'Çıkış'}
-            </button>
-          </div>
+          )}
         </div>
+
+        {activeTab === 'profile' ? (
+          <>
+            {isAdmin && (
+              <div className="admin-badge">
+                <span>ADMİN</span>
+                <button
+                  onClick={() => navigate('/admin')}
+                  className="admin-link"
+                >
+                  PANEL
+                </button>
+              </div>
+            )}
+
+            <div className="account-info">
+              <div className="info-section">
+                <h2>PROFİL BİLGİLERİ</h2>
+
+                <div className="info-item">
+                  <label>E-POSTA:</label>
+                  <p>{user.email}</p>
+                </div>
+
+                <div className="info-item">
+                  <label>AD SOYAD:</label>
+                  <p>
+                    {profile?.full_name ||
+                      user.user_metadata?.full_name ||
+                      user.user_metadata?.name ||
+                      'İsimsiz'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="account-actions">
+                <button
+                  onClick={() => navigate('/')}
+                  className="secondary-btn"
+                >
+                  Ana Sayfa
+                </button>
+
+                <button
+                  onClick={handleLogout}
+                  className="logout-btn"
+                  disabled={isLoggingOut}
+                >
+                  {isLoggingOut ? '...' : 'Çıkış'}
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <OrderHistory />
+        )}
       </div>
     </div>
   );
