@@ -24,7 +24,7 @@ const marqueeText = "BLVZEUNIT | WHERE STREET MEETS SOUL | ";
 const lookbookData = {
   title: "MONEY TALKS",
   subtitle: "'WHERE STREET MEETS SOUL'",
-  imageUrl: "/banner.png", // public klasöründeki görsel
+  imageUrl: "/moneytalks.jpeg", // public klasöründeki görsel
   cta: "KOLEKSİYONU GÖR"
 };
 

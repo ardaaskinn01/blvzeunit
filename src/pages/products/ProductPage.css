@@ -3,8 +3,8 @@
 /* Global tema değişkenleri varsayılmıştır */
 :root {
   --color-black: #000000;
-  --color-dark-gray: #a9a9a9;
-  --color-medium-gray: #333333;
+  --color-dark-gray: #ffffff;
+  --color-medium-gray: #ffffff;
   --color-light-gray: #dddddd;
   --color-white: #ffffff;
 }
@@ -148,7 +148,7 @@
   margin-bottom: 2rem;
   padding: 1.5rem;
   border: 2px solid var(--color-dark-gray);
-  background: var(--color-light-gray);
+  background: var(--color-white);
   border-radius: 0;
 }
 

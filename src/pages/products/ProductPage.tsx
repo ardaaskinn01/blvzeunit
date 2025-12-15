@@ -10,6 +10,7 @@ import {
   type Discount
 } from '../../utils/discount-utils';
 import './ProductPage.css';
+import Modal from '../../components/Modal';
 
 // Veritabanı tipleri
 type Product = Tables<'products'>;
@@ -31,6 +32,7 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState<string | null>(null);
+  const [isSizeChartOpen, setIsSizeChartOpen] = useState(false);
 
   useEffect(() => {
     if (slug) {
@@ -188,26 +190,9 @@ export default function ProductPage() {
     // İndirimli fiyat varsa onu kullan, yoksa normal fiyat
     const finalPrice = discountedPrice || product.price;
 
-    // addToCart fonksiyonuna fiyat göndermiyoruz (CartContext'te üründen alıyor),
-    // Ancak tipik olarak sepete eklerken güncel fiyatın snapshot'ı alınmalı.
-    // Mevcut CartContext yapımızda fiyat product objesi içinden geliyor.
-    // Bu yüzden product objesini güncelleyip gönderebiliriz veya CartContext'i güncelleyebiliriz.
-    // Şimdilik product objesini manipüle edip gönderelim (Cart Item yapısı buna müsaitse)
-    // CartContext add fonksiyonu: addToCart(product, size, qty)
-    // Product tipinde 'price' alanı veritabanı fiyatı.
-    // Bunu override etmek için, addToCart implementation'ına bakmak lazım.
-    // Basitlik adına, şimdilik context'e olduğu gibi gönderiyoruz.
-    // Not: CartContext'te indirimli fiyat desteği eklenmesi gerekebilir.
-    // Şimdilik "Frontend" hilesi:
     const productToAdd = { ...product, price: finalPrice };
 
     addToCart(productToAdd, selectedVariant ? selectedVariant.size : 'Standart', quantity);
-
-    // Geri bildirim (Toast kullanılabilir, şimdilik alert)
-    // alert(`${quantity} adet ${product.name} sepete eklendi!`);
-
-    // Sepete gitmek ister mi?
-    // navigate('/cart');
   };
 
   if (loading) {
@@ -308,7 +293,25 @@ export default function ProductPage() {
             {/* Beden Seçimi */}
             {variants.length > 0 ? (
               <div className="size-selector">
-                <label className="size-label">BEDEN SEÇİNİZ:</label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                  <label className="size-label" style={{ margin: 0 }}>BEDEN SEÇİNİZ:</label>
+                  <button
+                    onClick={() => setIsSizeChartOpen(true)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      textDecoration: 'underline',
+                      cursor: 'pointer',
+                      fontSize: '0.85rem',
+                      fontWeight: '700',
+                      color: '#000',
+                      fontFamily: "'Bebas Neue', monospace",
+                      letterSpacing: '0.5px'
+                    }}
+                  >
+                    BEDEN TABLOSU
+                  </button>
+                </div>
                 <div className="size-options">
                   {variants.map((variant) => (
                     <button
@@ -321,21 +324,8 @@ export default function ProductPage() {
                   ))}
                 </div>
 
-                <div style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
-                  {selectedVariant ? (
-                    <span style={{ color: '#000', fontWeight: 'bold' }}>
-                      ✓ Stokta Var
-                    </span>
-                  ) : (
-                    <span style={{ color: '#666' }}>Lütfen beden seçiniz.</span>
-                  )}
-                </div>
               </div>
-            ) : (
-              <div className="product-stock">
-                ✓ Stokta Var
-              </div>
-            )}
+            ) : null}
 
             {/* Özellikler */}
             <div className="product-specs">
@@ -409,6 +399,21 @@ export default function ProductPage() {
         )}
 
       </div>
+
+      <Modal
+        isOpen={isSizeChartOpen}
+        onClose={() => setIsSizeChartOpen(false)}
+        title="BEDEN TABLOSU"
+      >
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <img
+            src="/table.png"
+            alt="Beden Tablosu"
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
+        </div>
+      </Modal>
+
     </div>
   );
 }

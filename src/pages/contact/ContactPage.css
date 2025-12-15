@@ -52,7 +52,7 @@
 
 .contact-info-item p {
   font-size: 1.1rem;
-  color: var(--color-medium-gray);
+  color: var(--color-black);
   line-height: 1.5;
   padding-left: 1.1rem;
   /* Indent to align with border */
@@ -62,9 +62,9 @@
 /* --- Right Side: Form Container --- */
 .contact-container {
   /* Keep original colors as requested */
-  background: var(--color-light-gray);
+  background: var(--color-white);
   border: 3px solid var(--color-black);
-  box-shadow: 12px 12px 0 var(--color-dark-gray);
+  box-shadow: 12px 12px 0 var(--color-black);
 
   padding: 3rem;
   border-radius: 0;
@@ -83,7 +83,7 @@
 }
 
 .contact-container>p {
-  color: var(--color-medium-gray);
+  color: var(--color-black);
   margin-bottom: 2rem;
   font-size: 1rem;
   text-align: left;
@@ -127,8 +127,8 @@
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: var(--color-dark-gray);
-  opacity: 0.7;
+  color: var(--color-black);
+  opacity: 0.6;
 }
 
 .form-group input:focus,
@@ -150,7 +150,7 @@
   padding: 1.2rem;
   background: var(--color-black);
   color: var(--color-white);
-  border: none;
+  border: 2px solid var(--color-black);
   border-radius: 0;
   font-size: 1rem;
   font-weight: 800;
@@ -160,17 +160,21 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: 'Segoe UI', sans-serif;
-  box-shadow: 6px 6px 0 var(--color-dark-gray);
+  box-shadow: 6px 6px 0 var(--color-black);
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: var(--color-medium-gray);
-  box-shadow: 8px 8px 0 var(--color-dark-gray);
+  background: var(--color-white);
+  color: var(--color-black);
+  box-shadow: 8px 8px 0 var(--color-black);
   transform: translate(-2px, -2px);
 }
 
 .submit-btn:disabled {
-  background: var(--color-dark-gray);
+  background: var(--color-white);
+  color: var(--color-black);
+  border: 2px solid var(--color-black);
+  opacity: 0.5;
   cursor: not-allowed;
   box-shadow: none;
   transform: none;

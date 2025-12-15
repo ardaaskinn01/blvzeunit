@@ -53,6 +53,15 @@
   gap: 1.25rem;
 }
 
+.auth-form input[type="email"] {
+  text-transform: none;
+  /* Harflerin küçüklüğünü korur */
+  font-family: 'Roboto Mono', monospace;
+  /* Veya 'Arial', 'sans-serif' gibi standart bir font */
+  font-weight: 400;
+  /* Font ağırlığını normale düşür */
+}
+
 /* Form Grupları */
 .form-group {
   display: flex;

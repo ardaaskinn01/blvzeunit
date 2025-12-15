@@ -120,7 +120,7 @@ export default function CartPage() {
                     <h2>Sepetiniz boş</h2>
                     <p style={{ margin: '1rem 0 2rem' }}>Henüz sepetinize ürün eklemediniz.</p>
                     <Link to="/categories/all" style={{ ...styles.checkoutBtn, display: 'inline-block', width: 'auto', textDecoration: 'none' }}>
-                        Alışverişe Devam Et
+                        Alışverİşe Devam Et
                     </Link>
                 </div>
             </div>

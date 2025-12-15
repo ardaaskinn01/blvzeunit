@@ -387,13 +387,15 @@ export default function AdminDashboard() {
     // Veri çekme işleminin başladığını işaretle
     initialLoadRef.current = true; // Sadece bir kere çalışmasını garantiler
 
-    // 4. Veri Çekme - Sadece ilk kez
-    console.log('Fetching Admin Dashboard Data (first time only)...');
-    fetchAllData();
+    // 4. Veri Çekme - Sadece ilk kez ve eğer veri yoksa
+    if (!hasFetched) {
+      console.log('Fetching Admin Dashboard Data (first time only)...');
+      fetchAllData();
+    }
 
     // NOT: fetchAllData dependency array'den çıkarıldı - sadece ilk mount'ta çalışır
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authLoading, isAdmin]);
+  }, [authLoading, isAdmin, hasFetched]);
 
   // 3. Component Gövdesindeki Ön Kontroller (Conditional Rendering / Guard Clauses)
 
@@ -522,7 +524,6 @@ export default function AdminDashboard() {
             desi: newProduct.desi,          // Yeni alan
             weight_kg: newProduct.weight_kg, // Yeni alan
             slug: slug,
-            stock_quantity: 999999
           })
           .select()
           .single();
@@ -534,7 +535,7 @@ export default function AdminDashboard() {
           const variants = newProduct.size_options.map(size => ({
             product_id: newProductData.id,
             size: size,
-            stock_quantity: 999999
+
           }));
 
           const { error: variantsError } = await supabase
@@ -624,7 +625,6 @@ export default function AdminDashboard() {
         .insert({
           product_id: productId,
           size: size,
-          stock_quantity: 999999
         })
         .select()
         .single();
@@ -848,7 +848,7 @@ export default function AdminDashboard() {
             className={`tab-btn ${activeTab === 'categories' ? 'active' : ''}`}
             onClick={() => setActiveTab('categories')}
           >
-            Kategoriler
+            Koleksiyonlar
           </button>
           <button
             className={`tab-btn ${activeTab === 'users' ? 'active' : ''}`}
@@ -1143,7 +1143,7 @@ export default function AdminDashboard() {
                     <tr>
                       <th>Görsel</th>
                       <th>Ürün Adı</th>
-                      <th>Kategori</th>
+                      <th>Koleksiyon</th>
                       <th>Fiyat</th>
                       <th>Desi</th>
                       <th>Ağırlık (kg)</th>
@@ -1191,21 +1191,21 @@ export default function AdminDashboard() {
         {activeTab === 'categories' && (
           <div className="admin-section">
             <div className="section-header">
-              <h2>Kategori Yönetimi</h2>
+              <h2>Koleksiyon Yönetimi</h2>
               <button
                 className="add-btn"
                 onClick={() => setShowCategoryForm(true)}
               >
-                + Yeni Kategori Ekle
+                + Yeni Koleksiyon Ekle
               </button>
             </div>
 
             {showCategoryForm && (
               <div className="category-form">
-                <h3>Yeni Kategori Ekle</h3>
+                <h3>Yeni Koleksiyon Ekle</h3>
                 <div className="form-grid">
                   <div className="form-group">
-                    <label>Kategori Adı *</label>
+                    <label>Koleksiyon Adı *</label>
                     <input
                       type="text"
                       value={newCategory.name}
@@ -1258,7 +1258,7 @@ export default function AdminDashboard() {
                 <table className="admin-table">
                   <thead>
                     <tr>
-                      <th>Kategori Adı</th>
+                      <th>Koleksiyon Adı</th>
                       <th>Açıklama</th>
                       <th>İşlemler</th>
                     </tr>
@@ -1371,7 +1371,7 @@ export default function AdminDashboard() {
                       onChange={e => setNewDiscount({ ...newDiscount, discount_type: e.target.value })}
                     >
                       <option value="product">Tek Ürün</option>
-                      <option value="bulk">Tüm Kategori (Toplu)</option>
+                      <option value="bulk">Tüm Koleksiyonlar</option>
                     </select>
                   </div>
 
@@ -1400,7 +1400,7 @@ export default function AdminDashboard() {
                     </div>
                   ) : (
                     <div className="form-group full-width">
-                      <label>Kategori Seçin</label>
+                      <label>Koleksiyon Seçin</label>
                       <select
                         value={newDiscount.category}
                         onChange={e => setNewDiscount({ ...newDiscount, category: e.target.value })}

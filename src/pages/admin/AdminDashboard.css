@@ -40,7 +40,7 @@
   margin-bottom: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Bebas Neue', sans-serif;
 }
 
 .stat-number {
@@ -48,7 +48,7 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Bebas Neue', sans-serif;
 }
 
 .admin-error {
@@ -110,7 +110,8 @@
   color: #000000;
   font-size: 1.3rem;
   font-weight: 700;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 1px;
   margin: 0;
 }
 
@@ -169,9 +170,10 @@
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  font-family: 'Bebas Neue', sans-serif;
 }
 
 .admin-table td {
@@ -235,9 +237,10 @@
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  font-family: 'Bebas Neue', sans-serif;
 }
 
 .users-table td {

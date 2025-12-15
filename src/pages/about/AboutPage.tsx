@@ -27,6 +27,16 @@ export default function AboutPage() {
             Kendi ateşine güven, kendi birliğini yarat.
           </p>
         </div>
+
+        <div className="about-section">
+          <h2>ÜRETİM FELSEFEMİZ</h2>
+          <p>
+            Her bir BLVZEUNIT ürünü, sadece bir giyim parçası değil, bir manifestodur. Üretim sürecimizde
+            kaliteden asla ödün vermiyor, sokağın ruhunu kullanıyoruz.
+            Tüm ürünlerimiz Türkiye'de, yerel iş gücü ve etik çalışma standartları gözetilerek üretilmektedir.
+            Bu sayede hem kaliteyi kontrol altında tutuyor hem de yerel ekonomiyi destekliyoruz.
+          </p>
+        </div>
       </div>
     </div>
   );

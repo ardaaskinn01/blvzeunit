@@ -1,12 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '../types/database.types';
-
-// Debug için console.log ekleyelim
-console.log('🔄 Supabase başlatılıyor...');
-console.log('📡 VITE_SUPABASE_URL:', import.meta.env.VITE_SUPABASE_URL);
-console.log('🔑 VITE_SUPABASE_ANON_KEY var mı?', !!import.meta.env.VITE_SUPABASE_ANON_KEY);
-
-// URL ve anahtarın doğru olduğundan emin olun
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 

@@ -114,8 +114,27 @@ export default function CategoryProductsPage() {
         .from('products')
         .select('*', { count: 'exact' });
 
+      // Eğer belirli bir kategori seçiliyse, önce kategori ID'sini bul
       if (selectedCategory && selectedCategory !== 'all') {
-        query = query.eq('category', selectedCategory);
+        // Slug'dan kategori ID'sini al
+        const { data: categoryData, error: categoryError } = await supabase
+          .from('categories')
+          .select('id')
+          .eq('slug', selectedCategory)
+          .single();
+
+        if (categoryError) {
+          console.error('❌ Kategori bulunamadı:', categoryError);
+          setProducts([]);
+          setTotalProducts(0);
+          setLoading(false);
+          return;
+        }
+
+        if (categoryData) {
+          // category_id ile filtrele
+          query = query.eq('category_id', categoryData.id);
+        }
       }
 
       switch (sortBy) {

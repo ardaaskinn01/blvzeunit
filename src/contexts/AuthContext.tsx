@@ -3,6 +3,9 @@ import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import React from 'react';
 
+// Supabase client options should be configured to avoid aggressive auto-refresh if needed,
+// but usually it's handled by not reacting to every event.
+
 interface UserProfile {
   id: string;
   email: string;
@@ -32,6 +35,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const isMounted = useRef<boolean>(true);
 
+  // Track the last processed session to avoid redundant updates
+  const lastProcessedSessionRef = useRef<string | null>(null);
+
   // 2. Cleanup useEffect
   useEffect(() => {
     return () => {
@@ -59,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Eğer hata alırsak, admin email kontrolü yap
         const currentUserEmail = (await supabase.auth.getUser()).data.user?.email;
 
-        if (currentUserEmail === 'ardaaskindm@gmail.com') {
+        if (currentUserEmail === 'blvzeunit@gmail.com') {
           console.log('✅ Admin detected via email, returning admin profile');
           return {
             id: userId,
@@ -130,25 +136,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         // TOKEN_REFRESHED durumunda gereksiz re-render'ları engelle
         if (event === 'TOKEN_REFRESHED') {
-          if (currentSession) {
-            // Sadece token gerçekten değiştiyse session'ı güncelle
-            setSession(prev => {
-              // Eğer token aynıysa, state update'i tetikleme (re-render engellenir)
-              if (prev?.access_token === currentSession.access_token) {
-                console.log('🔄 Token refresh: Same token, skipping state update');
-                return prev;
-              }
-              console.log('🔄 Token refresh: New token detected, updating session');
-              return currentSession;
-            });
-            // User bilgisi token refresh'te değişmez, setUser çağırma
-            // Bu sayede user'ı kullanan component'ler re-render olmaz
-          }
+          console.log('🔄 Token refresh event received - ignoring');
           return;
         }
 
-        // Diğer durumlar için loading göster (SIGNED_OUT durumunda da göstermek mantıklı)
-        if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED' || event === 'INITIAL_SESSION') {
+        // Create a unique session identifier
+        const currentSessionId = currentSession
+          ? `${currentSession.access_token}_${currentSession.user?.id}`
+          : null;
+
+        // Check if we've already processed this exact session
+        if (currentSessionId && lastProcessedSessionRef.current === currentSessionId) {
+          console.log('🔄 Same session already processed - IGNORING event:', event);
+          return;
+        }
+
+        // Tab focus olduğunda bazen SIGNED_IN tetiklenir, bunu kontrol et
+        if (event === 'SIGNED_IN' && currentSession && session?.access_token === currentSession.access_token) {
+          console.log('🔄 Redundant SIGNED_IN event (focus or network retry) - IGNORING');
+          return;
+        }
+
+        // Update the last processed session
+        if (currentSessionId) {
+          lastProcessedSessionRef.current = currentSessionId;
+        } else {
+          lastProcessedSessionRef.current = null;
+        }
+
+        // Diğer durumlar için loading göster (ancak yukarıdaki ignore check'lerden sonra)
+        if (event === 'SIGNED_OUT' || event === 'USER_UPDATED' || event === 'INITIAL_SESSION') {
+          setLoading(true);
+        } else if (event === 'SIGNED_IN') {
+          // SIGNED_IN için sadece session değişiyorsa loading true yap (yukarıdaki check'i geçtiyse sessions farklıdır)
           setLoading(true);
         }
 

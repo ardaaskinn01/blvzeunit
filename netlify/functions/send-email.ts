@@ -10,6 +10,18 @@ interface ContactFormData {
   message: string;
 }
 
+// XSS koruması için HTML escape fonksiyonu
+function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, (char) => map[char]);
+}
+
 const handler: Handler = async (event) => {
   // Sadece POST isteklerine izin ver
   if (event.httpMethod !== 'POST') {
@@ -33,19 +45,25 @@ const handler: Handler = async (event) => {
       };
     }
 
+    // Kullanıcı girdilerini sanitize et (XSS koruması)
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeSubject = escapeHtml(subject);
+    const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
+
     // E-posta gönder
     const response = await resend.emails.send({
-      from: 'noreply@myshop.com', // Resend'de doğrulanmış domain kullan
+      from: 'info@blvzeunit.com', // Resend'de doğrulanmış domain kullan
       to: process.env.VITE_CONTACT_EMAIL || 'admin@myshop.com',
       reply_to: email,
-      subject: `Yeni İletişim: ${subject}`,
+      subject: `Yeni İletişim: ${safeSubject}`,
       html: `
         <h2>Yeni İletişim Mesajı</h2>
-        <p><strong>İsim:</strong> ${name}</p>
-        <p><strong>E-posta:</strong> ${email}</p>
-        <p><strong>Konu:</strong> ${subject}</p>
+        <p><strong>İsim:</strong> ${safeName}</p>
+        <p><strong>E-posta:</strong> ${safeEmail}</p>
+        <p><strong>Konu:</strong> ${safeSubject}</p>
         <p><strong>Mesaj:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
+        <p>${safeMessage}</p>
       `,
     });
 
