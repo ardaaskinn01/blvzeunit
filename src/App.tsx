@@ -27,6 +27,7 @@ import SearchPage from './pages/search/SearchPage';
 import CategoryProductsPage from './pages/categories/CategoryProductsPage';
 import CartPage from './pages/cart/CartPage';
 import CheckoutPage from './pages/checkout/CheckoutPage';
+import PaymentCallbackPage from './pages/checkout/PaymentCallbackPage';
 
 // Legal Pages
 import PrivacyPolicyPage from './pages/legal/PrivacyPolicyPage';
@@ -106,6 +107,7 @@ function AppContent() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/payment-callback" element={<PaymentCallbackPage />} />
 
         {/* Legal Pages */}
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />

@@ -18,7 +18,7 @@
   justify-content: center;
   background: var(--color-white);
   padding: 1.5rem;
-  font-family: 'Bebas Neue', monospace;
+  font-family: 'Roboto Mono', monospace;
 }
 
 /* Form Kapsayıcısı - Minimal */
@@ -53,13 +53,24 @@
   gap: 1.25rem;
 }
 
-.auth-form input[type="email"] {
+
+/* Tüm input'lardaki placeholder'lar için */
+.form-input::placeholder {
   text-transform: none;
-  /* Harflerin küçüklüğünü korur */
   font-family: 'Roboto Mono', monospace;
-  /* Veya 'Arial', 'sans-serif' gibi standart bir font */
   font-weight: 400;
-  /* Font ağırlığını normale düşür */
+}
+
+/* Özellikle e-posta placeholder'ı */
+.form-input[type="email"]::placeholder {
+  text-transform: none;
+}
+
+.auth-form input[type="email"],
+.auth-form input[name="email"] {
+  text-transform: lowercase !important;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 400;
 }
 
 /* Form Grupları */

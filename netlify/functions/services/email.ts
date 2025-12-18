@@ -5,7 +5,7 @@ export class EmailService {
     private fromEmail: string;
 
     constructor() {
-        this.resend = new Resend(process.env.VITE_RESEND_API_KEY || process.env.RESEND_API_KEY);
+        this.resend = new Resend(process.env.RESEND_API_KEY!);
         this.fromEmail = 'info@blvzeunit.com'; // Resend domain
     }
 
@@ -32,7 +32,7 @@ export class EmailService {
 
           <h3>Teslimat Adresi:</h3>
           <p>
-            ${order.shipping_address.address_line1}<br>
+            ${order.shipping_address.address}<br>
             ${order.shipping_address.city} / ${order.shipping_address.country || 'Turkey'}
           </p>
 
@@ -53,6 +53,53 @@ export class EmailService {
         } catch (error) {
             console.error('Failed to send order confirmation email:', error);
             // Hata fırlatmıyoruz ki sipariş akışı bozulmasın, sadece logluyoruz.
+            return null;
+        }
+    }
+
+    async sendShippingNotification(order: any, trackingNumber: string, trackingUrl: string | null, carrier: string) {
+        if (!order.contact_info?.email) {
+            console.warn('Shipping notification email skipped: No email found.');
+            return;
+        }
+
+        try {
+            const { first_name, last_name, email } = order.contact_info;
+
+            const trackingLinkHtml = trackingUrl
+                ? `<p>Kargonuzu takip etmek için <a href="${trackingUrl}" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">buraya tıklayın</a>.</p>`
+                : '';
+
+            const htmlContent = `
+        <div style="font-family: Arial, sans-serif; color: #333;">
+          <h1>Siparişiniz Kargoya Teslim Edildi! 📦</h1>
+          <p>Merhaba ${first_name} ${last_name},</p>
+          <p>Siparişiniz (#${order.id.slice(0, 8)}) hazırlanmış ve kargo firmasına teslim edilmiştir.</p>
+          
+          <div style="background: #f4f4f4; padding: 15px; margin: 20px 0; border-radius: 5px;">
+            <h3>Kargo Bilgileri</h3>
+            <p><strong>Kargo Firması:</strong> ${carrier}</p>
+            <p><strong>Takip Numarası:</strong> ${trackingNumber}</p>
+            ${trackingLinkHtml}
+          </div>
+
+          <p>Ürünlerinizin size en kısa sürede ulaşmasını dileriz.</p>
+          <p>Bizi tercih ettiğiniz için teşekkür ederiz.</p>
+          <p><em>BLVZEUNIT Ekibi</em></p>
+        </div>
+      `;
+
+            const data = await this.resend.emails.send({
+                from: this.fromEmail,
+                to: email,
+                subject: `Siparişiniz Kargolandı 📦 #${order.id.slice(0, 8)} - BLVZEUNIT`,
+                html: htmlContent,
+            });
+
+            console.log('Shipping notification email sent:', data.data?.id);
+            return data;
+        } catch (error) {
+            console.error('Failed to send shipping notification email:', error);
             return null;
         }
     }

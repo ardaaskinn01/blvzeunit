@@ -39,6 +39,17 @@ body {
   color: var(--color-black);
 }
 
+/* 
+ * TÜRKÇE KARAKTER DÜZELTMESİ:
+ * CSS'deki text-transform: uppercase Türkçe karakterleri yanlış dönüştürüyor.
+ * Örnek: "İzmir" → "IZMIR" (yanlış), "İZMİR" (doğru) olmalı
+ * 
+ * Çözüm: text-transform yerine font-variant-caps kullanılıyor
+ * ancak bu da tam çalışmadığı için metinler DOĞRUDAN büyük harfle yazılmalı.
+
+
+/* Bebas Neue zaten büyük harf görünümü veriyor, ek transform gerekmez */
+
 /* Scrollbar Styling (Marjinal/Eskiz temasına uygun basit ve kontrastlı) */
 ::-webkit-scrollbar {
   width: 12px;

@@ -7,19 +7,6 @@ import Modal from '../../components/Modal';
 import TermsOfServicePage from '../legal/TermsOfServicePage';
 import PreliminaryInformationForm from '../legal/PreliminaryInformationForm';
 
-// Türkiye'nin 81 ili
-const turkishCities = [
-    "Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin",
-    "Aydın", "Balıkesir", "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur", "Bursa",
-    "Çanakkale", "Çankırı", "Çorum", "Denizli", "Diyarbakır", "Düzce", "Edirne", "Elazığ",
-    "Erzincan", "Erzurum", "Eskişehir", "Gaziantep", "Giresun", "Gümüşhane", "Hakkari",
-    "Hatay", "Iğdır", "Isparta", "İstanbul", "İzmir", "Kahramanmaraş", "Karabük",
-    "Karaman", "Kars", "Kastamonu", "Kayseri", "Kırıkkale", "Kırklareli", "Kırşehir",
-    "Kilis", "Kocaeli", "Konya", "Kütahya", "Malatya", "Manisa", "Mardin", "Mersin",
-    "Muğla", "Muş", "Nevşehir", "Niğde", "Ordu", "Osmaniye", "Rize", "Sakarya",
-    "Samsun", "Siirt", "Sinop", "Sivas", "Şanlıurfa", "Şırnak", "Tekirdağ", "Tokat",
-    "Trabzon", "Tunceli", "Uşak", "Van", "Yalova", "Yozgat", "Zonguldak"
-];
 
 const styles = {
     container: {
@@ -110,24 +97,6 @@ const styles = {
         background: '#f5f5f5',
         borderRadius: '6px',
     } as React.CSSProperties,
-    citiesGrid: {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-        gap: '0.75rem',
-        maxHeight: '200px',
-        overflowY: 'auto' as 'auto',
-        padding: '1rem',
-        border: '1px solid #eee',
-        borderRadius: '6px',
-        marginTop: '0.5rem',
-    } as React.CSSProperties,
-    cityCheckboxLabel: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        cursor: 'pointer',
-        padding: '0.25rem 0',
-    } as React.CSSProperties,
     error: {
         color: '#dc3545',
         fontSize: '0.875rem',
@@ -138,15 +107,6 @@ const styles = {
         padding: '1rem',
         borderRadius: '8px',
         marginBottom: '1.5rem',
-    } as React.CSSProperties,
-    selectedCityBadge: {
-        display: 'inline-block',
-        background: '#007bff',
-        color: 'white',
-        padding: '0.25rem 0.75rem',
-        borderRadius: '20px',
-        fontSize: '0.875rem',
-        marginTop: '0.5rem',
     } as React.CSSProperties,
     itemsContainer: {
         marginBottom: '1.5rem',
@@ -187,6 +147,7 @@ export default function CheckoutPage() {
         email: '',
         phone: '',
         city: '',
+        district: '',
         fullAddress: '',
         zipCode: '',
     });
@@ -195,20 +156,22 @@ export default function CheckoutPage() {
     const [showTerms, setShowTerms] = useState(false);
     const [showPreliminary, setShowPreliminary] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
-    const [selectedCity, setSelectedCity] = useState('');
+
 
     // Kullanıcı adresi varsa formu doldur
     useEffect(() => {
         if (userAddress) {
-            setFormData({
+            setFormData(prev => ({
+                ...prev,
                 fullName: userAddress.recipientName || '',
-                email: '',
                 phone: userAddress.phone || '',
                 city: userAddress.city || '',
                 fullAddress: userAddress.fullAddress || '',
                 zipCode: userAddress.zipCode || '',
-            });
-            setSelectedCity(userAddress.city || '');
+                district: userAddress.district || '',
+            }));
+            // İleri seviye: userAddress'teki şehir isminden cityCode bulup districts çekilebilir
+            // Şimdilik kullanıcı tekrar seçsin
         }
     }, [userAddress]);
 
@@ -227,14 +190,6 @@ export default function CheckoutPage() {
         }
     };
 
-    const handleCitySelect = (city: string) => {
-        setSelectedCity(city);
-        setFormData(prev => ({ ...prev, city }));
-
-        if (errors.city) {
-            setErrors(prev => ({ ...prev, city: '' }));
-        }
-    };
 
     const validateForm = () => {
         const newErrors: Record<string, string> = {};
@@ -247,6 +202,7 @@ export default function CheckoutPage() {
         }
         if (!formData.phone.trim()) newErrors.phone = 'Telefon numarası zorunludur';
         if (!formData.city.trim()) newErrors.city = 'İl seçimi zorunludur';
+        if (!formData.district.trim()) newErrors.district = 'İlçe seçimi zorunludur';
         if (!formData.fullAddress.trim()) newErrors.fullAddress = 'Detaylı adres zorunludur';
         if (!formData.zipCode.trim()) newErrors.zipCode = 'Posta kodu zorunludur';
         if (!termsAccepted) newErrors.terms = 'Sözleşmeleri kabul etmelisiniz';
@@ -269,7 +225,7 @@ export default function CheckoutPage() {
             // Adresi kaydet
             const address = {
                 city: formData.city,
-                district: '',
+                district: formData.district,
                 neighborhood: '',
                 fullAddress: formData.fullAddress,
                 zipCode: formData.zipCode,
@@ -279,7 +235,6 @@ export default function CheckoutPage() {
 
             saveAddressToStorage(address);
 
-            // 1. Siparişi Oluştur
             // 1. Siparişi Oluştur
             const { data: orderData, error: orderError } = await (supabase as any)
                 .from('orders')
@@ -292,6 +247,7 @@ export default function CheckoutPage() {
                         full_name: formData.fullName,
                         address: formData.fullAddress,
                         city: formData.city,
+                        district: formData.district,
                         zip_code: formData.zipCode,
                         country: 'Turkey'
                     },
@@ -341,6 +297,35 @@ export default function CheckoutPage() {
     return (
         <div style={styles.container}>
             <h1 style={styles.header}>Ödeme & Teslimat</h1>
+
+            {/* iyzico Integration Notice */}
+            <div style={{
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                color: '#fff',
+                padding: '1.25rem 1.5rem',
+                borderRadius: '12px',
+                marginBottom: '2rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem',
+                boxShadow: '0 4px 12px rgba(102, 126, 234, 0.2)'
+            }}>
+                <div style={{ fontSize: '2rem' }}>🔒</div>
+                <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '0.25rem' }}>
+                        Güvenli Ödeme - iyzico ile Korunuyorsunuz
+                    </div>
+                    <div style={{ fontSize: '0.9rem', opacity: 0.95 }}>
+                        Tüm ödemeleriniz iyzico'nun güvenli ödeme altyapısı ile 256-bit SSL şifrelemesi altında işlenir.
+                        Kredi kartı bilgileriniz hiçbir zaman sistemimizde saklanmaz.
+                    </div>
+                </div>
+                <img
+                    src="/iyzico-logo-pack/checkout_iyzico_ile_ode/TR/Tr_White/iyzico_ile_ode_white.png"
+                    alt="iyzico"
+                    style={{ height: '35px', width: 'auto', opacity: 0.95 }}
+                />
+            </div>
 
             <form onSubmit={handleSubmit} style={styles.layout}>
                 {/* Sol Taraf: Adres Bilgileri */}
@@ -392,29 +377,32 @@ export default function CheckoutPage() {
                         {errors.phone && <div style={styles.error}>{errors.phone}</div>}
                     </div>
 
-                    <div style={styles.formGroup}>
-                        <label style={styles.label}>İl*</label>
-                        <div style={styles.citiesGrid}>
-                            {turkishCities.map(city => (
-                                <label key={city} style={styles.cityCheckboxLabel}>
-                                    <input
-                                        type="radio"
-                                        name="city"
-                                        value={city}
-                                        checked={selectedCity === city}
-                                        onChange={() => handleCitySelect(city)}
-                                        style={{ cursor: 'pointer' }}
-                                    />
-                                    {city}
-                                </label>
-                            ))}
+                    <div style={styles.grid2Col}>
+                        <div style={styles.formGroup}>
+                            <label style={styles.label}>İl*</label>
+                            <input
+                                required
+                                name="city"
+                                placeholder="Örn: İstanbul"
+                                style={styles.input}
+                                value={formData.city}
+                                onChange={handleInputChange}
+                            />
+                            {errors.city && <div style={styles.error}>{errors.city}</div>}
                         </div>
-                        {selectedCity && (
-                            <div style={styles.selectedCityBadge}>
-                                Seçilen İl: {selectedCity}
-                            </div>
-                        )}
-                        {errors.city && <div style={styles.error}>{errors.city}</div>}
+
+                        <div style={styles.formGroup}>
+                            <label style={styles.label}>İlçe*</label>
+                            <input
+                                required
+                                name="district"
+                                placeholder="Örn: Kadıköy"
+                                style={styles.input}
+                                value={formData.district}
+                                onChange={handleInputChange}
+                            />
+                            {errors.district && <div style={styles.error}>{errors.district}</div>}
+                        </div>
                     </div>
 
                     <div style={styles.grid2Col}>
@@ -528,11 +516,37 @@ export default function CheckoutPage() {
                         {isSubmitting ? 'İşleniyor...' : 'Siparişi Tamamla'}
                     </button>
 
+                    {/* iyzico Payment Logo */}
+                    <div style={{
+                        marginTop: '1.5rem',
+                        textAlign: 'center',
+                        padding: '1rem',
+                        background: '#fff',
+                        borderRadius: '8px',
+                        border: '1px solid #eee'
+                    }}>
+                        <img
+                            src="/iyzico-logo-pack/checkout_iyzico_ile_ode/TR/Tr_White/iyzico_ile_ode_white.png"
+                            alt="iyzico ile güvenli ödeme"
+                            style={{
+                                height: '45px',
+                                width: 'auto',
+                                display: 'block',
+                                margin: '0 auto',
+                                filter: 'brightness(0) invert(1)'
+                            }}
+                        />
+                        <p style={{ marginTop: '0.75rem', fontSize: '0.8rem', color: '#666' }}>
+                            Güvenli ödeme altyapısı
+                        </p>
+                    </div>
+
                     <p style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#666', textAlign: 'center' }}>
                         Ödeme işleminiz iyzico güvencesi ile yapılacaktır.
                     </p>
                 </div>
             </form>
+
 
             <Modal
                 isOpen={showTerms}

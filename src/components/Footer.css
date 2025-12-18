@@ -87,6 +87,33 @@
   margin: 2rem 0;
 }
 
+/* Payment Logos Section */
+.footer-payment {
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.payment-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.iyzico-logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.payment-band-logo {
+  height: 35px;
+  width: auto;
+  object-fit: contain;
+}
+
+
 .footer-bottom {
   text-align: center;
   padding-top: 1rem;
@@ -112,5 +139,18 @@
 
   .footer-bottom {
     text-align: center;
+  }
+
+  /* Mobile responsive payment logos */
+  .payment-logos {
+    gap: 1rem;
+  }
+
+  .iyzico-logo {
+    height: 30px;
+  }
+
+  .payment-band-logo {
+    height: 25px;
   }
 }

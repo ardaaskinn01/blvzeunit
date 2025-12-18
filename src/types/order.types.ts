@@ -17,6 +17,9 @@ export interface Order {
         phone: string;
     };
     created_at: string;
+    cargo_tracking_number?: string | null;
+    cargo_tracking_url?: string | null;
+    shipment_label_url?: string | null;
 }
 
 export interface OrderItem {

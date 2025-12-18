@@ -109,12 +109,7 @@ export default function TermsOfServicePage() {
                             <li>Kargo firmasının yoğunluğuna göre süreler değişebilir.</li>
                         </ul>
 
-                        <h3>6.2. Kargo Ücretleri</h3>
-                        <ul>
-                            <li>Yakında belirlenecek...</li>
-                        </ul>
-
-                        <h3>6.3. Teslimat Kuralları</h3>
+                        <h3>6.2. Teslimat Kuralları</h3>
                         <ul>
                             <li>Teslimat adresinin doğru ve güncel olması müşteri sorumluluğundadır.</li>
                             <li>Adres hatalarından kaynaklanan gecikmelerden satıcı sorumlu değildir.</li>

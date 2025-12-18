@@ -18,6 +18,8 @@ interface Order {
     created_at: string;
     status: string;
     total_amount: number;
+    cargo_tracking_number?: string;
+    cargo_tracking_url?: string;
     items: OrderItem[]; // Basitlik için JSONB veya ayrı tablodan çekilebilir, şimdilik ayrı tablo varsayalım
 }
 
@@ -116,8 +118,29 @@ export default function OrderHistory() {
                             ))}
                         </div>
                         <div className="order-footer">
-                            <span>TOPLAM</span>
-                            <span className="total-amount">₺{order.total_amount.toLocaleString('tr-TR')}</span>
+                            <div className="order-actions">
+                                {order.cargo_tracking_number && (
+                                    <div className="cargo-info">
+                                        <span className="tracking-label">Kargo Takip: </span>
+                                        {order.cargo_tracking_url ? (
+                                            <a
+                                                href={order.cargo_tracking_url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="tracking-link"
+                                            >
+                                                {order.cargo_tracking_number}
+                                            </a>
+                                        ) : (
+                                            <span className="tracking-number">{order.cargo_tracking_number}</span>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                            <div className="total-wrapper">
+                                <span>TOPLAM</span>
+                                <span className="total-amount">₺{order.total_amount.toLocaleString('tr-TR')}</span>
+                            </div>
                         </div>
                     </div>
                 ))}

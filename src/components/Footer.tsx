@@ -52,6 +52,42 @@ export default function Footer() {
         {/* Divider */}
         <div className="footer-divider"></div>
 
+        {/* Payment Logos Section */}
+        <div className="footer-payment">
+          <h4 style={{
+            textAlign: 'center',
+            marginBottom: '1.5rem',
+            fontSize: '1rem',
+            fontWeight: '700',
+            letterSpacing: '0.5px',
+            color: '#ffffff'
+          }}>
+            GÜVENLİ ÖDEME
+          </h4>
+          <div className="payment-logos">
+            <img
+              src="/iyzico-logo-pack/checkout_iyzico_ile_ode/TR/Tr_White/iyzico_ile_ode_white.svg"
+              alt="iyzico ile Öde"
+              className="iyzico-logo"
+            />
+            <img
+              src="/iyzico-logo-pack/footer_iyzico_ile_ode/White/logo_band_white.svg"
+              alt="Visa, Mastercard ve diğer ödeme yöntemleri"
+              className="payment-band-logo"
+            />
+          </div>
+          <p style={{
+            textAlign: 'center',
+            marginTop: '1rem',
+            fontSize: '0.85rem',
+            color: '#b0b0b0',
+            maxWidth: '600px',
+            margin: '1rem auto 0'
+          }}>
+            Tüm ödemeleriniz iyzico güvencesi altında 256-bit SSL şifrelemesi ile korunmaktadır.
+          </p>
+        </div>
+
         {/* Footer Bottom */}
         <div className="footer-bottom">
           <p>&copy; 2025 BLVZEUNIT. Tüm hakları saklıdır.</p>

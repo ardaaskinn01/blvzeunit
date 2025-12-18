@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import type { Tables } from '../../types/database.types';
 import './AdminDashboard.css';
-import { jsPDF } from 'jspdf';
 import type { OrderWithItems } from '../../types/order.types';
 
 // Types
@@ -119,6 +118,77 @@ export default function AdminDashboard() {
     end_date: '',
     is_active: true
   });
+
+  // Manual Shipping State
+  const [trackingInputs, setTrackingInputs] = useState<Record<string, { carrier: string, trackingNumber: string }>>({});
+
+  const handleShipOrder = async (orderId: string) => {
+    const input = trackingInputs[orderId];
+    if (!input || !input.trackingNumber) {
+      alert('Lütfen takip numarası giriniz.');
+      return;
+    }
+
+    if (!confirm('Siparişi kargolanmış olarak işaretlemek istiyor musunuz?')) return;
+
+    try {
+      // Determine tracking URL based on carrier (simple logic for now)
+      let trackingUrl = null;
+      if (input.carrier.toLowerCase().includes('mng')) {
+        trackingUrl = `https://kargotakip.mngkargo.com.tr/?takipNo=${input.trackingNumber}`;
+      } else if (input.carrier.toLowerCase().includes('yurtiçi') || input.carrier.toLowerCase().includes('yurtici')) {
+        trackingUrl = `https://yurticikargo.com/tr/online-servisler/gonderi-sorgula?code=${input.trackingNumber}`;
+      }
+
+      const { error } = await supabase
+        .from('orders')
+        .update({
+          status: 'shipped',
+          cargo_tracking_number: input.trackingNumber,
+          cargo_tracking_url: trackingUrl,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', orderId);
+
+      if (error) throw error;
+
+      // Send Email Notification
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          await fetch('/.netlify/functions/notify-shipping', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({
+              orderId,
+              trackingNumber: input.trackingNumber,
+              trackingUrl,
+              carrier: input.carrier
+            })
+          });
+        }
+      } catch (notifyError) {
+        console.error('Bildirim gönderilemedi:', notifyError);
+        // Ana işlem başarılı olduğu için kullanıcıyı korkutmaya gerek yok, sadece logluyoruz.
+      }
+
+      // Refresh local state
+      setOrders(prev => prev.map(o => o.id === orderId ? {
+        ...o,
+        status: 'shipped',
+        cargo_tracking_number: input.trackingNumber,
+        cargo_tracking_url: trackingUrl
+      } : o));
+
+      alert('Sipariş başarıyla kargolandı olarak güncellendi.');
+    } catch (err: any) {
+      console.error('Kargo güncelleme hatası:', err);
+      alert('Hata: ' + err.message);
+    }
+  };
 
   // Image upload function
   const uploadImage = async (file: File): Promise<string | null> => {
@@ -753,72 +823,6 @@ export default function AdminDashboard() {
     return category ? category.name : categorySlug;
   };
 
-  const handleDownloadLabel = (order: OrderWithItems) => {
-    const doc = new jsPDF();
-
-    // Title
-    doc.setFontSize(20);
-    doc.text('Kargo Etiketi', 105, 20, { align: 'center' });
-
-    doc.setFontSize(12);
-
-    // Sender Info (Firm)
-    doc.setFont('helvetica', 'bold');
-    doc.text('GÖNDERİCİ:', 20, 40);
-    doc.setFont('helvetica', 'normal');
-    doc.text('BLVZEUNIT (Hüseyin Ceylan)', 20, 50);
-    doc.text('4562 Sokak No:31 Kat:2 Daire:2', 20, 57);
-    doc.text('Sevgi Mahallesi Karabağlar/İzmir', 20, 64);
-    doc.text('Tel: +90 000 000 00 00', 20, 71);
-
-    // Line separator
-    doc.line(20, 80, 190, 80);
-
-    // Recipient Info
-    doc.setFont('helvetica', 'bold');
-    doc.text('ALICI:', 20, 95);
-    doc.setFont('helvetica', 'normal');
-    doc.text(order.shipping_address.full_name.toUpperCase(), 20, 105);
-
-    // Address wrapping
-    const addressLines = doc.splitTextToSize(order.shipping_address.address, 170);
-    doc.text(addressLines, 20, 112);
-
-    let currentY = 112 + (addressLines.length * 7);
-
-    doc.text(`${order.shipping_address.city} / Turkey`, 20, currentY);
-    currentY += 7;
-
-    if (order.shipping_address.zip_code) {
-      doc.text(`Posta Kodu: ${order.shipping_address.zip_code}`, 20, currentY);
-      currentY += 7;
-    }
-
-    doc.text(`Tel: ${order.contact_info.phone}`, 20, currentY);
-
-    // Line separator
-    currentY += 15;
-    doc.line(20, currentY, 190, currentY);
-
-    // Order Details
-    currentY += 15;
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Sipariş No: #${order.id.slice(0, 8)}`, 20, currentY);
-    doc.text(`Tarih: ${new Date(order.created_at).toLocaleDateString('tr-TR')}`, 140, currentY);
-
-    currentY += 15;
-    doc.text('İçerik:', 20, currentY);
-    doc.setFont('helvetica', 'normal');
-
-    order.items.forEach((item, index) => {
-      currentY += 7;
-      const itemText = `${index + 1}. ${item.product_name} (${item.size}) - ${item.quantity} Adet`;
-      doc.text(itemText, 25, currentY);
-    });
-
-    // Save PDF
-    doc.save(`Kargo-Etiketi-${order.id.slice(0, 8)}.pdf`);
-  };
 
   if (!isAdmin) {
     return null;
@@ -1562,26 +1566,48 @@ export default function AdminDashboard() {
                           ))}
                         </div>
 
-                        <button
-                          onClick={() => handleDownloadLabel(order)}
-                          style={{
-                            marginTop: '1rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            padding: '0.5rem 1rem',
-                            backgroundColor: '#dc3545',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer',
-                            fontSize: '0.9rem'
-                          }}
-                        >
-                          📄 Kargo Etiketi Oluştur
-                        </button>
                       </div>
                     </div>
+
+                    {/* Manual Shipping Form */}
+                    {(order.status === 'preparing' || order.status === 'pending') && (
+                      <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid #eee' }}>
+                        <h4 style={{ fontSize: '0.9rem', marginBottom: '0.5rem' }}>Manuel Kargo Girişi</h4>
+                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                          <div style={{ flex: 1, minWidth: '150px' }}>
+                            <input
+                              type="text"
+                              placeholder="Kargo Firması (Örn: MNG, Yurtiçi)"
+                              value={trackingInputs[order.id]?.carrier || ''}
+                              onChange={e => setTrackingInputs(prev => ({ ...prev, [order.id]: { ...prev[order.id] || {}, carrier: e.target.value } }))}
+                              style={{ width: '100%', padding: '0.5rem', border: '1px solid #ddd', borderRadius: '4px' }}
+                            />
+                          </div>
+                          <div style={{ flex: 2, minWidth: '200px' }}>
+                            <input
+                              type="text"
+                              placeholder="Takip Numarası"
+                              value={trackingInputs[order.id]?.trackingNumber || ''}
+                              onChange={e => setTrackingInputs(prev => ({ ...prev, [order.id]: { ...prev[order.id] || {}, trackingNumber: e.target.value } }))}
+                              style={{ width: '100%', padding: '0.5rem', border: '1px solid #ddd', borderRadius: '4px' }}
+                            />
+                          </div>
+                          <button
+                            onClick={() => handleShipOrder(order.id)}
+                            style={{
+                              padding: '0.5rem 1rem',
+                              backgroundColor: '#28a745',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '4px',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            Kargola
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

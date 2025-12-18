@@ -1,8 +1,7 @@
 import { Handler } from '@netlify/functions';
 import { createClient } from '@supabase/supabase-js';
 import { IyzicoService } from './services/iyzico';
-import { ParasutService } from './services/parasut';
-import { ShippingService } from './services/shipping';
+
 import { EmailService } from './services/email';
 
 const supabase = createClient(
@@ -11,8 +10,7 @@ const supabase = createClient(
 );
 
 const iyzicoService = new IyzicoService();
-const parasutService = new ParasutService();
-const shippingService = new ShippingService();
+
 const emailService = new EmailService();
 
 export const handler: Handler = async (event, context) => {
@@ -34,7 +32,7 @@ export const handler: Handler = async (event, context) => {
             return { statusCode: 401, body: JSON.stringify({ error: 'Invalid token' }) };
         }
 
-        const { orderId } = JSON.parse(event.body || '{}');
+        const { orderId, paymentToken } = JSON.parse(event.body || '{}');
 
         if (!orderId) {
             return { statusCode: 400, body: JSON.stringify({ error: 'orderId is required' }) };
@@ -67,26 +65,31 @@ export const handler: Handler = async (event, context) => {
 
         const steps = [];
 
-        // 2. İyzico Ödeme Kontrolü (Mock)
-        // Normalde burası callback'ten gelen token ile yapılır ama debug için
-        // direkt başarılı bir sonuç simüle ediyoruz.
-        const paymentResult = await iyzicoService.retrieveCheckoutFormResult('mock-token') as any;
+        // 2. İyzico Ödeme Kontrolü
+        // Frontend'den gönderilen token ile doğrulama yapıyoruz.
+        let paymentResult: any;
+
+        if (paymentToken) {
+            paymentResult = await iyzicoService.retrieveCheckoutFormResult(paymentToken) as any;
+        } else {
+            // Eğer token gelmediyse ve sipariş zaten ödendiyse (retry durumu) geçebiliriz
+            if (order.payment_status === 'paid') {
+                paymentResult = { status: 'success', paymentId: order.payment_id };
+            } else {
+                throw new Error('Payment token missing and order not paid');
+            }
+        }
+
         steps.push({ name: 'Iyzico Payment', result: paymentResult });
 
         if (paymentResult.status !== 'success') {
-            throw new Error('Payment failed');
+            throw new Error(`Payment failed: ${paymentResult.errorMessage || 'Unknown error'}`);
         }
 
-        // 3. Paraşüt Fatura Oluşturma
-        // Önce müşteri kaydı (varsa bul, yoksa oluştur)
-        const parasutContact = await parasutService.createContact(order.contact_info);
-        const invoice = await parasutService.createSalesInvoice(order, parasutContact.id);
-        steps.push({ name: 'Parasut Invoice', result: invoice });
-
-        // 4. Kargo Etiketi ve Takip Kodu
-        const shipment = await shippingService.createShipment(order);
-        const labelUrl = await shippingService.generateLabelPDF(order, shipment.trackingNumber);
-        steps.push({ name: 'Shipping Label', result: { ...shipment, labelUrl } });
+        // 4. Kargo Etiketi ve Takip Kodu (Manuel Süreç)
+        // Otomatik kargo entegrasyonu kaldırıldı.
+        // Admin panelden manuel kargo takibi girilecek.
+        steps.push({ name: 'Shipping', result: 'Manual processing' });
 
         // 5. Müşteriye Bilgilendirme Maili
         const emailResult = await emailService.sendOrderConfirmation(order);
@@ -99,11 +102,6 @@ export const handler: Handler = async (event, context) => {
                 status: 'preparing', // veya shipped
                 payment_status: 'paid',
                 payment_id: paymentResult.paymentId,
-                parasut_invoice_id: invoice.id,
-                parasut_invoice_url: invoice.pdf_url,
-                cargo_tracking_number: shipment.trackingNumber,
-                cargo_tracking_url: shipment.trackingUrl,
-                shipment_label_url: labelUrl,
                 updated_at: new Date().toISOString()
             })
             .eq('id', orderId);

@@ -1,8 +1,11 @@
+/* LegalPages.css - Bebas Neue kaldırıldı, varsayılan fontlar kullanılıyor */
+
 .legal-page-container {
     padding: 4rem 2rem;
     max-width: 800px;
     margin: 0 auto;
     min-height: 60vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .legal-content {
@@ -11,6 +14,7 @@
     border: 1px solid black;
     border-radius: 0;
     box-shadow: none;
+    font-family: inherit;
 }
 
 .legal-content h1 {
@@ -20,6 +24,9 @@
     font-weight: 700;
     border-bottom: 2px solid black;
     padding-bottom: 0.5rem;
+    font-family: inherit;
+    text-transform: none;
+    /* Büyük harf dönüşümünü kaldır */
 }
 
 .last-updated {
@@ -29,6 +36,8 @@
     font-size: 0.9rem;
     border-bottom: 1px solid black;
     padding-bottom: 1rem;
+    font-family: inherit;
+    text-transform: none;
 }
 
 /* BÖLÜM 1: Ana yapı */
@@ -50,6 +59,8 @@
     margin-bottom: 1rem;
     color: black;
     font-weight: 600;
+    font-family: inherit;
+    text-transform: none;
 }
 
 .terms-page .legal-content h2:before {
@@ -68,6 +79,8 @@
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
     color: black;
+    font-family: inherit;
+    text-transform: none;
 }
 
 .terms-page .legal-content h3:before {
@@ -84,6 +97,8 @@
     margin-bottom: 1rem;
     color: black;
     font-weight: 600;
+    font-family: inherit;
+    text-transform: none;
 }
 
 .legal-content h3:not(.terms-page h3) {
@@ -91,12 +106,16 @@
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
     color: black;
+    font-family: inherit;
+    text-transform: none;
 }
 
 .legal-content p {
     line-height: 1.7;
     color: black;
     margin-bottom: 1rem;
+    font-family: inherit;
+    text-transform: none;
 }
 
 .legal-content ul,
@@ -109,6 +128,8 @@
     margin-bottom: 0.5rem;
     line-height: 1.5;
     color: black;
+    font-family: inherit;
+    text-transform: none;
 }
 
 /* Link stilleri */
@@ -116,6 +137,8 @@
     color: black;
     text-decoration: underline;
     transition: background-color 0.2s, color 0.2s;
+    font-family: inherit;
+    text-transform: none;
 }
 
 .legal-content a:hover {
@@ -132,6 +155,7 @@
     border-radius: 0;
     margin-bottom: 2rem;
     border-left: 4px solid black;
+    font-family: inherit;
 }
 
 .agreement-intro {
@@ -140,6 +164,7 @@
     padding: 1.5rem;
     border-radius: 0;
     margin-bottom: 2rem;
+    font-family: inherit;
 }
 
 .agreement-intro strong {
@@ -152,12 +177,14 @@
     border: 1px solid black;
     border-radius: 0;
     margin: 1rem 0;
+    font-family: inherit;
 }
 
 .definitions p {
     margin-bottom: 0.75rem;
     padding-left: 1.5rem;
     position: relative;
+    font-family: inherit;
 }
 
 .definitions p:before {
@@ -171,29 +198,34 @@
 .detailed-list {
     margin-left: 1.5rem;
     margin-bottom: 1.5rem;
+    font-family: inherit;
 }
 
 .detailed-list li {
     margin-bottom: 1rem;
     line-height: 1.6;
+    font-family: inherit;
 }
 
 .detailed-list strong {
     color: black;
     display: inline-block;
     min-width: 150px;
+    font-family: inherit;
 }
 
 .data-table {
     overflow-x: auto;
     margin: 1.5rem 0;
     border: 1px solid black;
+    font-family: inherit;
 }
 
 .data-table table {
     width: 100%;
     border-collapse: collapse;
     margin: 0;
+    font-family: inherit;
 }
 
 .data-table th {
@@ -203,6 +235,8 @@
     text-align: left;
     font-weight: 600;
     border: 1px solid black;
+    font-family: inherit;
+    text-transform: none;
 }
 
 .data-table td {
@@ -210,6 +244,8 @@
     border: 1px solid black;
     vertical-align: top;
     color: black;
+    font-family: inherit;
+    text-transform: none;
 }
 
 .data-table tr:nth-child(even) {
@@ -223,6 +259,7 @@
     border-radius: 0;
     margin-top: 1rem;
     font-size: 0.95rem;
+    font-family: inherit;
 }
 
 .cookie-types {
@@ -238,6 +275,7 @@
     border-radius: 0;
     padding: 1.25rem;
     box-shadow: none;
+    font-family: inherit;
 }
 
 .cookie-type h3 {
@@ -246,6 +284,8 @@
     margin-bottom: 0.75rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid black;
+    font-family: inherit;
+    text-transform: none;
 }
 
 .rights-list {
@@ -259,6 +299,7 @@
     padding-left: 1.5rem;
     position: relative;
     color: black;
+    font-family: inherit;
 }
 
 .rights-list li:before {
@@ -275,6 +316,7 @@
     border: 1px solid black;
     border-radius: 0;
     margin-top: 2rem;
+    font-family: inherit;
 }
 
 .contact-details,
@@ -284,6 +326,7 @@
     border: 1px solid black;
     border-radius: 0;
     margin-top: 1rem;
+    font-family: inherit;
 }
 
 .contact-details p,
@@ -292,16 +335,19 @@
     display: flex;
     align-items: center;
     color: black;
+    font-family: inherit;
 }
 
 .contact-details strong {
     min-width: 120px;
     color: black;
+    font-family: inherit;
 }
 
 .company-details strong {
     min-width: 180px;
     color: black;
+    font-family: inherit;
 }
 
 .important-note {
@@ -311,10 +357,12 @@
     border-radius: 0;
     border-left: 4px solid black;
     margin: 2rem 0;
+    font-family: inherit;
 }
 
 .important-note h2 {
     color: black;
+    font-family: inherit;
 }
 
 .legal-footer {
@@ -324,6 +372,7 @@
     font-size: 0.9rem;
     color: black;
     text-align: center;
+    font-family: inherit;
 }
 
 .signature {
@@ -333,6 +382,259 @@
     text-align: right;
     font-style: italic;
     color: black;
+    font-family: inherit;
+}
+
+/* Shipping Policy sayfası için özel stiller */
+.shipping-policy-page .legal-content {
+    font-family: inherit;
+}
+
+.shipping-policy-page .legal-content h2 {
+    position: relative;
+    color: black;
+    font-family: inherit;
+    text-transform: none;
+}
+
+.shipping-policy-page .legal-content h3 {
+    position: relative;
+    color: black;
+    font-family: inherit;
+    text-transform: none;
+}
+
+.shipping-summary {
+    background: white;
+    border: 2px solid black;
+    color: black;
+    padding: 2rem;
+    border-radius: 0;
+    margin-bottom: 2rem;
+    font-family: inherit;
+}
+
+.summary-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0;
+    color: black;
+    border: 1px solid black;
+    font-family: inherit;
+}
+
+.summary-card h3 {
+    color: black;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    font-family: inherit;
+    text-transform: none;
+}
+
+.summary-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.summary-card li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+    font-family: inherit;
+}
+
+.summary-card li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: black;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.shipping-partner {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    background: white;
+    border: 1px solid black;
+    padding: 1.5rem;
+    border-radius: 0;
+    margin: 1.5rem 0;
+    font-family: inherit;
+}
+
+.partner-logo {
+    font-size: 2.5rem;
+    background: black;
+    color: white;
+    width: 70px;
+    height: 70px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-family: inherit;
+}
+
+.partner-info h3 {
+    color: black;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    font-family: inherit;
+    text-transform: none;
+}
+
+.shipping-fees-table {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    font-family: inherit;
+}
+
+.shipping-fees-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid black;
+    font-family: inherit;
+}
+
+.shipping-fees-table th {
+    background: black;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid black;
+    font-family: inherit;
+    text-transform: none;
+}
+
+.shipping-fees-table td {
+    padding: 12px;
+    border: 1px solid black;
+    vertical-align: middle;
+    color: black;
+    font-family: inherit;
+}
+
+.fee-badge {
+    background: black;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 0;
+    font-weight: bold;
+    display: inline-block;
+    border: 1px solid black;
+    font-family: inherit;
+}
+
+.free-badge {
+    background: white;
+    color: black;
+    padding: 4px 12px;
+    border-radius: 0;
+    font-weight: bold;
+    display: inline-block;
+    border: 1px solid black;
+    font-family: inherit;
+}
+
+.delivery-timelines {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.timeline-card {
+    background: white;
+    border: 1px solid black;
+    border-radius: 0;
+    padding: 1.25rem;
+    font-family: inherit;
+}
+
+.timeline-card h4 {
+    color: black;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid black;
+    font-weight: 600;
+    font-family: inherit;
+    text-transform: none;
+}
+
+.return-shipping-info {
+    background: white;
+    border: 1px solid black;
+    padding: 1.5rem;
+    border-radius: 0;
+    margin: 1.5rem 0;
+    font-family: inherit;
+}
+
+.important-notice {
+    background: white;
+    border: 2px solid black;
+    padding: 1rem;
+    border-radius: 0;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+    position: relative;
+    font-family: inherit;
+}
+
+.important-notice:before {
+    content: "❗";
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+}
+
+.important-notice p {
+    margin-left: 2rem;
+    font-family: inherit;
+}
+
+.important-notice strong {
+    color: black;
+    font-weight: 700;
+    font-family: inherit;
+}
+
+/* Link renkleri */
+.shipping-policy-page .legal-content a {
+    color: black;
+    text-decoration: underline;
+    font-weight: 600;
+    font-family: inherit;
+}
+
+.shipping-policy-page .legal-content a:hover {
+    text-decoration: none;
+}
+
+/* Kart gölgelerini kaldır */
+.shipping-fees-table table,
+.timeline-card,
+.summary-card,
+.shipping-partner,
+.return-shipping-info {
+    box-shadow: none;
+}
+
+/* Border stilleri */
+.shipping-policy-page .legal-content section {
+    border-bottom: 1px solid black;
+    padding-bottom: 1.5rem;
+}
+
+.shipping-policy-page .legal-content section:last-of-type {
+    border-bottom: none;
 }
 
 /* Bölümlere özel stiller */
@@ -411,4 +713,51 @@
     .cookie-types {
         grid-template-columns: 1fr;
     }
+
+    /* Shipping Policy responsive */
+    .shipping-partner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .partner-logo {
+        margin: 0 auto;
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+
+    .delivery-timelines {
+        grid-template-columns: 1fr;
+    }
+
+    .shipping-policy-page .legal-content h2 {
+        font-size: 1.3rem;
+    }
+
+    .shipping-policy-page .legal-content h3 {
+        font-size: 1.1rem;
+    }
+
+    .shipping-summary {
+        padding: 1.5rem;
+    }
+
+    .important-notice:before {
+        left: 0.5rem;
+    }
+
+    .important-notice p {
+        margin-left: 1.5rem;
+    }
+}
+
+/* Tüm text-transform: none eklemeleri ve font-family: inherit eklemeleri
+   Bebas Neue fontu ve büyük harf sorununu çözer */
+
+/* Ekstra: Eğer hala büyük harf sorunu varsa */
+.legal-content * {
+    font-variant: normal !important;
+    text-transform: none !important;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
 }

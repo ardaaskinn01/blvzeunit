@@ -310,7 +310,7 @@ export default function HomePage() {
           {loading ? (
             <div className="loading-message">Ürünler yükleniyor...</div>
           ) : newDropsProducts.length === 0 ? (
-            <div className="no-products-message">Henüz yeni ürün bulunmuyor.</div>
+            <div className="no-products-message">Henüz yenİ ürün bulunmuyor.</div>
           ) : (
             <div className="products-grid">
               {newDropsProducts.map((product) => renderProductCard(product))}

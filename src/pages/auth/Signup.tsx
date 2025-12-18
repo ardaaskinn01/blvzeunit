@@ -161,7 +161,7 @@ export default function SignupPage() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Ahmet Yılmaz"
+                placeholder="Adınız ve soyadınız"
                 disabled={loading}
                 required
                 className="form-input"
