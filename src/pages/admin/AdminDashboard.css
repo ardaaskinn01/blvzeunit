@@ -3,6 +3,7 @@
   background: #ffffff;
   color: #000000;
   padding: 3rem 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .admin-container {
@@ -40,7 +41,7 @@
   margin-bottom: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .stat-number {
@@ -48,7 +49,7 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .admin-error {
@@ -110,7 +111,7 @@
   color: #000000;
   font-size: 1.3rem;
   font-weight: 700;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   letter-spacing: 1px;
   margin: 0;
 }
@@ -173,7 +174,7 @@
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .admin-table td {
@@ -240,7 +241,7 @@
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .users-table td {

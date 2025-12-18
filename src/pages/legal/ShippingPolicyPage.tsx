@@ -9,18 +9,13 @@ export default function ShippingPolicyPage() {
 
 
                 <section>
-                    <h2>1. KARGO FIRMASI VE ANLAŞMALARIMIZ</h2>
+                    <h2>1. KARGO FİRMASİ VE ANLAŞMALARIMIZ</h2>
                     <div className="shipping-partner">
                         <div className="partner-info">
                             <h3>DHL Kargo</h3>
                             <p>
-                                BLVZEUNIT olarak, güvenilir ve hızlı teslimat sağlamak için <strong>DHL Kargo</strong>
-                                ile resmi anlaşma yapmış bulunmaktayız. Tüm gönderilerimiz DHL Kargo güvencesiyle taşınmaktadır.
+                                BLVZEUNIT olarak, güvenilir ve hızlı teslimat sağlamak için <strong>DHL Kargo</strong> ile resmi anlaşma yapmış bulunmaktayız. Tüm gönderilerimiz DHL Kargo güvencesiyle taşınmaktadır.
                             </p>
-                            <ul>
-                                <li>Profesyonel teslimat hizmeti</li>
-                                <li>Takip numarası ile anlık takip</li>
-                            </ul>
                         </div>
                     </div>
                 </section>
@@ -192,7 +187,7 @@ export default function ShippingPolicyPage() {
                             <li><strong>Yanıt Süresi:</strong> 24 saat içinde</li>
                         </ul>
                         <p>
-                            <strong>DHL Kargo Müşteri Hizmetleri:</strong> 444 00 40
+                            <li>DHL Kargo Müşteri Hizmetleri: 444 00 40 </li>
                         </p>
                     </div>
                 </section>

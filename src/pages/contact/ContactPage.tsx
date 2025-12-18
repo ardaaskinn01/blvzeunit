@@ -77,7 +77,7 @@ export default function ContactPage() {
         </div>
 
         <div className="contact-container">
-          <h1>BİZE ULAŞIN</h1>
+          <h2>BİZE ULAŞIN</h2>
           <p>Sorularınız için aşağıdaki formu doldurabilirsiniz.</p>
 
           <form onSubmit={handleSubmit} className="contact-form">

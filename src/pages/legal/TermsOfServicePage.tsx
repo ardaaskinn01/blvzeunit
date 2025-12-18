@@ -85,9 +85,9 @@ export default function TermsOfServicePage() {
 
                         <h3>5.2. Ödeme Seçenekleri</h3>
                         <ul>
-                            <li>Kredi Kartı (3D Secure ile güvenli ödeme)</li>
-                            <li>Banka Havalesi/Eft</li>
-                            <li>Kapıda Ödeme (Nakit veya Kredi Kartı)</li>
+                            <li>Kredi Kartı</li>
+                            <li>Banka Kartı</li>
+                            <li>Ön Ödemeli Kart</li>
                         </ul>
 
                         <h3>5.3. Ödeme Kuralları</h3>
@@ -228,6 +228,7 @@ export default function TermsOfServicePage() {
                         <p><strong>Şirket Sahibi:</strong> HÜSEYİN CEYLAN</p>
                         <p><strong>Adres:</strong> 4562 Sokak No:31 Kat:2 Daire:2 Sevgi Mahallesi Karabağlar/İzmir</p>
                         <p><strong>E-posta:</strong> <a href="mailto:blvzeunit@gmail.com">blvzeunit@gmail.com</a></p>
+                        <p><strong>ETBİS Kayıt No:</strong> 6152243016</p>
                     </div>
                 </section>
 

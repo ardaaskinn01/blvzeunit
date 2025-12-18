@@ -45,6 +45,7 @@ const styles = {
         border: '1px solid #ddd',
         borderRadius: '6px',
         fontSize: '1rem',
+        fontFamily: 'Inter, system-ui, -apple-system, sans-serif', // Override global font
     } as React.CSSProperties,
     select: {
         width: '100%',
@@ -53,6 +54,7 @@ const styles = {
         borderRadius: '6px',
         fontSize: '1rem',
         backgroundColor: 'white',
+        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
     } as React.CSSProperties,
     summarySection: {
         background: '#f9f9f9',
@@ -300,7 +302,7 @@ export default function CheckoutPage() {
 
             {/* iyzico Integration Notice */}
             <div style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background: 'linear-gradient(135deg, #838383ff 0%, #151515ff 100%)',
                 color: '#fff',
                 padding: '1.25rem 1.5rem',
                 borderRadius: '12px',
@@ -308,16 +310,15 @@ export default function CheckoutPage() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '1rem',
-                boxShadow: '0 4px 12px rgba(102, 126, 234, 0.2)'
+                boxShadow: '0 4px 12px rgba(53, 53, 53, 0.2)'
             }}>
-                <div style={{ fontSize: '2rem' }}>🔒</div>
                 <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '0.25rem' }}>
-                        Güvenli Ödeme - iyzico ile Korunuyorsunuz
+                        Güvenli Ödeme - İyzİco ile Korunuyorsunuz
                     </div>
                     <div style={{ fontSize: '0.9rem', opacity: 0.95 }}>
-                        Tüm ödemeleriniz iyzico'nun güvenli ödeme altyapısı ile 256-bit SSL şifrelemesi altında işlenir.
-                        Kredi kartı bilgileriniz hiçbir zaman sistemimizde saklanmaz.
+                        Tüm ödemelerİnİz İyzİco'nun güvenli ödeme altyapısı ile 256-bit SSL şifrelemesİS altında İşlenİr.
+                        Kredİ kartı Bİlgİlerİnİz hİçbİr zaman sİstemİmİzde saklanmaz.
                     </div>
                 </div>
                 <img
@@ -383,7 +384,7 @@ export default function CheckoutPage() {
                             <input
                                 required
                                 name="city"
-                                placeholder="Örn: İstanbul"
+                                placeholder="İliniz"
                                 style={styles.input}
                                 value={formData.city}
                                 onChange={handleInputChange}
@@ -396,7 +397,7 @@ export default function CheckoutPage() {
                             <input
                                 required
                                 name="district"
-                                placeholder="Örn: Kadıköy"
+                                placeholder="İlçeniz"
                                 style={styles.input}
                                 value={formData.district}
                                 onChange={handleInputChange}
@@ -411,7 +412,7 @@ export default function CheckoutPage() {
                             <input
                                 required
                                 name="zipCode"
-                                placeholder="34000"
+                                placeholder="Posta kodunuz"
                                 style={styles.input}
                                 value={formData.zipCode}
                                 onChange={handleInputChange}
@@ -449,14 +450,14 @@ export default function CheckoutPage() {
                                     onClick={(e) => { e.preventDefault(); setShowPreliminary(true); }}
                                     style={{ color: '#0066cc', textDecoration: 'underline', fontWeight: 500 }}
                                 >
-                                    Ön Bilgilendirme Formu
+                                    Ön Bİlgİlendİrme Formu
                                 </span>
                                 'nu ve{' '}
                                 <span
                                     onClick={(e) => { e.preventDefault(); setShowTerms(true); }}
                                     style={{ color: '#0066cc', textDecoration: 'underline', fontWeight: 500 }}
                                 >
-                                    Mesafeli Satış Sözleşmesi
+                                    Mesafelİ Satış Sözleşmesİ
                                 </span>
                                 'ni okudum, onaylıyorum.*
                             </label>
@@ -542,7 +543,7 @@ export default function CheckoutPage() {
                     </div>
 
                     <p style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#666', textAlign: 'center' }}>
-                        Ödeme işleminiz iyzico güvencesi ile yapılacaktır.
+                        Ödeme İşlemİnİz İyzİco güvencesi ile yapılacaktır.
                     </p>
                 </div>
             </form>

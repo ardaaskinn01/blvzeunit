@@ -60,15 +60,17 @@ const styles = {
 };
 
 export default function Modal({ isOpen, onClose, title, children }: ModalProps) {
-    if (!isOpen) return null;
-
     // Prevent scrolling on body when modal is open
     React.useEffect(() => {
-        document.body.style.overflow = 'hidden';
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        }
         return () => {
             document.body.style.overflow = 'unset';
         };
-    }, []);
+    }, [isOpen]);
+
+    if (!isOpen) return null;
 
     return (
         <div style={styles.overlay} onClick={onClose}>

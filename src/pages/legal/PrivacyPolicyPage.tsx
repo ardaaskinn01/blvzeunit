@@ -23,6 +23,7 @@ export default function PrivacyPolicyPage() {
                         <strong>Adres:</strong> 4562 Sokak No:31 Kat:2 Daire:2 Sevgi Mahallesi Karabağlar/İzmir
                         <br />
                         <strong>E-posta:</strong> <a href="mailto:blvzeunit@gmail.com">blvzeunit@gmail.com</a>
+                        <strong>ETBİS Kayıt No:</strong> 6152243016
                     </p>
                 </section>
 
@@ -52,12 +53,6 @@ export default function PrivacyPolicyPage() {
                                     <td>Sipariş formu, iletişim formu</td>
                                     <td>Sipariş teslimatı, müşteri iletişimi</td>
                                     <td>KVKK md. 5/2-ç, açık rıza</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Teknik Veriler</strong><br />(IP adresi, tarayıcı bilgisi, çerezler)</td>
-                                    <td>Otomatik olarak toplanır</td>
-                                    <td>Sistem güvenliği, site analizi, kullanıcı deneyimi</td>
-                                    <td>KVKK md. 5/2-f</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Kullanım Verileri</strong><br />(Sipariş geçmişi)</td>
@@ -99,11 +94,11 @@ export default function PrivacyPolicyPage() {
                     </p>
                     <ul>
                         <li>
-                            <strong>Hizmet Sağlayıcılar:</strong>
+                            <strong>Hizmet Sağlayıcılar: </strong>
                             Kargo firması, ödeme işlemcileri ile sınırlı veri paylaşımı
                         </li>
                         <li>
-                            <strong>Yasal Zorunluluklar:</strong>
+                            <strong>Yasal Zorunluluklar: </strong>
                             Mahkeme kararı, kanuni düzenlemeler gereği resmi makamlara
                         </li>
                     </ul>

@@ -31,12 +31,12 @@
 }
 
 .about-section h2 {
-  font-family: 'Anton', 'Impact', sans-serif;
+  font-family: 'Bebas Neue', sans-serif;
   font-size: 3.5rem;
   text-transform: uppercase;
   color: var(--color-black);
   line-height: 0.9;
-  letter-spacing: -1px;
+  letter-spacing: 1px;
   margin-bottom: 1rem;
 }
 
@@ -59,6 +59,7 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
+
 /* --- Right Side: Form Container --- */
 .contact-container {
   /* Keep original colors as requested */
@@ -71,15 +72,14 @@
   /* Brutalist sharp corners */
 }
 
-.contact-container h1 {
-  color: var(--color-black);
-  margin-bottom: 0.5rem;
-  font-size: 2rem;
-  text-align: left;
-  font-weight: 800;
+.contact-container h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
   text-transform: uppercase;
-  font-family: 'Anton', sans-serif;
+  color: var(--color-black);
+  line-height: 0.9;
   letter-spacing: 1px;
+  margin-bottom: 1rem;
 }
 
 .contact-container>p {
@@ -118,11 +118,15 @@
   border: 2px solid var(--color-black);
   /* Bolder border */
   border-radius: 0;
-  font-family: inherit;
+  font-family: 'Segoe UI', sans-serif;
   font-size: 1rem;
   background: var(--color-white);
   color: var(--color-black);
   transition: all 0.2s ease;
+}
+
+.form-group input[type="email"] {
+  text-transform: lowercase !important;
 }
 
 .form-group input::placeholder,

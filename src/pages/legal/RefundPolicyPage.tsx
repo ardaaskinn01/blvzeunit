@@ -58,7 +58,7 @@ export default function RefundPolicyPage() {
                 </section>
 
                 <section>
-                    <h2>7. Hatalı veya Hasarlı Ürünler</h2>
+                    <h2>6. Hatalı veya Hasarlı Ürünler</h2>
                     <p>
                         Ürün hatalı, hasarlı veya yanlış gönderilmişse, lütfen 48 saat içinde <a href="mailto:blvzeunit@gmail.com">blvzeunit@gmail.com</a> adresine
                         ürün fotoğrafları ve açıklamasıyla birlikte ulaşın. Bu durumda kargo ücreti tarafımıza aittir ve ücretsiz yeni ürün gönderimi veya tam iade yapılır.
@@ -66,7 +66,7 @@ export default function RefundPolicyPage() {
                 </section>
 
                 <section>
-                    <h2>8. İletişim</h2>
+                    <h2>7. İletişim</h2>
                     <p>
                         İade ile ilgili tüm sorularınız için:
                     </p>

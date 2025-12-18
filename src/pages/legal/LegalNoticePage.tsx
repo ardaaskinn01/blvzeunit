@@ -23,6 +23,12 @@ export default function LegalNoticePage() {
                         <p><strong>Vergi Dairesi:</strong> Karabağlar Vergi Dairesi Müdürlüğü</p>
                         {/* VKN/TCKN yasal unvanın kim olduğunu belirtir */}
                         <p><strong>Vergi Numarası:</strong> 2080909268</p>
+                        <p>
+                            <strong>ETBİS Kayıt No:</strong> 6152243016
+                            <span style={{ fontSize: '0.9rem', marginLeft: '5px' }}>
+                                (<a href="https://etbis.ticaret.gov.tr/tr/Home/SearchSite?url=blvzeunit" target="_blank" rel="noopener noreferrer">Sorgula</a>)
+                            </span>
+                        </p>
                     </div>
                 </section>
 
@@ -52,6 +58,8 @@ export default function LegalNoticePage() {
                         Bu politika, aynı zamanda Çerez Politikamızı ve 6698 sayılı KVKK yükümlülüklerimizi de kapsamaktadır.
                     </p>
                 </section>
+
+
 
                 {/* ⚠️ Şart ve Koşullar (Link zorunludur) */}
                 <section>

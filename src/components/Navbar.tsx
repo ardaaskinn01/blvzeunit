@@ -133,7 +133,7 @@ export default function Navbar() {
               className="navbar-search-input"
             />
             <button type="submit" className="navbar-search-btn">
-              🔍
+              🔍︎
             </button>
           </form>
 

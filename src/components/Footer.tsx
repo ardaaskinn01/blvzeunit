@@ -5,92 +5,78 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-container">
-        {/* Footer Content */}
         <div className="footer-content">
-          {/* About Section */}
           <div className="footer-section">
-            <h3>BLVZEUNIT</h3>
+            <h3 className="bebas-font">BLVZEUNIT</h3>
             <p>Kaliteli giyim ürünleriyle tarzınızı yansıtın. Modern tasarım, uygun fiyatlar ve hızlı teslimat.</p>
             <div className="social-links">
-              <a href="https://www.instagram.com/blvzeunit/" target="_blank" rel="noopener noreferrer">Instagram</a>
-              <a href="https://www.facebook.com/profile.php?id=61584021405184&ref=pl_edit_xav_ig_profile_page_web" target="_blank" rel="noopener noreferrer">Facebook</a>
+              <a href="https://www.instagram.com/blvzeunit/" target="_blank" rel="noopener noreferrer" className="bebas-font">Instagram</a>
+              <a href="https://www.facebook.com/profile.php?id=61584021405184&ref=pl_edit_xav_ig_profile_page_web" target="_blank" rel="noopener noreferrer" className="bebas-font">Facebook</a>
             </div>
           </div>
 
-          {/* Quick Links */}
           <div className="footer-section">
-            <h4>HIZLI LİNKler</h4>
+            <h4 className="bebas-font">HIZLI LİNKLER</h4>
             <ul>
-              <li><Link to="/">Anasayfa</Link></li>
-              <li><Link to="/categories">Kategoriler</Link></li>
-              <li><Link to="/categories/all">Ürünler</Link></li>
-              <li><Link to="/about">Hakkımızda</Link></li>
-              <li><Link to="/contact">İletişim</Link></li>
+              <li><Link to="/" className="bebas-font">Anasayfa</Link></li>
+              <li><Link to="/categories" className="bebas-font">Kategoriler</Link></li>
+              <li><Link to="/categories/all" className="bebas-font">Ürünler</Link></li>
+              <li><Link to="/about" className="bebas-font">Hakkımızda</Link></li>
+              <li><Link to="/contact" className="bebas-font">İletişim</Link></li>
             </ul>
           </div>
 
-          {/* Policies */}
           <div className="footer-section">
-            <h4>POLİTİKALAR</h4>
+            <h4 className="bebas-font">POLİTİKALAR</h4>
             <ul>
-              <li><Link to="/privacy-policy">Gizlilik Politikası</Link></li>
-              <li><Link to="/refund-policy">Para İade Politikası</Link></li>
-              <li><Link to="/shipping-policy">Kargo Politikası</Link></li>
-              <li><Link to="/terms-of-service">Hizmet Şartları</Link></li>
-              <li><Link to="/legal-notice">Yasal Bildirim</Link></li>
+              <li><Link to="/privacy-policy" className="bebas-font">Gizlilik Politikası</Link></li>
+              <li><Link to="/refund-policy" className="bebas-font">Para İade Politikası</Link></li>
+              <li><Link to="/shipping-policy" className="bebas-font">Kargo Politikası</Link></li>
+              <li><Link to="/terms-of-service" className="bebas-font">Hizmet Şartları</Link></li>
+              <li><Link to="/legal-notice" className="bebas-font">Yasal Bildirim</Link></li>
             </ul>
           </div>
 
-          {/* Contact */}
           <div className="footer-section">
-            <h4>İLETİŞİM</h4>
+            <h4 className="bebas-font">İLETİŞİM</h4>
             <p>Email: blvzeunit@gmail.com</p>
             <p>Adres: 4562 Sokak No:31 Kat:2 Daire:2 Sevgi Mahallesi Karabağlar/İzmir</p>
           </div>
         </div>
 
-        {/* Divider */}
         <div className="footer-divider"></div>
 
-        {/* Payment Logos Section */}
-        <div className="footer-payment">
-          <h4 style={{
-            textAlign: 'center',
-            marginBottom: '1.5rem',
-            fontSize: '1rem',
-            fontWeight: '700',
-            letterSpacing: '0.5px',
-            color: '#ffffff'
-          }}>
-            GÜVENLİ ÖDEME
-          </h4>
-          <div className="payment-logos">
-            <img
-              src="/iyzico-logo-pack/checkout_iyzico_ile_ode/TR/Tr_White/iyzico_ile_ode_white.svg"
-              alt="iyzico ile Öde"
-              className="iyzico-logo"
-            />
-            <img
-              src="/iyzico-logo-pack/footer_iyzico_ile_ode/White/logo_band_white.svg"
-              alt="Visa, Mastercard ve diğer ödeme yöntemleri"
-              className="payment-band-logo"
-            />
+        <div className="footer-trust-section">
+          <div className="trust-logos">
+            {/* iyzico Logo Band */}
+            <div className="footer-payment">
+              <img
+                src="/iyzico-logo-pack/footer_iyzico_ile_ode/White/logo_band_white.svg"
+                alt="Visa, Mastercard ve diğer ödeme yöntemleri"
+                className="payment-band-logo"
+              />
+            </div>
+
+            {/* ETBIS Logo & Link */}
+            <div className="footer-etbis">
+              <a
+                href="https://etbis.ticaret.gov.tr/tr/Home/SearchSite?url=blvzeunit"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="etbis-link"
+              >
+                <img src="/logo-etbis.png" alt="ETBİS" className="etbis-logo" />
+              </a>
+            </div>
           </div>
-          <p style={{
-            textAlign: 'center',
-            marginTop: '1rem',
-            fontSize: '0.85rem',
-            color: '#b0b0b0',
-            maxWidth: '600px',
-            margin: '1rem auto 0'
-          }}>
-            Tüm ödemeleriniz iyzico güvencesi altında 256-bit SSL şifrelemesi ile korunmaktadır.
+
+          <p className="trust-text">
+            Tüm ödemeleriniz iyzico güvencesi altında 256-bit SSL şifrelemesi ile korunmaktadır. Bu site ETBİS'e kayıtlıdır.
           </p>
         </div>
 
-        {/* Footer Bottom */}
         <div className="footer-bottom">
-          <p>&copy; 2025 BLVZEUNIT. Tüm hakları saklıdır.</p>
+          <p className="bebas-font">&copy; 2025 BLVZEUNIT. TÜM HAKLARI SAKLIDIR.</p>
         </div>
       </div>
     </footer>
