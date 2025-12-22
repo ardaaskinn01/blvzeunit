@@ -26,7 +26,6 @@ export default function PaymentCallbackPage() {
 
         const token = searchParams.get('token');
         const statusParam = searchParams.get('status');
-        const paymentIdParam = searchParams.get('paymentId');
         const messageParam = searchParams.get('message');
 
         // Yeni Akış (Status var)
