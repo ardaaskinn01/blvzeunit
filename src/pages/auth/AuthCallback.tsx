@@ -15,7 +15,7 @@ export default function AuthCallbackPage() {
       try {
         // 1. Önce mevcut session'ı kontrol et (Bu en önemli adım oldu)
         const { data: { session: currentSession } } = await supabase.auth.getSession();
-        
+
         // Oturum ZATEN varsa (AuthContext tarafından ayarlanmış demektir), ana sayfaya yönlendir.
         if (currentSession) {
           console.log('✅ Session already exists, redirecting to /');
@@ -26,7 +26,7 @@ export default function AuthCallbackPage() {
         // 2. URL parametrelerini kontrol et
         const searchParams = new URLSearchParams(window.location.search);
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        
+
         const code = searchParams.get('code');
         const error = searchParams.get('error') || hashParams.get('error');
         const accessToken = hashParams.get('access_token');
@@ -42,9 +42,9 @@ export default function AuthCallbackPage() {
         if (code) {
           console.log('🔄 Processing PKCE flow');
           const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-          
+
           if (exchangeError) throw exchangeError;
-          
+
           console.log('✅ PKCE successful, redirecting');
           navigate('/', { replace: true }); // Yönlendirmeyi yap
           return;
@@ -57,9 +57,9 @@ export default function AuthCallbackPage() {
             access_token: accessToken,
             refresh_token: hashParams.get('refresh_token') || '',
           });
-          
+
           if (sessionError) throw sessionError;
-          
+
           console.log('✅ Hash flow successful, redirecting');
           navigate('/', { replace: true }); // Yönlendirmeyi yap
           return;
@@ -67,14 +67,14 @@ export default function AuthCallbackPage() {
 
         // 6. Hiçbir parametre yoksa - Login'e yönlendir
         console.warn('⚠️ No auth parameters found, redirecting to login');
-        navigate('/login');
+        navigate('/');
 
       } catch (error: any) {
         console.error('🔥 AuthCallback error:', error);
-        
+
         let errorMessage = 'auth_failed';
         if (error.message?.includes('invalid_grant')) errorMessage = 'invalid_grant';
-        
+
         navigate(`/login?error=${errorMessage}`);
       }
     };

@@ -87,14 +87,7 @@ function AppContent() {
         <Route path="/categories/:slug" element={<CategoryProductsPage />} />
         <Route path="/products/:slug" element={<ProductPage />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route
-          path="/account"
-          element={
-            <ProtectedRoute>
-              <AccountPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/account" element={<AccountPage />} />
         <Route
           path="/admin/*"
           element={

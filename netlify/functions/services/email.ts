@@ -1,4 +1,4 @@
-import { Resend } from 'resend';
+﻿import { Resend } from 'resend';
 
 export class EmailService {
     private resend: Resend;
@@ -16,12 +16,14 @@ export class EmailService {
         }
 
         try {
-            const { first_name, last_name, email } = order.contact_info;
+            // contact_info sadece email ve phone içeriyor. İsim shipping_address içinde.
+            const { email } = order.contact_info;
+            const fullName = order.shipping_address?.full_name || 'Değerli Müşterimiz';
 
             const htmlContent = `
         <div style="font-family: Arial, sans-serif; color: #333;">
           <h1>Siparişiniz Alındı! 🚀</h1>
-          <p>Merhaba ${first_name} ${last_name},</p>
+          <p>Merhaba ${fullName},</p>
           <p>Siparişiniz başarıyla alındı ve hazırlanmaya başlandı.</p>
           
           <div style="background: #f4f4f4; padding: 15px; margin: 20px 0;">
@@ -35,6 +37,10 @@ export class EmailService {
             ${order.shipping_address.address}<br>
             ${order.shipping_address.city} / ${order.shipping_address.country || 'Turkey'}
           </p>
+
+          <div style="background: #e7f3ff; padding: 15px; margin: 20px 0; border-left: 4px solid #007bff; border-radius: 4px;">
+            <p style="margin: 0;"><strong> Bilgilendirme:</strong> Siparişiniz kargoya verildiğinde, kargo takip numaranızı içeren ayrı bir e-posta alacaksınız.</p>
+          </div>
 
           <p>Bizi tercih ettiğiniz için teşekkür ederiz.</p>
           <p><em>BLVZEUNIT Ekibi</em></p>
@@ -64,7 +70,9 @@ export class EmailService {
         }
 
         try {
-            const { first_name, last_name, email } = order.contact_info;
+            // contact_info sadece email ve phone içeriyor. İsim shipping_address içinde.
+            const { email } = order.contact_info;
+            const fullName = order.shipping_address?.full_name || 'Değerli Müşterimiz';
 
             const trackingLinkHtml = trackingUrl
                 ? `<p>Kargonuzu takip etmek için <a href="${trackingUrl}" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">buraya tıklayın</a>.</p>`
@@ -73,7 +81,7 @@ export class EmailService {
             const htmlContent = `
         <div style="font-family: Arial, sans-serif; color: #333;">
           <h1>Siparişiniz Kargoya Teslim Edildi! 📦</h1>
-          <p>Merhaba ${first_name} ${last_name},</p>
+          <p>Merhaba ${fullName},</p>
           <p>Siparişiniz (#${order.id.slice(0, 8)}) hazırlanmış ve kargo firmasına teslim edilmiştir.</p>
           
           <div style="background: #f4f4f4; padding: 15px; margin: 20px 0; border-radius: 5px;">

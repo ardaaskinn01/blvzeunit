@@ -4,4 +4,15 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    // Tünel adresini buraya ekliyoruz
+    allowedHosts: ['4d8c251274e543.lhr.life'],
+    proxy: {
+      '/.netlify/functions': {
+        target: 'http://localhost:8888',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 })

@@ -90,7 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // isAdmin hesaplamasını düzelt:
   const isAdmin = React.useMemo(() => {
     // ÖNCE: Email kontrolü (bu her zaman çalışır)
-    if (user?.email === 'ardaaskindm@gmail.com') {
+    if (user?.email === 'ardaaskindm@gmail.com' || user?.email === 'ardaaskinp@hotmail.com' || user?.email === 'byhsyncyln1@gmail.com') {
       console.log('✅ Admin detected via email');
       return true;
     }
@@ -118,12 +118,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return profilePromise;
       }
 
-      // Diğer durumlar için 5 saniye timeout (2 saniye çok kısaydı)
+      // Diğer durumlar için 15 saniye timeout (5 saniyeden artırıldı)
       const timeoutPromise = new Promise<UserProfile | null>((resolve) =>
         setTimeout(() => {
-          console.warn('⏰ Profile fetch timed out (5s) - continuing without profile');
+          console.warn('⏰ Profile fetch timed out (15s) - continuing without profile');
           resolve(null);
-        }, 5000)
+        }, 15000)
       );
       return Promise.race([profilePromise, timeoutPromise]);
     };

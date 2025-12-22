@@ -53,8 +53,8 @@
 /* --- Yönetici (Admin) Uyarısı Stili --- */
 .admin-badge {
   /* Yüksek kontrastlı uyarı */
-  background: var(--color-light-gray);
-  border: 3px solid var(--color-black);
+  background: var(--color-white);
+  border: 3px solid var(--color-medium-gray);
   border-radius: 0;
   padding: 1.5rem;
   margin-bottom: 3rem;
@@ -71,8 +71,8 @@
 
 .admin-link {
   /* Buton stili */
-  background: var(--color-black);
-  color: var(--color-white);
+  background: var(--color-white);
+  color: var(--color-black);
   padding: 0.75rem 1.5rem;
   border-radius: 0;
   text-decoration: none;
@@ -86,9 +86,9 @@
 }
 
 .admin-link:hover {
-  background: var(--color-black);
+  background: var(--color-light-gray);
   transform: translate(-1px, -1px);
-  box-shadow: 5px 5px 0 var(--color-black);
+  box-shadow: 5px 5px 0 var(--color-medium-gray);
 }
 
 .info-item p.role-admin {
@@ -277,6 +277,7 @@
     transform: translateY(-2px) !important;
   }
 }
+
 /* --- Order History --- */
 .order-history {
   margin-top: 2rem;
@@ -310,6 +311,7 @@
 .order-header {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--color-light-gray);
@@ -317,9 +319,69 @@
   font-size: 1.1rem;
 }
 
+.order-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.order-date {
+  font-size: 1rem;
+  color: var(--color-medium-gray);
+}
+
+.order-number {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-black);
+  font-family: 'Roboto Mono', monospace;
+}
+
 .order-status {
   font-weight: 700;
   text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  background: var(--color-black);
+  color: var(--color-white);
+  border: 2px solid var(--color-black);
+}
+
+.status-paid {
+  background: #27ae60;
+  border-color: #27ae60;
+}
+
+.status-unpaid {
+  background: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.status-failed {
+  background: #c0392b;
+  border-color: #c0392b;
+}
+
+.shipping-address-section {
+  background: var(--color-black);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 3px solid var(--color-black);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+}
+
+.shipping-address-section strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: 'Bebas Neue', monospace;
+  font-size: 1rem;
+  color: var(--color-white);
+}
+
+.shipping-address-section p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--color-white);
 }
 
 .order-items {
@@ -366,12 +428,56 @@
 .order-footer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 2px solid var(--color-black);
   font-weight: 900;
   font-size: 1.2rem;
   font-family: 'Bebas Neue', monospace;
+}
+
+.cargo-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.cargo-info strong {
+  font-family: 'Bebas Neue', monospace;
+  color: var(--color-black);
+}
+
+.tracking-link {
+  color: var(--color-black);
+  text-decoration: none;
+  font-weight: 700;
+  border-bottom: 2px solid var(--color-black);
+  transition: all 0.2s ease;
+}
+
+.tracking-link:hover {
+  color: #27ae60;
+  border-bottom-color: #27ae60;
+}
+
+.tracking-number {
+  font-weight: 700;
+  color: var(--color-medium-gray);
+}
+
+.total-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.total-amount {
+  font-size: 1.5rem;
+  color: var(--color-black);
 }
 
 .empty-orders {

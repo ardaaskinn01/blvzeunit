@@ -29,7 +29,7 @@ export default function AccountPage() {
         <div className="account-container" style={{ textAlign: 'center', padding: '50px' }}>
           <h2>Giriş Yapmanız Gerekiyor</h2>
           <button
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/')}
             className="logout-btn"
             style={{ marginTop: '20px' }}
           >
@@ -55,22 +55,22 @@ export default function AccountPage() {
 
       console.log('✅ Logout successful, redirecting...');
 
-      // 3. Login sayfasına yönlendir
+      // 3. Ana sayfaya yönlendir
       // React Router ve AuthContext zaten state'leri temizliyor, reload gereksiz
-      navigate('/login', { replace: true });
+      navigate('/', { replace: true });
 
     } catch (error: any) {
       console.error('❌ Logout failed:', error);
 
-      // Hata olsa bile login sayfasına git
-      console.log('⚠️ Force redirecting to login despite error');
+      // Hata olsa bile ana sayfaya git
+      console.log('⚠️ Force redirecting to home despite error');
 
       // State'leri temizle
       localStorage.removeItem('supabase.auth.token');
       localStorage.removeItem('sb-wsrtrnvfzuarpswkrlgz-auth-token');
 
-      // Login sayfasına yönlendir
-      window.location.href = '/login';
+      // Ana sayfaya yönlendir
+      window.location.href = '/';
     }
   };
 

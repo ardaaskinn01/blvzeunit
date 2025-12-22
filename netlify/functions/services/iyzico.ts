@@ -30,13 +30,13 @@ export class IyzicoService {
                     id: order.user_id,
                     name: order.contact_info.first_name || 'Misafir',
                     surname: order.contact_info.last_name || 'Kullanıcı',
-                    gsmNumber: order.contact_info.phone || '+905555555555',
+                    gsmNumber: order.contact_info.phone,
                     email: order.contact_info.email,
                     identityNumber: '11111111111',
                     lastLoginDate: '2015-10-05 12:43:35',
-                    registrationAddress: order.shipping_address.address_line1,
+                    registrationAddress: order.shipping_address.address,
                     registrationDate: '2013-04-21 15:12:09',
-                    ip: '85.85.85.85',
+                    ip: order.ip || '85.85.85.85',
                     city: order.shipping_address.city,
                     country: order.shipping_address.country || 'Turkey',
                     zipCode: order.shipping_address.zip_code || '34732'
@@ -45,14 +45,14 @@ export class IyzicoService {
                     contactName: `${order.contact_info.first_name} ${order.contact_info.last_name}`,
                     city: order.shipping_address.city,
                     country: order.shipping_address.country || 'Turkey',
-                    address: order.shipping_address.address_line1,
+                    address: order.shipping_address.address,
                     zipCode: order.shipping_address.zip_code || '34732'
                 },
                 billingAddress: {
                     contactName: `${order.contact_info.first_name} ${order.contact_info.last_name}`,
                     city: order.shipping_address.city,
                     country: order.shipping_address.country || 'Turkey',
-                    address: order.shipping_address.address_line1,
+                    address: order.shipping_address.address,
                     zipCode: order.shipping_address.zip_code || '34732'
                 },
                 basketItems: order.items?.map((item: any) => ({

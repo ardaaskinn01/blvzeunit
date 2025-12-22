@@ -61,10 +61,12 @@
 
 .etbis-logo {
   height: 50px;
-  background-color: #ffffff;
+  background-blend-mode: color-dodge;
   /* ETBİS logosu biraz daha belirgin olmalı */
   width: auto;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  margin-top: -4px;
+  margin-left: -4px;
 }
 
 .payment-band-logo {
@@ -80,8 +82,10 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Eğer paragrafların (adres, telefon vb.) da rengini açmak isterseniz: */
 .footer-section p {
-  color: #b0b0b0;
+  color: #e0e0e0;
+  /* Yazıların okunabilirliğini artırmak için rengi açtık */
   font-size: 0.9rem;
   line-height: 1.6;
   margin-bottom: 0.75rem;
@@ -99,7 +103,8 @@
 }
 
 .footer-section a {
-  color: #b0b0b0;
+  color: #f0f0f0;
+  /* Beyaza çok yakın bir gri (Daha parlak) */
   text-decoration: none;
   font-size: 0.9rem;
   transition: all 0.3s ease;
@@ -108,7 +113,10 @@
 
 .footer-section a:hover {
   color: #ffffff;
+  /* Üzerine gelince tam beyaz */
 }
+
+
 
 .social-links {
   display: flex;

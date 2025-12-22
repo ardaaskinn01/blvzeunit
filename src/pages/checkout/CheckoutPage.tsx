@@ -8,138 +8,10 @@ import TermsOfServicePage from '../legal/TermsOfServicePage';
 import PreliminaryInformationForm from '../legal/PreliminaryInformationForm';
 
 
-const styles = {
-    container: {
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: '2rem',
-        minHeight: '70vh',
-    } as React.CSSProperties,
-    header: {
-        marginBottom: '2rem',
-        borderBottom: '1px solid #eee',
-        paddingBottom: '1rem',
-    } as React.CSSProperties,
-    layout: {
-        display: 'grid',
-        gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)',
-        gap: '3rem',
-    } as React.CSSProperties,
-    formSection: {
-        background: '#fff',
-        padding: '2rem',
-        borderRadius: '12px',
-        border: '1px solid #eee',
-    } as React.CSSProperties,
-    formGroup: {
-        marginBottom: '1.5rem',
-    } as React.CSSProperties,
-    label: {
-        display: 'block',
-        marginBottom: '0.5rem',
-        fontWeight: 500,
-    } as React.CSSProperties,
-    input: {
-        width: '100%',
-        padding: '0.75rem',
-        border: '1px solid #ddd',
-        borderRadius: '6px',
-        fontSize: '1rem',
-        fontFamily: 'Inter, system-ui, -apple-system, sans-serif', // Override global font
-    } as React.CSSProperties,
-    select: {
-        width: '100%',
-        padding: '0.75rem',
-        border: '1px solid #ddd',
-        borderRadius: '6px',
-        fontSize: '1rem',
-        backgroundColor: 'white',
-        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-    } as React.CSSProperties,
-    summarySection: {
-        background: '#f9f9f9',
-        padding: '2rem',
-        borderRadius: '12px',
-        height: 'fit-content',
-        position: 'sticky' as 'sticky',
-        top: '2rem',
-    } as React.CSSProperties,
-    summaryRow: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginBottom: '1rem',
-    } as React.CSSProperties,
-    totalRow: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginTop: '1rem',
-        paddingTop: '1rem',
-        borderTop: '2px solid #ddd',
-        fontSize: '1.25rem',
-        fontWeight: 'bold' as 'bold',
-    } as React.CSSProperties,
-    submitBtn: {
-        width: '100%',
-        padding: '1rem',
-        background: 'black',
-        color: 'white',
-        border: 'none',
-        borderRadius: '8px',
-        fontSize: '1.1rem',
-        marginTop: '2rem',
-        cursor: 'pointer',
-        fontWeight: 600,
-    } as React.CSSProperties,
-    checkboxContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        marginTop: '1.5rem',
-        padding: '1rem',
-        background: '#f5f5f5',
-        borderRadius: '6px',
-    } as React.CSSProperties,
-    error: {
-        color: '#dc3545',
-        fontSize: '0.875rem',
-        marginTop: '0.25rem',
-    } as React.CSSProperties,
-    userInfo: {
-        background: '#e8f4ff',
-        padding: '1rem',
-        borderRadius: '8px',
-        marginBottom: '1.5rem',
-    } as React.CSSProperties,
-    itemsContainer: {
-        marginBottom: '1.5rem',
-        maxHeight: '300px',
-        overflowY: 'auto' as 'auto',
-    } as React.CSSProperties,
-    itemContainer: {
-        display: 'flex',
-        gap: '1rem',
-        marginBottom: '1rem',
-        fontSize: '0.9rem',
-    } as React.CSSProperties,
-    itemImage: {
-        width: '50px',
-        height: '50px',
-        background: '#eee',
-        borderRadius: '4px',
-        overflow: 'hidden' as 'hidden',
-    } as React.CSSProperties,
-    itemDetails: {
-        flex: 1,
-    } as React.CSSProperties,
-    grid2Col: {
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '1rem',
-    } as React.CSSProperties,
-};
+import './CheckoutPage.css';
 
 export default function CheckoutPage() {
-    const { items, cartTotal, clearCart, userAddress, saveAddressToStorage } = useCart();
+    const { items, cartTotal, shippingCost, finalTotal, userAddress, saveAddressToStorage } = useCart();
     const { user } = useAuth();
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -152,12 +24,20 @@ export default function CheckoutPage() {
         district: '',
         fullAddress: '',
         zipCode: '',
+        // Kart bilgileri (3DS Payment API için)
+        cardHolderName: '',
+        cardNumber: '',
+        expireMonth: '',
+        expireYear: '',
+        cvc: '',
     });
 
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [showTerms, setShowTerms] = useState(false);
     const [showPreliminary, setShowPreliminary] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [show3DS, setShow3DS] = useState(false);
+    const [threeDSHtml, setThreeDSHtml] = useState('');
 
 
     // Kullanıcı adresi varsa formu doldur
@@ -172,15 +52,43 @@ export default function CheckoutPage() {
                 zipCode: userAddress.zipCode || '',
                 district: userAddress.district || '',
             }));
-            // İleri seviye: userAddress'teki şehir isminden cityCode bulup districts çekilebilir
-            // Şimdilik kullanıcı tekrar seçsin
         }
     }, [userAddress]);
+
+    // Kullanıcı oturum açmışsa e-posta adresini otomatik doldur
+    useEffect(() => {
+        if (user?.email) {
+            setFormData(prev => ({
+                ...prev,
+                email: user.email || ''
+            }));
+        }
+    }, [user]);
 
     if (items.length === 0) {
         navigate('/cart');
         return null;
     }
+
+    // 3DS Başarı Mesajını Dinle
+    useEffect(() => {
+        const handleMessage = (event: MessageEvent) => {
+            if (event.data?.type === 'PAYMENT_SUCCESS') {
+                // Başarılı ödeme -> Modal'ı kapat ve Yönlendir
+                setShow3DS(false);
+                setThreeDSHtml('');
+                navigate(`/payment-callback?status=success&paymentId=${event.data.paymentId}`);
+            } else if (event.data?.type === 'PAYMENT_FAILURE') {
+                // Başarısız ödeme -> Modal'ı kapat ve hata göster
+                setShow3DS(false);
+                setThreeDSHtml('');
+                alert('Ödeme başarısız: ' + (event.data.message || 'Bilinmeyen hata'));
+            }
+        };
+
+        window.addEventListener('message', handleMessage);
+        return () => window.removeEventListener('message', handleMessage);
+    }, [navigate]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -207,6 +115,22 @@ export default function CheckoutPage() {
         if (!formData.district.trim()) newErrors.district = 'İlçe seçimi zorunludur';
         if (!formData.fullAddress.trim()) newErrors.fullAddress = 'Detaylı adres zorunludur';
         if (!formData.zipCode.trim()) newErrors.zipCode = 'Posta kodu zorunludur';
+
+        // Kart bilgiler doğrulama
+        if (!formData.cardHolderName.trim()) newErrors.cardHolderName = 'Kart sahibi adı zorunludur';
+        if (!formData.cardNumber.trim()) {
+            newErrors.cardNumber = 'Kart numarası zorunludur';
+        } else if (formData.cardNumber.replace(/\s/g, '').length < 13) {
+            newErrors.cardNumber = 'Geçerli bir kart numarası girin';
+        }
+        if (!formData.expireMonth) newErrors.expireMonth = 'Son kullanma ayı zorunludur';
+        if (!formData.expireYear) newErrors.expireYear = 'Son kullanma yılı zorunludur';
+        if (!formData.cvc.trim()) {
+            newErrors.cvc = 'CVV zorunludur';
+        } else if (formData.cvc.length < 3) {
+            newErrors.cvc = 'CVV en az 3 hane olmalı';
+        }
+
         if (!termsAccepted) newErrors.terms = 'Sözleşmeleri kabul etmelisiniz';
 
         setErrors(newErrors);
@@ -243,7 +167,7 @@ export default function CheckoutPage() {
                 .insert({
                     user_id: user?.id || null, // Giriş yapmışsa user id, yoksa null
                     status: 'pending', // Sipariş alındı - Hazırlanacak
-                    total_amount: cartTotal,
+                    total_amount: finalTotal, // Kargo dahil toplam tutar
                     currency: 'TRY',
                     shipping_address: {
                         full_name: formData.fullName,
@@ -268,7 +192,7 @@ export default function CheckoutPage() {
             // 2. Sipariş Kalemlerini (Items) Oluştur
             const orderItems = items.map(item => ({
                 order_id: orderData.id,
-                product_id: item.id,
+                product_id: item.product_id, // item.id contains size suffix (uuid-M), using product_id which is pure UUID
                 quantity: item.quantity,
                 unit_price: item.price,
                 size: item.size,
@@ -282,36 +206,114 @@ export default function CheckoutPage() {
 
             if (itemsError) throw itemsError;
 
-            // 3. Sepeti temizle ve yönlendir
-            console.log('Sipariş Başarıyla Kaydedildi:', orderData);
-            clearCart();
-            alert('Siparişiniz başarıyla alındı! Teşekkür ederiz.');
-            navigate('/');
+            // 3. iyzico Ödeme Başlatma
+            const nameParts = formData.fullName.trim().split(' ');
+            const surname = nameParts.length > 1 ? nameParts.pop() : 'Bey/Hanım';
+            const firstName = nameParts.join(' ') || 'Değerli Müşteri';
+
+            const paymentData = {
+                orderId: orderData.id,
+                basketId: orderData.id,
+                price: cartTotal.toFixed(2), // Ürünlerin toplamı (kargo hariç)
+                paidPrice: finalTotal.toFixed(2), // Ödenen toplam tutar (kargo dahil)
+                currency: 'TRY',
+                paymentGroup: 'PRODUCT',
+                // callbackUrl backend'de ayarlanıyor
+                paymentCard: {
+                    cardHolderName: formData.cardHolderName,
+                    cardNumber: formData.cardNumber.replace(/\s/g, ''),
+                    expireYear: formData.expireYear,
+                    expireMonth: formData.expireMonth,
+                    cvc: formData.cvc,
+                },
+                buyer: {
+                    id: user?.id || 'guest',
+                    name: firstName,
+                    surname: surname,
+                    gsmNumber: `+90${formData.phone.replace(/\D/g, '').replace(/^0/, '').replace(/^90/, '')}`,
+                    email: formData.email,
+                    identityNumber: '11111111111',
+                    registrationAddress: formData.fullAddress,
+                    ip: '', // Backend handle edecek
+                    city: formData.city,
+                    country: 'Turkey',
+                    zipCode: formData.zipCode
+                },
+                shippingAddress: {
+                    contactName: formData.fullName,
+                    city: formData.city,
+                    country: 'Turkey',
+                    address: formData.fullAddress,
+                    zipCode: formData.zipCode
+                },
+                billingAddress: {
+                    contactName: formData.fullName,
+                    city: formData.city,
+                    country: 'Turkey',
+                    address: formData.fullAddress,
+                    zipCode: formData.zipCode
+                },
+                basketItems: items.map(item => ({
+                    id: item.product_id,
+                    name: item.name,
+                    category1: 'Clothing',
+                    itemType: 'PHYSICAL',
+                    price: (item.price * item.quantity).toFixed(2)
+                }))
+            };
+
+            const response = await fetch('/.netlify/functions/create-payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(paymentData),
+            });
+
+            // Yanıtı önce text olarak alıp kontrol edelim
+            const responseText = await response.text();
+            let result;
+
+            try {
+                result = responseText ? JSON.parse(responseText) : {};
+            } catch (e) {
+                console.error('JSON Parse Hatası:', e);
+                console.log('Ham Yanıt:', responseText);
+                throw new Error('Sunucu yanıtı geçersiz (JSON değil).');
+            }
+
+            if (!response.ok) {
+                const detailedError = result.message || result.error || 'Bilinmeyen hata';
+                throw new Error(`Sunucu Hatası (${response.status}): ${detailedError}`);
+            }
+
+            if (result.success && result.threeDSHtmlContent) {
+                // 3DS HTML content'i göster
+                setThreeDSHtml(result.threeDSHtmlContent);
+                setShow3DS(true);
+                // PaymentId'yi session storage'a kaydet (callback için)
+                sessionStorage.setItem('iyzico_paymentId', result.paymentId);
+                sessionStorage.setItem('iyzico_orderId', orderData.id);
+                sessionStorage.setItem('iyzico_paidPrice', finalTotal.toFixed(2));
+                sessionStorage.setItem('iyzico_basketId', orderData.id);
+            } else {
+                throw new Error(result.error || 'Ödeme başlatılamadı');
+            }
 
         } catch (error: any) {
-            console.error('Sipariş Hatası:', error);
-            alert('Sipariş oluşturulurken bir hata oluştu: ' + (error.message || 'Bilinmeyen hata'));
+            console.error('Sipariş/Ödeme Hatası:', error);
+            alert('İşlem sırasında bir hata oluştu: ' + (error.message || 'Bilinmeyen hata'));
         } finally {
             setIsSubmitting(false);
         }
     };
 
     return (
-        <div style={styles.container}>
-            <h1 style={styles.header}>Ödeme & Teslimat</h1>
+        <div className="checkout-container">
+            <h1 className="checkout-header">Ödeme & Teslİmat</h1>
 
             {/* iyzico Integration Notice */}
-            <div style={{
-                background: 'linear-gradient(135deg, #838383ff 0%, #151515ff 100%)',
-                color: '#fff',
-                padding: '1.25rem 1.5rem',
-                borderRadius: '12px',
-                marginBottom: '2rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1rem',
-                boxShadow: '0 4px 12px rgba(53, 53, 53, 0.2)'
-            }}>
+            <div className="iyzico-notice">
                 <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '0.25rem' }}>
                         Güvenli Ödeme - İyzİco ile Korunuyorsunuz
@@ -328,115 +330,195 @@ export default function CheckoutPage() {
                 />
             </div>
 
-            <form onSubmit={handleSubmit} style={styles.layout}>
+            <form onSubmit={handleSubmit} className="checkout-layout">
                 {/* Sol Taraf: Adres Bilgileri */}
-                <div style={styles.formSection}>
-                    <h2 style={{ marginBottom: '1.5rem' }}>Teslimat Bilgileri</h2>
+                <div className="form-section">
+                    <h2 style={{ marginBottom: '1.5rem' }}>Teslİmat Bİlgİlerİ</h2>
 
                     {userAddress && (
-                        <div style={styles.userInfo}>
-                            <p>✅ Daha önce kaydettiğiniz adres otomatik yüklendi.</p>
+                        <div className="user-info-box">
+                            <p>Daha önce kaydettİğİniz adres otomatİk yüklendİ.</p>
                         </div>
                     )}
 
-                    <div style={styles.formGroup}>
-                        <label style={styles.label}>Ad Soyad*</label>
+                    <div className="form-group">
+                        <label className="form-label">Ad Soyad*</label>
                         <input
                             required
                             name="fullName"
-                            style={styles.input}
+                            className="form-input"
                             value={formData.fullName}
                             onChange={handleInputChange}
                         />
-                        {errors.fullName && <div style={styles.error}>{errors.fullName}</div>}
+                        {errors.fullName && <div className="error-message">{errors.fullName}</div>}
                     </div>
 
-                    <div style={styles.formGroup}>
-                        <label style={styles.label}>E-posta*</label>
+                    <div className="form-group">
+                        <label className="form-label">E-posta*</label>
                         <input
                             required
                             type="email"
                             name="email"
-                            style={styles.input}
+                            className="form-input"
                             value={formData.email}
                             onChange={handleInputChange}
                         />
-                        {errors.email && <div style={styles.error}>{errors.email}</div>}
+                        {errors.email && <div className="error-message">{errors.email}</div>}
                     </div>
 
-                    <div style={styles.formGroup}>
-                        <label style={styles.label}>Telefon Numarası*</label>
+                    <div className="form-group">
+                        <label className="form-label">Telefon Numarası*</label>
                         <input
                             required
                             type="tel"
                             name="phone"
                             placeholder="05XX XXX XX XX"
-                            style={styles.input}
+                            className="form-input"
                             value={formData.phone}
                             onChange={handleInputChange}
                         />
-                        {errors.phone && <div style={styles.error}>{errors.phone}</div>}
+                        {errors.phone && <div className="error-message">{errors.phone}</div>}
                     </div>
 
-                    <div style={styles.grid2Col}>
-                        <div style={styles.formGroup}>
-                            <label style={styles.label}>İl*</label>
+                    <div className="grid-2-col">
+                        <div className="form-group">
+                            <label className="form-label">İl*</label>
                             <input
                                 required
                                 name="city"
                                 placeholder="İliniz"
-                                style={styles.input}
+                                className="form-input"
                                 value={formData.city}
                                 onChange={handleInputChange}
                             />
-                            {errors.city && <div style={styles.error}>{errors.city}</div>}
+                            {errors.city && <div className="error-message">{errors.city}</div>}
                         </div>
 
-                        <div style={styles.formGroup}>
-                            <label style={styles.label}>İlçe*</label>
+                        <div className="form-group">
+                            <label className="form-label">İlçe*</label>
                             <input
                                 required
                                 name="district"
                                 placeholder="İlçeniz"
-                                style={styles.input}
+                                className="form-input"
                                 value={formData.district}
                                 onChange={handleInputChange}
                             />
-                            {errors.district && <div style={styles.error}>{errors.district}</div>}
+                            {errors.district && <div className="error-message">{errors.district}</div>}
                         </div>
                     </div>
 
-                    <div style={styles.grid2Col}>
-                        <div style={styles.formGroup}>
-                            <label style={styles.label}>Posta Kodu*</label>
+                    <div className="grid-2-col">
+                        <div className="form-group">
+                            <label className="form-label">Posta Kodu*</label>
                             <input
                                 required
                                 name="zipCode"
                                 placeholder="Posta kodunuz"
-                                style={styles.input}
+                                className="form-input"
                                 value={formData.zipCode}
                                 onChange={handleInputChange}
                             />
-                            {errors.zipCode && <div style={styles.error}>{errors.zipCode}</div>}
+                            {errors.zipCode && <div className="error-message">{errors.zipCode}</div>}
                         </div>
                     </div>
 
-                    <div style={styles.formGroup}>
-                        <label style={styles.label}>Detaylı Adres (Sokak, Bina No, Daire No)*</label>
+                    <div className="form-group">
+                        <label className="form-label">Detaylı Adres (Sokak, Bİna No, Daİre No)*</label>
                         <textarea
                             required
                             name="fullAddress"
                             placeholder="Mahalle, sokak, bina no, daire no, kat..."
-                            style={styles.input}
+                            className="form-input"
                             value={formData.fullAddress}
                             onChange={(e) => handleInputChange(e as any)}
                             rows={3}
                         />
-                        {errors.fullAddress && <div style={styles.error}>{errors.fullAddress}</div>}
+                        {errors.fullAddress && <div className="error-message">{errors.fullAddress}</div>}
+                    </div>
+
+                    <h2 style={{ marginTop: '2rem', marginBottom: '1.5rem' }}>Ödeme Bİlgİlerİ</h2>
+
+                    <div className="form-group">
+                        <label className="form-label">Kart Sahİbİ Adı Soyadı*</label>
+                        <input
+                            required
+                            name="cardHolderName"
+                            placeholder="Kart üzerindeki isim"
+                            className="form-input"
+                            value={formData.cardHolderName}
+                            onChange={handleInputChange}
+                        />
+                        {errors.cardHolderName && <div className="error-message">{errors.cardHolderName}</div>}
+                    </div>
+
+                    <div className="form-group">
+                        <label className="form-label">Kart Numarası*</label>
+                        <input
+                            required
+                            name="cardNumber"
+                            placeholder="1234 5678 9012 3456"
+                            className="form-input"
+                            value={formData.cardNumber}
+                            onChange={handleInputChange}
+                            maxLength={19}
+                        />
+                        {errors.cardNumber && <div className="error-message">{errors.cardNumber}</div>}
+                    </div>
+
+                    <div className="grid-2-col">
+                        <div className="form-group">
+                            <label className="form-label">Son Kullanma Tarİhİ*</label>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                                <select
+                                    required
+                                    name="expireMonth"
+                                    className="form-select"
+                                    value={formData.expireMonth}
+                                    onChange={(e) => handleInputChange(e as any)}
+                                >
+                                    <option value="">Ay</option>
+                                    {Array.from({ length: 12 }, (_, i) => {
+                                        const month = (i + 1).toString().padStart(2, '0');
+                                        return <option key={month} value={month}>{month}</option>;
+                                    })}
+                                </select>
+                                <select
+                                    required
+                                    name="expireYear"
+                                    className="form-select"
+                                    value={formData.expireYear}
+                                    onChange={(e) => handleInputChange(e as any)}
+                                >
+                                    <option value="">Yıl</option>
+                                    {Array.from({ length: 20 }, (_, i) => {
+                                        const year = new Date().getFullYear() + i;
+                                        return <option key={year} value={year}>{year}</option>;
+                                    })}
+                                </select>
+                            </div>
+                            {errors.expireMonth && <div className="error-message">{errors.expireMonth}</div>}
+                        </div>
+
+                        <div className="form-group">
+                            <label className="form-label">CVV*</label>
+                            <input
+                                required
+                                name="cvc"
+                                placeholder="123"
+                                className="form-input"
+                                value={formData.cvc}
+                                onChange={handleInputChange}
+                                maxLength={4}
+                                type="text"
+                                pattern="[0-9]*"
+                            />
+                            {errors.cvc && <div className="error-message">{errors.cvc}</div>}
+                        </div>
                     </div>
 
                     {/* Sözleşme Onayı */}
-                    <div style={styles.checkboxContainer}>
+                    <div className="checkbox-container">
                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
                             <input
                                 type="checkbox"
@@ -463,69 +545,62 @@ export default function CheckoutPage() {
                             </label>
                         </div>
                     </div>
-                    {errors.terms && <div style={styles.error}>{errors.terms}</div>}
+                    {errors.terms && <div className="error-message">{errors.terms}</div>}
 
                 </div>
 
                 {/* Sağ Taraf: Özet */}
-                <div style={styles.summarySection}>
-                    <h3 style={{ marginBottom: '1.5rem' }}>Sipariş Özeti</h3>
+                <div className="summary-section">
+                    <h3 style={{ marginBottom: '1.5rem' }}>SİPARİŞ ÖZETİ</h3>
 
-                    <div style={styles.itemsContainer}>
+                    <div className="items-container">
                         {items.map(item => (
-                            <div key={item.id} style={styles.itemContainer}>
-                                <div style={styles.itemImage}>
+                            <div key={item.id} className="summary-item">
+                                <div className="item-image">
                                     <img
                                         src={item.image_url || ''}
                                         alt={item.name}
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover' as 'cover' }}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                     />
                                 </div>
-                                <div style={styles.itemDetails}>
+                                <div className="item-details">
                                     <div style={{ fontWeight: 500 }}>{item.name}</div>
-                                    <div style={{ color: '#666' }}>Beden: {item.size}</div>
-                                    <div style={{ color: '#666' }}>{item.quantity} x {item.price.toLocaleString('tr-TR')} TL</div>
+                                    <div style={{ color: '#000000ff' }}>Beden: {item.size}</div>
+                                    <div style={{ color: '#000000ff' }}>{item.quantity} x {item.price.toLocaleString('tr-TR')} TL</div>
                                 </div>
                                 <div>{(item.price * item.quantity).toLocaleString('tr-TR')} TL</div>
                             </div>
                         ))}
                     </div>
 
-                    <div style={styles.summaryRow}>
+                    <div className="summary-row">
                         <span>Ara Toplam</span>
                         <span>{cartTotal.toLocaleString('tr-TR')} TL</span>
                     </div>
-                    <div style={styles.summaryRow}>
+                    <div className="summary-row">
                         <span>Kargo</span>
-                        <span>Ücretsiz</span>
+                        <span>{shippingCost === 0 ? 'Ücretsiz' : `${shippingCost.toLocaleString('tr-TR')} TL`}</span>
                     </div>
 
-                    <div style={styles.totalRow}>
+                    <div className="total-row">
                         <span>Toplam</span>
-                        <span>{cartTotal.toLocaleString('tr-TR')} TL</span>
+                        <span>{finalTotal.toLocaleString('tr-TR')} TL</span>
                     </div>
 
                     <button
                         type="submit"
+                        className="submit-btn"
                         style={{
-                            ...styles.submitBtn,
                             backgroundColor: termsAccepted ? 'black' : '#ccc',
                             cursor: termsAccepted ? 'pointer' : 'not-allowed',
                         }}
                         disabled={!termsAccepted || isSubmitting}
                     >
-                        {isSubmitting ? 'İşleniyor...' : 'Siparişi Tamamla'}
+                        {isSubmitting ? 'İşlenİyor...' : 'SİPARİŞİ TAMAMLA'}
                     </button>
 
                     {/* iyzico Payment Logo */}
-                    <div style={{
-                        marginTop: '1.5rem',
-                        textAlign: 'center',
-                        padding: '1rem',
-                        background: '#fff',
-                        borderRadius: '8px',
-                        border: '1px solid #eee'
-                    }}>
+                    <div className="iyzico-summary-logo">
                         <img
                             src="/iyzico-logo-pack/checkout_iyzico_ile_ode/TR/Tr_White/iyzico_ile_ode_white.png"
                             alt="iyzico ile güvenli ödeme"
@@ -537,12 +612,12 @@ export default function CheckoutPage() {
                                 filter: 'brightness(0) invert(1)'
                             }}
                         />
-                        <p style={{ marginTop: '0.75rem', fontSize: '0.8rem', color: '#666' }}>
+                        <p style={{ marginTop: '0.75rem', fontSize: '0.8rem', color: '#ffffffff' }}>
                             Güvenli ödeme altyapısı
                         </p>
                     </div>
 
-                    <p style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#666', textAlign: 'center' }}>
+                    <p style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#000000ff', textAlign: 'center' }}>
                         Ödeme İşlemİnİz İyzİco güvencesi ile yapılacaktır.
                     </p>
                 </div>
@@ -589,6 +664,22 @@ export default function CheckoutPage() {
                     <PreliminaryInformationForm />
                 </div>
             </Modal>
+
+            {/* 3DS Doğrulama Modal'i */}
+            {show3DS && threeDSHtml && (
+                <div className="tds-overlay">
+                    <div className="tds-modal">
+                        <div className="tds-header">
+                            3D Secure Doğrulama
+                        </div>
+                        <iframe
+                            srcDoc={atob(threeDSHtml)}
+                            className="tds-iframe"
+                            title="3D Secure"
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

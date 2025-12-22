@@ -10,33 +10,60 @@ export default function PaymentCallbackPage() {
     const [message, setMessage] = useState('Ödeme durumunuz kontrol ediliyor...');
 
     useEffect(() => {
-        const token = searchParams.get('token');
+        // Eğer iframe içindeysek, parent'a mesaj at
+        if (window.self !== window.top) {
+            const status = searchParams.get('status');
+            const paymentId = searchParams.get('paymentId');
+            const message = searchParams.get('message');
 
+            if (status === 'success') {
+                window.parent.postMessage({ type: 'PAYMENT_SUCCESS', paymentId }, '*');
+            } else {
+                window.parent.postMessage({ type: 'PAYMENT_FAILURE', message }, '*');
+            }
+            return; // React render'a devam etmesin veya loading göstersin
+        }
+
+        const token = searchParams.get('token');
+        const statusParam = searchParams.get('status');
+        const paymentIdParam = searchParams.get('paymentId');
+        const messageParam = searchParams.get('message');
+
+        // Yeni Akış (Status var)
+        if (statusParam) {
+            if (statusParam === 'success') {
+                setStatus('success');
+                setMessage('Ödemeniz başarıyla tamamlandı! Siparişiniz hazırlanıyor.');
+                clearCart();
+                setTimeout(() => navigate('/'), 3000);
+            } else {
+                setStatus('error');
+                setMessage(messageParam || 'Ödeme işlemi başarısız oldu.');
+                setTimeout(() => navigate('/checkout'), 3000);
+            }
+            return;
+        }
+
+        // Eski Akış (Sadece Token varsa)
         if (!token) {
             setStatus('error');
             setMessage('Ödeme bilgisi bulunamadı.');
             return;
         }
 
-        // Call backend to verify payment
+        // Call backend to verify payment (Legacy)
         fetch('/.netlify/functions/payment-callback', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ token }),
         })
             .then((res) => res.json())
             .then((data) => {
                 if (data.success && data.paymentStatus === 'SUCCESS') {
                     setStatus('success');
-                    setMessage('Ödemeniz başarıyla tamamlandı! Siparişiniz hazırlanmaya başlandı.');
+                    setMessage('Ödemeniz başarıyla tamamlandı! Siparişiniz hazırlanıyor.');
                     clearCart();
-
-                    // Redirect to home after 3 seconds
-                    setTimeout(() => {
-                        navigate('/');
-                    }, 3000);
+                    setTimeout(() => navigate('/'), 3000);
                 } else {
                     setStatus('error');
                     setMessage(data.errorMessage || 'Ödeme işlemi başarısız oldu.');

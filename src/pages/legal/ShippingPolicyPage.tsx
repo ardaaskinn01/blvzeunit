@@ -81,7 +81,7 @@ export default function ShippingPolicyPage() {
                 <section>
                     <h2>4. KARGO TAKİP VE BİLDİRİMLER</h2>
                     <p>
-                        Kargoya verildikten sonra sipariş takip numarası e-posta ve SMS ile gönderilir.
+                        Kargoya verildikten sonra sipariş takip numarası e-posta ile gönderilir.
                         Bu numara ile DHL Kargo web sitesinden anlık takip yapabilirsiniz.
                     </p>
 

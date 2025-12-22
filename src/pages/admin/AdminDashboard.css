@@ -3,648 +3,405 @@
   background: #ffffff;
   color: #000000;
   padding: 3rem 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Bebas Neue', monospace;
+  text-transform: uppercase;
 }
 
-.admin-container {
+.admin-dashboard .admin-container {
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .admin-dashboard h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 2rem;
   color: #000000;
-  font-weight: 700;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 900;
+  border-bottom: 4px solid #000000;
+  padding-bottom: 1rem;
 }
 
-.admin-stats {
+.admin-dashboard .admin-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
   margin-bottom: 3rem;
 }
 
-.stat-card {
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+.admin-dashboard .stat-card {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
   padding: 1.5rem;
   text-align: center;
+  box-shadow: 6px 6px 0 #000000;
 }
 
-.stat-card h3 {
-  color: #555555;
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.stat-number {
+.admin-dashboard .stat-card h3 {
   color: #000000;
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.admin-error {
-  background: #ffebee;
-  color: #c62828;
-  border: 1px solid #ef9a9a;
-  padding: 1rem;
-  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 900;
   margin-bottom: 1rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.admin-tabs {
+.admin-dashboard .stat-number {
+  color: #000000;
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 0;
+}
+
+.admin-dashboard .admin-error {
+  background: #000000;
+  color: #ffffff;
+  border: 3px solid #000000;
+  padding: 1rem;
+  border-radius: 0;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.admin-dashboard .admin-tabs {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   margin-bottom: 2rem;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 3px solid #000000;
+  padding-bottom: 1rem;
+  flex-wrap: wrap;
 }
 
-.tab-btn {
+.admin-dashboard .tab-btn {
   padding: 0.75rem 1.5rem;
   background: transparent;
-  border: none;
-  border-bottom: 3px solid transparent;
-  color: #666666;
-  font-weight: 600;
-  font-size: 0.95rem;
+  border: 2px solid transparent;
+  color: #000000;
+  font-weight: 900;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin-bottom: -2px;
+  transition: all 0.2s ease;
+  font-family: 'Bebas Neue', monospace;
+  letter-spacing: 1px;
 }
 
-.tab-btn:hover {
-  color: #000000;
-  background: #f5f5f5;
+.admin-dashboard .tab-btn:hover {
+  background: #666666;
+  color: #ffffff;
 }
 
-.tab-btn.active {
-  color: #000000;
-  border-bottom-color: #000000;
+.admin-dashboard .tab-btn.active {
+  background: #000000;
+  color: #ffffff;
+  border: 2px solid #000000;
 }
 
-.admin-section {
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+.admin-dashboard .admin-section {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
   padding: 2rem;
+  box-shadow: 8px 8px 0 #000000;
 }
 
-.section-header {
+.admin-dashboard .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #000000;
+  padding-bottom: 1rem;
 }
 
-.section-header h2 {
+.admin-dashboard .section-header h2 {
   color: #000000;
-  font-size: 1.3rem;
-  font-weight: 700;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  letter-spacing: 1px;
+  font-size: 1.8rem;
+  font-weight: 900;
   margin: 0;
 }
 
-.add-btn {
+.admin-dashboard .add-btn {
   padding: 0.75rem 1.5rem;
-  background: #000000;
-  color: #ffffff;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.add-btn:hover {
-  background: #333333;
-}
-
-.users-section {
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  padding: 2rem;
-}
-
-.users-section h2 {
+  background: #ffffff;
   color: #000000;
-  font-size: 1.3rem;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: 3px solid #000000;
+  border-radius: 0;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  font-family: 'Bebas Neue', monospace;
+  box-shadow: 4px 4px 0 #000000;
 }
 
-.table-wrapper {
+.admin-dashboard .add-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+  background: #666666;
+  color: #ffffff;
+}
+
+.admin-dashboard .users-section {
+  background: #ffffff;
+  border: 3px solid #000000;
+  padding: 2rem;
+  box-shadow: 8px 8px 0 #000000;
+}
+
+.admin-dashboard .users-section h2 {
+  color: #000000;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  font-weight: 900;
+}
+
+.admin-dashboard .table-wrapper {
   overflow-x: auto;
   margin-top: 1.5rem;
+  border: 2px solid #000000;
 }
 
-.admin-table {
+.admin-dashboard .admin-table {
   width: 100%;
   border-collapse: collapse;
   background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Bebas Neue', monospace;
 }
 
-.admin-table thead {
+.admin-dashboard .admin-table thead {
   background: #000000;
   color: #ffffff;
 }
 
-.admin-table th {
+.admin-dashboard .admin-table th {
   padding: 1rem;
   text-align: left;
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 700;
+  font-size: 1.1rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-bottom: 2px solid #000000;
 }
 
-.admin-table td {
+.admin-dashboard .admin-table td {
   padding: 1rem;
-  border-bottom: 1px solid #e0e0e0;
-  color: #555555;
-}
-
-.admin-table th:nth-child(5),
-/* Desi sütunu */
-.admin-table th:nth-child(6) {
-  /* Ağırlık sütunu */
-  width: 80px;
-}
-
-.admin-table td:nth-child(5),
-.admin-table td:nth-child(6) {
-  text-align: center;
+  border-bottom: 1px solid #000000;
+  color: #000000;
+  font-family: 'Roboto Mono', monospace;
   font-size: 0.9rem;
+  font-weight: 600;
 }
 
-.admin-table tbody tr:hover {
-  background: #f5f5f5;
+.admin-dashboard .admin-table tbody tr:hover {
+  background: #f0f0f0;
+  color: #000000;
 }
 
-.admin-table tbody tr.current-user {
-  background: #e8f5e9;
+.admin-dashboard .admin-table tbody tr:hover td {
+  color: #000000;
 }
 
-.product-thumb {
+.admin-dashboard .product-thumb {
   width: 60px;
   height: 60px;
   object-fit: cover;
-  border-radius: 4px;
+  border: 2px solid #000000;
 }
 
-.no-image {
-  color: #999999;
-  font-size: 0.85rem;
-}
-
-.users-table-wrapper {
-  overflow-x: auto;
-}
-
-.users-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.users-table thead {
-  background: #000000;
-  color: #ffffff;
-}
-
-.users-table th {
-  padding: 1rem;
-  text-align: left;
-  font-weight: 600;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.users-table td {
-  padding: 1rem;
-  border-bottom: 1px solid #e0e0e0;
-  color: #555555;
-}
-
-.users-table tbody tr:hover {
-  background: #f5f5f5;
-}
-
-.users-table tbody tr.current-user {
-  background: #e8f5e9;
-}
-
-.role-select {
+.admin-dashboard .role-select {
   padding: 0.5rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 3px;
+  border: 2px solid #000000;
+  border-radius: 0;
   background: #ffffff;
   color: #000000;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Bebas Neue', monospace;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.role-select.role-admin {
-  color: #d32f2f;
-}
-
-.role-select.role-guest {
-  color: #666666;
-}
-
-.role-select:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background: #f5f5f5;
-}
-
-.delete-btn {
+.admin-dashboard .delete-btn {
   padding: 0.5rem 1rem;
-  background: #d32f2f;
-  color: #ffffff;
-  border: none;
-  border-radius: 3px;
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+  border-radius: 0;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 0.85rem;
-  transition: all 0.3s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  font-family: 'Bebas Neue', monospace;
+  box-shadow: 2px 2px 0 #000000;
 }
 
-.delete-btn:hover:not(:disabled) {
-  background: #b71c1c;
+.admin-dashboard .delete-btn:hover:not(:disabled) {
+  background: #666666;
+  color: #ffffff;
+  box-shadow: 4px 4px 0 #000000;
 }
 
-.delete-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.edit-btn {
+.admin-dashboard .edit-btn {
   padding: 0.5rem 1rem;
-  background: #1976d2;
-  color: #ffffff;
-  border: none;
-  border-radius: 3px;
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+  border-radius: 0;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 0.85rem;
-  transition: all 0.3s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  font-family: 'Bebas Neue', monospace;
   margin-right: 0.5rem;
+  box-shadow: 2px 2px 0 #000000;
 }
 
-.edit-btn:hover {
-  background: #1565c0;
+.admin-dashboard .edit-btn:hover {
+  background: #666666;
+  color: #ffffff;
+  box-shadow: 4px 4px 0 #000000;
 }
 
 /* Form Styles */
-.product-form,
-.category-form {
+.admin-dashboard .product-form,
+.admin-dashboard .category-form {
   background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  border: 3px solid #000000;
+  border-radius: 0;
   padding: 2rem;
   margin-bottom: 2rem;
+  box-shadow: 8px 8px 0 #000000;
 }
 
-.product-form h3,
-.category-form h3 {
+.admin-dashboard .product-form h3,
+.admin-dashboard .category-form h3 {
   color: #000000;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   margin-bottom: 1.5rem;
-  font-weight: 700;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  border-bottom: 2px solid #000000;
+  padding-bottom: 0.5rem;
 }
 
-.form-grid {
+.admin-dashboard .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group.full-width {
-  grid-column: 1 / -1;
-}
-
-.form-group label {
-  color: #333333;
-  font-weight: 600;
-  font-size: 0.9rem;
+.admin-dashboard .form-group label {
+  color: #000000;
+  font-weight: 900;
+  font-size: 1rem;
   margin-bottom: 0.5rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-transform: uppercase;
+  font-family: 'Bebas Neue', monospace;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
+.admin-dashboard .form-group input,
+.admin-dashboard .form-group textarea,
+.admin-dashboard .form-group select {
   padding: 0.75rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 3px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: 2px solid #000000;
+  border-radius: 0;
+  font-family: 'Roboto Mono', monospace;
   font-size: 0.95rem;
   color: #000000;
+  background: #ffffff;
 }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
+.admin-dashboard .form-group input:focus,
+.admin-dashboard .form-group textarea:focus,
+.admin-dashboard .form-group select:focus {
   outline: none;
-  border-color: #000000;
-}
-
-.form-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.save-btn {
-  padding: 0.75rem 2rem;
   background: #000000;
   color: #ffffff;
-  border: none;
-  border-radius: 3px;
+}
+
+.admin-dashboard .save-btn {
+  padding: 1rem 3rem;
+  background: #000000;
+  color: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  font-family: 'Bebas Neue', monospace;
+  transition: all 0.2s ease;
 }
 
-.save-btn:hover {
-  background: #333333;
+.admin-dashboard .save-btn:hover {
+  background: #666666;
+  color: #ffffff;
+  box-shadow: 6px 6px 0 #000000;
 }
 
-.cancel-btn {
-  padding: 0.75rem 2rem;
-  background: #f5f5f5;
-  color: #000000;
-  border: 1px solid #e0e0e0;
-  border-radius: 3px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.cancel-btn:hover {
-  background: #e0e0e0;
-}
-
-/* Variants Section */
-.variants-section {
+.admin-dashboard .cancel-btn {
+  padding: 1rem 3rem;
   background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  color: #000000;
+  border: 3px solid #000000;
+  border-radius: 0;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 1.2rem;
+  font-family: 'Bebas Neue', monospace;
+  transition: all 0.2s ease;
+}
+
+.admin-dashboard .cancel-btn:hover {
+  background: #666666;
+  color: #ffffff;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.admin-dashboard .variants-section {
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 0;
   padding: 1.5rem;
   margin-top: 1.5rem;
 }
 
-.variants-section h4 {
-  color: #000000;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.variants-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.variant-item {
+.admin-dashboard .variant-item {
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 0.75rem;
-  background: #f5f5f5;
-  border-radius: 3px;
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 0;
+  margin-bottom: 0.5rem;
 }
 
-.variant-size {
-  font-weight: 600;
-  min-width: 60px;
-  color: #000000;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-
-
-.remove-btn {
+.admin-dashboard .remove-btn {
   padding: 0.5rem 1rem;
-  background: #d32f2f;
-  color: #ffffff;
-  border: none;
-  border-radius: 3px;
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+  border-radius: 0;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 0.85rem;
-  transition: all 0.3s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  font-family: 'Bebas Neue', monospace;
   margin-left: auto;
+  box-shadow: 2px 2px 0 #000000;
 }
 
-.remove-btn:hover {
-  background: #b71c1c;
-}
-
-.add-variant {
-  margin-top: 0.5rem;
-}
-
-.add-variant input {
-  padding: 0.75rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 3px;
-  width: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.add-variant input:focus {
-  outline: none;
-  border-color: #000000;
+.admin-dashboard .remove-btn:hover {
+  background: #666666;
+  color: #ffffff;
+  box-shadow: 4px 4px 0 #000000;
 }
 
 @media (max-width: 768px) {
   .admin-dashboard {
-    padding: 2rem 1rem;
-  }
-
-  .admin-dashboard h1 {
-    font-size: 1.5rem;
-  }
-
-  .admin-tabs {
-    flex-wrap: wrap;
-  }
-
-  .tab-btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-  }
-
-  .admin-stats {
-    grid-template-columns: 1fr;
-  }
-
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .admin-section {
     padding: 1rem;
   }
 
-  .form-grid {
+  .admin-dashboard .admin-table th,
+  .admin-dashboard .admin-table td {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .admin-dashboard .form-grid {
     grid-template-columns: 1fr;
-  }
-
-  .product-form,
-  .category-form {
-    padding: 1.5rem;
-  }
-
-  .users-section {
-    padding: 1rem;
-  }
-
-  .admin-table,
-  .users-table {
-    font-size: 0.85rem;
-  }
-
-  .admin-table th,
-  .admin-table td,
-  .users-table th,
-  .users-table td {
-    padding: 0.75rem;
-  }
-
-  .variant-item {
-    flex-wrap: wrap;
-  }
-
-  .remove-btn {
-    margin-left: 0;
-    width: 100%;
-  }
-
-  .image-upload-container {
-    margin-bottom: 15px;
-  }
-
-  .image-upload-area {
-    border: 2px dashed #ccc;
-    border-radius: 8px;
-    padding: 30px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.3s;
-  }
-
-  .image-upload-area:hover {
-    border-color: #007bff;
-  }
-
-  .file-input-label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-  }
-
-  .file-input {
-    display: none;
-  }
-
-  .upload-icon {
-    font-size: 40px;
-    margin-bottom: 10px;
-  }
-
-  .image-preview {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    margin: 0 auto;
-  }
-
-  .preview-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-  }
-
-  .remove-image-btn {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background: #ff4444;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Product thumbnail in table */
-  .product-thumb {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 4px;
-  }
-
-  .no-image {
-    display: inline-block;
-    padding: 5px 10px;
-    background: #f5f5f5;
-    border-radius: 4px;
-    font-size: 12px;
-    color: #888;
   }
 }

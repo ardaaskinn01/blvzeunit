@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import type { Tables } from '../types/database.types';
+import { supabase } from '../lib/supabase';
 
 // CartItem tipi: Product tablosundan türetilmiş ama beden ve adet bilgisi eklenmiş
 export interface CartItem {
@@ -31,6 +32,8 @@ interface CartContextType {
     updateQuantity: (itemId: string, quantity: number) => void;
     clearCart: () => void;
     cartTotal: number;
+    shippingCost: number;
+    finalTotal: number;
     cartCount: number;
     isCartOpen: boolean;
     toggleCart: () => void;
@@ -46,6 +49,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const [items, setItems] = useState<CartItem[]>([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [userAddress, setUserAddress] = useState<Address | null>(null);
+    const [shippingSettings, setShippingSettings] = useState({
+        cost: 85,
+        freeThreshold: 800
+    });
 
     // 1. Başlangıçta LocalStorage'dan yükle
     useEffect(() => {
@@ -65,7 +72,38 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }
     }, []);
 
-    // 2. Items değiştiğinde LocalStorage'a kaydet
+    // 2. Kargo ayarlarını Supabase'den çek
+    useEffect(() => {
+        const fetchShippingSettings = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('site_settings' as any)
+                    .select('setting_value')
+                    .eq('setting_key', 'shipping')
+                    .single();
+
+                if (error) {
+                    console.error('Failed to fetch shipping settings:', error);
+                    return;
+                }
+
+                const settingData = data as any;
+                if (settingData?.setting_value) {
+                    const settingValue = settingData.setting_value;
+                    setShippingSettings({
+                        cost: settingValue.cost || 85,
+                        freeThreshold: settingValue.freeThreshold || 800
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching shipping settings:', error);
+            }
+        };
+
+        fetchShippingSettings();
+    }, []);
+
+    // 3. Items değiştiğinde LocalStorage'a kaydet
     useEffect(() => {
         try {
             localStorage.setItem('shopping-cart', JSON.stringify(items));
@@ -146,6 +184,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const cartTotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
     const cartCount = items.reduce((count, item) => count + item.quantity, 0);
 
+    // Kargo hesaplama - artık dinamik
+    const shippingCost = items.length === 0
+        ? 0
+        : (cartTotal >= shippingSettings.freeThreshold ? 0 : shippingSettings.cost);
+
+    const finalTotal = cartTotal + shippingCost;
+
     return (
         <CartContext.Provider
             value={{
@@ -155,6 +200,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 updateQuantity,
                 clearCart,
                 cartTotal,
+                shippingCost,
+                finalTotal,
                 cartCount,
                 isCartOpen,
                 toggleCart,

@@ -44,6 +44,15 @@ export default function AdminDashboard() {
   // Gerçek tip: import { Discount } from '../../utils/discount-utils';
   const [discounts, setDiscounts] = useState<any[]>([]);
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
+  const [shippingSettings, setShippingSettings] = useState({
+    cost: 85,
+    freeThreshold: 800
+  });
+  const [editingShipping, setEditingShipping] = useState(false);
+  const [tempShippingSettings, setTempShippingSettings] = useState({
+    cost: 85,
+    freeThreshold: 800
+  });
 
   // Loading & Error states
   const [loading, setLoading] = useState(false); // Başlangıçta false, sadece fetchAllData çağrıldığında true olacak
@@ -132,13 +141,9 @@ export default function AdminDashboard() {
     if (!confirm('Siparişi kargolanmış olarak işaretlemek istiyor musunuz?')) return;
 
     try {
-      // Determine tracking URL based on carrier (simple logic for now)
-      let trackingUrl = null;
-      if (input.carrier.toLowerCase().includes('mng')) {
-        trackingUrl = `https://kargotakip.mngkargo.com.tr/?takipNo=${input.trackingNumber}`;
-      } else if (input.carrier.toLowerCase().includes('yurtiçi') || input.carrier.toLowerCase().includes('yurtici')) {
-        trackingUrl = `https://yurticikargo.com/tr/online-servisler/gonderi-sorgula?code=${input.trackingNumber}`;
-      }
+      // Fixed tracking URL for DHL Ecommerce
+      const trackingUrl = `https://www.dhl.com/tr-tr/home/tracking.html?tracking-id=${input.trackingNumber}`;
+      const carrier = 'DHL Ecommerce';
 
       const { error } = await supabase
         .from('orders')
@@ -166,7 +171,7 @@ export default function AdminDashboard() {
               orderId,
               trackingNumber: input.trackingNumber,
               trackingUrl,
-              carrier: input.carrier
+              carrier: carrier
             })
           });
         }
@@ -186,6 +191,97 @@ export default function AdminDashboard() {
       alert('Sipariş başarıyla kargolandı olarak güncellendi.');
     } catch (err: any) {
       console.error('Kargo güncelleme hatası:', err);
+      alert('Hata: ' + err.message);
+    }
+  };
+
+  const handleResetShipping = async (orderId: string) => {
+    if (!confirm('Kargo bilgilerini sıfırlamak ve siparişi tekrar hazırlanıyor durumuna almak istiyor musunuz?')) return;
+
+    try {
+      const { error } = await supabase
+        .from('orders')
+        .update({
+          status: 'preparing',
+          cargo_tracking_number: null,
+          cargo_tracking_url: null,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', orderId);
+
+      if (error) throw error;
+
+      // Refresh local state
+      setOrders(prev => prev.map(o => o.id === orderId ? {
+        ...o,
+        status: 'preparing',
+        cargo_tracking_number: null,
+        cargo_tracking_url: null
+      } : o));
+
+      // Clear tracking inputs for this order
+      setTrackingInputs(prev => {
+        const updated = { ...prev };
+        delete updated[orderId];
+        return updated;
+      });
+
+      alert('Kargo bilgileri sıfırlandı. Sipariş tekrar hazırlanıyor durumuna alındı.');
+    } catch (err: any) {
+      console.error('Kargo sıfırlama hatası:', err);
+      alert('Hata: ' + err.message);
+    }
+  };
+
+  // Fetch shipping settings from database
+  const fetchShippingSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('site_settings' as any)
+        .select('setting_value')
+        .eq('setting_key', 'shipping')
+        .single();
+
+      if (error) {
+        console.error('Failed to fetch shipping settings:', error);
+        return;
+      }
+
+      const settingData = data as any;
+      if (settingData?.setting_value) {
+        const settings = {
+          cost: settingData.setting_value.cost || 85,
+          freeThreshold: settingData.setting_value.freeThreshold || 800
+        };
+        setShippingSettings(settings);
+        setTempShippingSettings(settings);
+      }
+    } catch (error) {
+      console.error('Error fetching shipping settings:', error);
+    }
+  };
+
+  // Update shipping settings
+  const handleUpdateShipping = async () => {
+    try {
+      const { error } = await supabase
+        .from('site_settings' as any)
+        .update({
+          setting_value: {
+            cost: tempShippingSettings.cost,
+            freeThreshold: tempShippingSettings.freeThreshold
+          },
+          updated_at: new Date().toISOString()
+        })
+        .eq('setting_key', 'shipping');
+
+      if (error) throw error;
+
+      setShippingSettings(tempShippingSettings);
+      setEditingShipping(false);
+      alert('Kargo ayarları başarıyla güncellendi!');
+    } catch (err: any) {
+      console.error('Kargo ayarları güncelleme hatası:', err);
       alert('Hata: ' + err.message);
     }
   };
@@ -425,6 +521,9 @@ export default function AdminDashboard() {
       if (!ordersError) {
         setOrders(ordersData as OrderWithItems[]);
       }
+
+      // 6. Kargo ayarlarını çekme
+      await fetchShippingSettings();
 
 
       setHasFetched(true); // ✅ Başarılıysa bu bayrağı ayarla!
@@ -840,7 +939,7 @@ export default function AdminDashboard() {
             className={`tab-btn ${activeTab === 'stats' ? 'active' : ''}`}
             onClick={() => setActiveTab('stats')}
           >
-            İstatistikler
+            İstatİstİkler
           </button>
           <button
             className={`tab-btn ${activeTab === 'products' ? 'active' : ''}`}
@@ -852,7 +951,7 @@ export default function AdminDashboard() {
             className={`tab-btn ${activeTab === 'categories' ? 'active' : ''}`}
             onClick={() => setActiveTab('categories')}
           >
-            Koleksiyonlar
+            Koleksİyonlar
           </button>
           <button
             className={`tab-btn ${activeTab === 'users' ? 'active' : ''}`}
@@ -864,13 +963,13 @@ export default function AdminDashboard() {
             className={`tab-btn ${activeTab === 'discounts' ? 'active' : ''}`}
             onClick={() => setActiveTab('discounts')}
           >
-            İndirimler
+            İndirİmler
           </button>
           <button
             className={`tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
             onClick={() => setActiveTab('orders')}
           >
-            Siparişler
+            Sİparİşler
           </button>
         </div>
 
@@ -883,11 +982,11 @@ export default function AdminDashboard() {
               <p className="stat-number">{profiles.length}</p>
             </div>
             <div className="stat-card">
-              <h3>Site Üyeleri</h3>
+              <h3>Sİte Üyelerİ</h3>
               <p className="stat-number">{guestCount}</p>
             </div>
             <div className="stat-card">
-              <h3>Admin</h3>
+              <h3>Admİn</h3>
               <p className="stat-number">{profiles.filter(p => p.role === 'admin').length}</p>
             </div>
             <div className="stat-card">
@@ -895,8 +994,114 @@ export default function AdminDashboard() {
               <p className="stat-number">{products.length}</p>
             </div>
             <div className="stat-card">
-              <h3>Toplam Kategori</h3>
+              <h3>Toplam Kategorİ</h3>
               <p className="stat-number">{categories.length}</p>
+            </div>
+
+            {/* Kargo Ayarları Kartı */}
+            <div className="stat-card" style={{ gridColumn: '1 / -1', marginTop: '2rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <h3>Kargo Ayarları</h3>
+                {!editingShipping ? (
+                  <button
+                    onClick={() => setEditingShipping(true)}
+                    style={{
+                      padding: '0.5rem 1rem',
+                      backgroundColor: '#007bff',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Düzenle
+                  </button>
+                ) : (
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button
+                      onClick={handleUpdateShipping}
+                      style={{
+                        padding: '0.5rem 1rem',
+                        backgroundColor: '#28a745',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Kaydet
+                    </button>
+                    <button
+                      onClick={() => {
+                        setTempShippingSettings(shippingSettings);
+                        setEditingShipping(false);
+                      }}
+                      style={{
+                        padding: '0.5rem 1rem',
+                        backgroundColor: '#6c757d',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      İptal
+                    </button>
+                  </div>
+                )}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+                    Kargo Ücretİ (TL)
+                  </label>
+                  {editingShipping ? (
+                    <input
+                      type="number"
+                      value={tempShippingSettings.cost}
+                      onChange={(e) => setTempShippingSettings({
+                        ...tempShippingSettings,
+                        cost: Number(e.target.value)
+                      })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #ddd',
+                        borderRadius: '4px'
+                      }}
+                    />
+                  ) : (
+                    <p className="stat-number" style={{ fontSize: '1.5rem', margin: 0 }}>
+                      ₺{shippingSettings.cost}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+                    Ücretsİz Kargo Limitİ (TL)
+                  </label>
+                  {editingShipping ? (
+                    <input
+                      type="number"
+                      value={tempShippingSettings.freeThreshold}
+                      onChange={(e) => setTempShippingSettings({
+                        ...tempShippingSettings,
+                        freeThreshold: Number(e.target.value)
+                      })}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #ddd',
+                        borderRadius: '4px'
+                      }}
+                    />
+                  ) : (
+                    <p className="stat-number" style={{ fontSize: '1.5rem', margin: 0 }}>
+                      ₺{shippingSettings.freeThreshold}+
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -904,7 +1109,7 @@ export default function AdminDashboard() {
         {activeTab === 'products' && (
           <div className="admin-section">
             <div className="section-header">
-              <h2>Ürün Yönetimi</h2>
+              <h2>Ürün Yönetİmİ</h2>
               <button
                 className="add-btn"
                 onClick={() => {
@@ -1108,7 +1313,7 @@ export default function AdminDashboard() {
 
             {editingProduct && showProductForm && (
               <div className="variants-section">
-                <h4>Beden Yönetimi</h4>
+                <h4>Beden Yönetİmİ</h4>
                 <div className="variants-list">
                   {productVariants.map(variant => (
                     <div key={variant.id} className="variant-item">
@@ -1195,7 +1400,7 @@ export default function AdminDashboard() {
         {activeTab === 'categories' && (
           <div className="admin-section">
             <div className="section-header">
-              <h2>Koleksiyon Yönetimi</h2>
+              <h2>Koleksiyon Yönetİmİ</h2>
               <button
                 className="add-btn"
                 onClick={() => setShowCategoryForm(true)}
@@ -1291,7 +1496,7 @@ export default function AdminDashboard() {
 
         {activeTab === 'users' && (
           <div className="admin-section">
-            <h2>Kullanıcı Yönetimi</h2>
+            <h2>Kullanıcı Yönetİmİ</h2>
 
             {loading ? (
               <p>Yükleniyor...</p>
@@ -1346,7 +1551,7 @@ export default function AdminDashboard() {
         {activeTab === 'discounts' && (
           <div className="admin-section">
             <div className="section-header">
-              <h2>İndirim Yönetimi</h2>
+              <h2>İndirim Yönetİmİ</h2>
               <button
                 className="add-btn"
                 onClick={() => setShowDiscountForm(true)}
@@ -1356,7 +1561,7 @@ export default function AdminDashboard() {
             </div>
 
             {showDiscountForm && (
-              <div className="category-form" style={{ maxWidth: '600px' }}>
+              <div className="category-form" style={{ maxWidth: '800px' }}>
                 <h3>Yeni İndirim Kampanyası</h3>
                 <div className="form-grid">
                   <div className="form-group full-width">
@@ -1375,12 +1580,12 @@ export default function AdminDashboard() {
                       onChange={e => setNewDiscount({ ...newDiscount, discount_type: e.target.value })}
                     >
                       <option value="product">Tek Ürün</option>
-                      <option value="bulk">Tüm Koleksiyonlar</option>
+                      <option value="bulk">Koleksiyonlar</option>
                     </select>
                   </div>
 
                   <div className="form-group">
-                    <label>İndirim Oranı (%)</label>
+                    <label>İndİrİm Oranı (%)</label>
                     <input
                       type="number"
                       value={newDiscount.discount_value}
@@ -1391,7 +1596,7 @@ export default function AdminDashboard() {
 
                   {newDiscount.discount_type === 'product' ? (
                     <div className="form-group full-width">
-                      <label>Ürün Seçin</label>
+                      <label>Ürün Seçİn</label>
                       <select
                         value={newDiscount.product_id}
                         onChange={e => setNewDiscount({ ...newDiscount, product_id: e.target.value })}
@@ -1404,13 +1609,13 @@ export default function AdminDashboard() {
                     </div>
                   ) : (
                     <div className="form-group full-width">
-                      <label>Koleksiyon Seçin</label>
+                      <label>Koleksİyon Seçİn</label>
                       <select
                         value={newDiscount.category}
                         onChange={e => setNewDiscount({ ...newDiscount, category: e.target.value })}
                       >
                         <option value="">Seçiniz...</option>
-                        <option value="all">TÜM ÜRÜNLER (Genel İndirim)</option>
+                        <option value="all">TÜM ÜRÜNLER (Genel İndİrim)</option>
                         {categories.map(c => (
                           <option key={c.id} value={c.name}>{c.name}</option>
                         ))}
@@ -1419,7 +1624,7 @@ export default function AdminDashboard() {
                   )}
 
                   <div className="form-group">
-                    <label>Başlangıç Tarihi</label>
+                    <label>Başlangıç Tarİhİ</label>
                     <input
                       type="datetime-local"
                       value={newDiscount.start_date}
@@ -1428,7 +1633,7 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="form-group">
-                    <label>Bitiş Tarihi</label>
+                    <label>Bitiş Tarİhi</label>
                     <input
                       type="datetime-local"
                       value={newDiscount.end_date}
@@ -1499,7 +1704,7 @@ export default function AdminDashboard() {
         {activeTab === 'orders' && (
           <div className="admin-orders">
             <div className="section-header">
-              <h2>Sipariş Yönetimi</h2>
+              <h2>Sipariş Yönetİmİ</h2>
               <div style={{ fontSize: '0.9rem', color: '#666' }}>
                 Toplam {orders.length} sipariş
               </div>
@@ -1572,21 +1777,12 @@ export default function AdminDashboard() {
                     {/* Manual Shipping Form */}
                     {(order.status === 'preparing' || order.status === 'pending') && (
                       <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid #eee' }}>
-                        <h4 style={{ fontSize: '0.9rem', marginBottom: '0.5rem' }}>Manuel Kargo Girişi</h4>
+                        <h4 style={{ fontSize: '0.9rem', marginBottom: '0.5rem' }}>Kargo Girişi (DHL Ecommerce)</h4>
                         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                          <div style={{ flex: 1, minWidth: '150px' }}>
+                          <div style={{ flex: 1, minWidth: '200px' }}>
                             <input
                               type="text"
-                              placeholder="Kargo Firması (Örn: MNG, Yurtiçi)"
-                              value={trackingInputs[order.id]?.carrier || ''}
-                              onChange={e => setTrackingInputs(prev => ({ ...prev, [order.id]: { ...prev[order.id] || {}, carrier: e.target.value } }))}
-                              style={{ width: '100%', padding: '0.5rem', border: '1px solid #ddd', borderRadius: '4px' }}
-                            />
-                          </div>
-                          <div style={{ flex: 2, minWidth: '200px' }}>
-                            <input
-                              type="text"
-                              placeholder="Takip Numarası"
+                              placeholder="DHL Takip Numarası"
                               value={trackingInputs[order.id]?.trackingNumber || ''}
                               onChange={e => setTrackingInputs(prev => ({ ...prev, [order.id]: { ...prev[order.id] || {}, trackingNumber: e.target.value } }))}
                               style={{ width: '100%', padding: '0.5rem', border: '1px solid #ddd', borderRadius: '4px' }}
@@ -1603,9 +1799,46 @@ export default function AdminDashboard() {
                               cursor: 'pointer'
                             }}
                           >
-                            Kargola
+                            Kargoladım
                           </button>
                         </div>
+                      </div>
+                    )}
+
+                    {/* Shipped Order Info with Reset Option */}
+                    {order.status === 'shipped' && order.cargo_tracking_number && (
+                      <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid #eee', backgroundColor: '#f8f9fa', padding: '1rem', borderRadius: '4px' }}>
+                        <h4 style={{ fontSize: '0.9rem', marginBottom: '0.5rem', color: '#28a745' }}>✓ Kargolandı</h4>
+                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
+                          <div>
+                            <strong>Takip No:</strong> {order.cargo_tracking_number}
+                          </div>
+                          {order.cargo_tracking_url && (
+                            <a
+                              href={order.cargo_tracking_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ color: '#007bff', textDecoration: 'underline' }}
+                            >
+                              Kargo Takip Et
+                            </a>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => handleResetShipping(order.id)}
+                          style={{
+                            padding: '0.4rem 0.8rem',
+                            backgroundColor: '#dc3545',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '0.85rem',
+                            marginTop: '0.5rem'
+                          }}
+                        >
+                          ↺ Kargo Bilgilerini Sıfırla
+                        </button>
                       </div>
                     )}
                   </div>

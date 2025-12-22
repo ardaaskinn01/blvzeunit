@@ -370,7 +370,6 @@ export default function ProductPage() {
                   : 'SEPETE EKLE'
                 }
               </button>
-              <button className="add-to-wishlist">FAVORİ</button>
             </div>
 
           </div>
