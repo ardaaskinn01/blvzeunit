@@ -284,6 +284,17 @@
   margin-bottom: 1.5rem;
 }
 
+.admin-dashboard .form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.admin-dashboard .form-group.full-width {
+  grid-column: 1 / -1;
+}
+
 .admin-dashboard .form-group label {
   color: #000000;
   font-weight: 900;
@@ -296,6 +307,8 @@
 .admin-dashboard .form-group input,
 .admin-dashboard .form-group textarea,
 .admin-dashboard .form-group select {
+  width: 100%;
+  box-sizing: border-box;
   padding: 0.75rem;
   border: 2px solid #000000;
   border-radius: 0;
@@ -311,6 +324,13 @@
   outline: none;
   background: #000000;
   color: #ffffff;
+}
+
+.admin-dashboard .form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .admin-dashboard .save-btn {

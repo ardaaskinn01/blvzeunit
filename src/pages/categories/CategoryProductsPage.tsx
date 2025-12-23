@@ -468,6 +468,7 @@ export default function CategoryProductsPage() {
                             cursor: 'pointer',
                             fontWeight: 'bold',
                             fontSize: '1rem',
+                            color: 'black', // Metin rengini siyah yap
                           }}
                         >
                           {variant.size}
@@ -490,6 +491,7 @@ export default function CategoryProductsPage() {
                     cursor: 'pointer',
                     width: '100%',
                     fontWeight: '600',
+                    color: 'black', // Metin rengini siyah yap
                   }}
                 >
                   İptal

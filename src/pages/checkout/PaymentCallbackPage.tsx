@@ -11,17 +11,18 @@ export default function PaymentCallbackPage() {
 
     useEffect(() => {
         // Eğer iframe içindeysek, parent'a mesaj at
-        if (window.self !== window.top) {
+        // Eğer iframe içindeysek, parent window'u yönlendir (Break out of iframe)
+        if (window.self !== window.top && window.top) {
             const status = searchParams.get('status');
             const paymentId = searchParams.get('paymentId');
             const message = searchParams.get('message');
 
-            if (status === 'success') {
-                window.parent.postMessage({ type: 'PAYMENT_SUCCESS', paymentId }, '*');
-            } else {
-                window.parent.postMessage({ type: 'PAYMENT_FAILURE', message }, '*');
-            }
-            return; // React render'a devam etmesin veya loading göstersin
+            const destination = status === 'success'
+                ? `/payment-callback?status=success&paymentId=${paymentId}`
+                : `/payment-callback?status=failure&message=${message || 'Unknown error'}`;
+
+            window.top.location.href = destination;
+            return;
         }
 
         const token = searchParams.get('token');
@@ -33,7 +34,11 @@ export default function PaymentCallbackPage() {
             if (statusParam === 'success') {
                 setStatus('success');
                 setMessage('Ödemeniz başarıyla tamamlandı! Siparişiniz hazırlanıyor.');
-                clearCart();
+                try {
+                    clearCart();
+                } catch (e) {
+                    console.error('Sepet temizlenirken hata:', e);
+                }
                 setTimeout(() => navigate('/'), 3000);
             } else {
                 setStatus('error');

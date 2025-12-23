@@ -174,8 +174,7 @@ export default function TermsOfServicePage() {
                 <section>
                     <h2>10. KİŞİSEL VERİLERİN KORUNMASI</h2>
                     <p>
-                        Kişisel verilerinizin işlenmesi ve korunması <a href="/privacy-policy">Gizlilik Politikası</a>
-                        sayfamızda detaylandırılmıştır. 6698 sayılı KVKK kapsamında haklarınız saklıdır.
+                        Kişisel verilerinizin işlenmesi ve korunması <a href="/privacy-policy">Gizlilik Politikası</a> sayfamızda detaylandırılmıştır. 6698 sayılı KVKK kapsamında haklarınız saklıdır.
                     </p>
                 </section>
 

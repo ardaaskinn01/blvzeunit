@@ -90,7 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // isAdmin hesaplamasını düzelt:
   const isAdmin = React.useMemo(() => {
     // ÖNCE: Email kontrolü (bu her zaman çalışır)
-    if (user?.email === 'ardaaskindm@gmail.com' || user?.email === 'ardaaskinp@hotmail.com' || user?.email === 'byhsyncyln1@gmail.com') {
+    if (user?.email === 'ardaaskindm@gmail.com' || user?.email === 'byhsyncyln1@gmail.com') {
       console.log('✅ Admin detected via email');
       return true;
     }

@@ -21,7 +21,6 @@ export default function RefundPolicyPage() {
                         İade edilecek ürünlerde aşağıdaki koşullar aranır:
                     </p>
                     <ul>
-                        <li>Ürün kullanılmamış, denenmemiş olmalıdır</li>
                         <li>Etiketleri sökülmemiş ve orijinal ambalajında olmalıdır</li>
                         <li>Satış faturası veya fişi ile birlikte gönderilmelidir</li>
                         <li>Üzerinde herhangi bir koku, leke veya hasar bulunmamalıdır</li>
