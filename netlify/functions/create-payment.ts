@@ -158,7 +158,7 @@ export const handler: Handler = async (event): Promise<HandlerResponse> => {
             basketId: requestData.basketId,
             paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
             paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
-            callbackUrl: process.env.PAYMENT_CALLBACK_URL || `${process.env.SITE_URL || 'http://localhost:8888'}/.netlify/functions/payment-callback`,
+            callbackUrl: `${process.env.SITE_URL}/.netlify/functions/payment-callback`,
             enabledInstallments: [1],
             installment: requestData.installment || 1,
             buyer: {

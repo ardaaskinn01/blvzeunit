@@ -14,7 +14,7 @@ interface ProfileRow {
   id: string;
   email: string;
   full_name: string | null;
-  role: 'guest' | 'admin';
+  role: 'customer' | 'admin';
   created_at: string;
 }
 
@@ -881,7 +881,7 @@ export default function AdminDashboard() {
   };
 
   // User functions
-  const handleRoleChange = async (userId: string, newRole: 'guest' | 'admin') => {
+  const handleRoleChange = async (userId: string, newRole: 'customer' | 'admin') => {
     try {
       const { error } = await supabase
         .from('profiles')
@@ -1520,11 +1520,11 @@ export default function AdminDashboard() {
                         <td>
                           <select
                             value={profile.role}
-                            onChange={(e) => handleRoleChange(profile.id, e.target.value as 'guest' | 'admin')}
+                            onChange={(e) => handleRoleChange(profile.id, e.target.value as 'customer' | 'admin')}
                             className={`role-select role-${profile.role}`}
                             disabled={profile.id === user?.id}
                           >
-                            <option value="guest">Müşteri</option>
+                            <option value="customer">Müşteri</option>
                             <option value="admin">Admin</option>
                           </select>
                         </td>
