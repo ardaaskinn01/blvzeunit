@@ -193,7 +193,6 @@
 
     .summary-section {
         position: static;
-        order: -1;
         /* Summary shown first on mobile if needed, or keep order */
     }
 }

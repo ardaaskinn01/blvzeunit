@@ -12,12 +12,12 @@ export default function CartPage() {
     if (items.length === 0) {
         return (
             <div className="cart-container">
-                <h1 className="cart-header">Alışveriş Sepeti</h1>
+                <h1 className="cart-header">ALIŞVERİŞ SEPETİ</h1>
                 <div className="empty-cart">
-                    <h2>Sepetiniz boş</h2>
-                    <p style={{ margin: '1rem 0 2rem' }}>Henüz sepetinize ürün eklemediniz.</p>
+                    <h2>SEPETİNİZ BOŞ</h2>
+                    <p style={{ margin: '1rem 0 2rem' }}>HENÜZ SEPETİNİZE ÜRÜN EKLEMEDİNİZ.</p>
                     <Link to="/categories/all" className="checkout-btn" style={{ display: 'inline-block', width: 'auto' }}>
-                        Alışverİşe Devam Et
+                        ALIŞVERİŞE DEVAM ET
                     </Link>
                 </div>
             </div>
@@ -26,13 +26,13 @@ export default function CartPage() {
 
     return (
         <div className="cart-container">
-            <h1 className="cart-header">Alışveriş Sepeti ({items.length} Ürün)</h1>
+            <h1 className="cart-header">ALIŞVERİŞ SEPETİ ({items.length} ÜRÜN)</h1>
 
             {/* Kayıtlı adres bilgisi gösterimi */}
             {userAddress && (
                 <div className="address-notice">
                     <div>
-                        <strong>📦 Kayıtlı Adresiniz:</strong>
+                        <strong>📦 KAYITLI ADRESİNİZ:</strong>
                         <div style={{ marginTop: '0.5rem' }}>
                             {userAddress.recipientName} - {userAddress.city}/{userAddress.district}
                         </div>
@@ -48,7 +48,7 @@ export default function CartPage() {
                             fontSize: '0.9rem',
                         }}
                     >
-                        Değiştir
+                        DEĞİŞTİR
                     </button>
                 </div>
             )}
@@ -69,7 +69,7 @@ export default function CartPage() {
                                     <h3 className="cart-item-title">{item.name}</h3>
                                 </Link>
                                 <div className="cart-item-meta">Beden: {item.size}</div>
-                                <div className="cart-item-meta">Birim Fiyat: {item.price.toLocaleString('tr-TR')} TL</div>
+                                <div className="cart-item-meta">BİRİM FİYAT: {item.price.toLocaleString('tr-TR')} TL</div>
 
                                 <div className="quantity-control">
                                     <button
@@ -105,7 +105,7 @@ export default function CartPage() {
 
                 {/* Özet */}
                 <div className="cart-summary">
-                    <h2 style={{ marginBottom: '1.5rem' }}>Sipariş Özeti</h2>
+                    <h2 style={{ marginBottom: '1.5rem' }}>SİPARİŞ ÖZETİ</h2>
 
                     <div className="summary-row">
                         <span>Ara Toplam</span>

@@ -238,7 +238,7 @@ export default function HomePage() {
             <div className="lookbook-content">
               <h2>{lookbookData.title}</h2>
               <p>{lookbookData.subtitle}</p>
-              <Link to="/categories/all" className="cta-button lookbook-cta">
+              <Link to="/categories/money-talks" className="cta-button lookbook-cta">
                 {lookbookData.cta}
               </Link>
             </div>

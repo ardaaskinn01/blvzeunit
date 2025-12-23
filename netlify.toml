@@ -10,7 +10,11 @@
   publish = "dist"
   autoLaunch = true
 
-[functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
   external_node_modules = ["iyzipay"]
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

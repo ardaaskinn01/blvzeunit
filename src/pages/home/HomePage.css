@@ -674,14 +674,19 @@
     font-size: 1.2rem;
   }
 
-  .categories-scroll-container {
-    gap: 0.5rem;
+  .scroll-button {
+    display: none !important;
   }
 
-  .scroll-button {
-    width: 40px;
-    height: 40px;
-    font-size: 1.5rem;
+  .categories-scroll-container {
+    padding: 0 10px;
+  }
+
+  .categories-scroll {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-x: visible;
+    gap: 1.5rem;
   }
 
   .category-scroll-item {
@@ -704,6 +709,10 @@
 
   .marquee-content {
     font-size: 1.2rem;
+  }
+
+  .product-image img {
+    object-fit: contain;
   }
 
   .reviews-grid {

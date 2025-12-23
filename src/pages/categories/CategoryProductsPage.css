@@ -312,4 +312,8 @@
   .product-image {
     height: 180px;
   }
+
+  .product-image img {
+    object-fit: contain;
+  }
 }

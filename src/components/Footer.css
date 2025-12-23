@@ -186,8 +186,19 @@
   }
 
   .footer-content {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+  }
+
+  .footer-section:first-child,
+  .footer-section:last-child {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+
+  .footer-section h3,
+  .footer-section:last-child p {
+    text-align: center;
   }
 
   .footer-bottom {
@@ -200,16 +211,23 @@
   }
 
   .iyzico-logo {
-    height: 30px;
-  }
-
-  .payment-band-logo {
     height: 25px;
   }
 
+  .payment-band-logo {
+    height: 20px;
+  }
+
   .trust-logos {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 2rem;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .etbis-logo {
+    height: 35px;
+    margin: 0;
   }
 }

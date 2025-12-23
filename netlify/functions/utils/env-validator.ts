@@ -1,11 +1,4 @@
-/**
- * Environment Variable Validator
- * 
- * Bu utility, Netlify Functions'ın çalışması için gerekli tüm environment variable'ların
- * mevcut olduğunu doğrular. Eksik variable varsa hata fırlatır.
- * 
- * Her function'ın başında çağrılmalıdır.
- */
+
 
 const REQUIRED_ENV_VARS = [
     'IYZICO_API_KEY',
@@ -29,7 +22,7 @@ export function validateEnvironment(): void {
 
     // Production-specific validation
     if (process.env.NODE_ENV === 'production') {
-        const productionVars = ['SITE_URL', 'PAYMENT_CALLBACK_URL'];
+        const productionVars = ['SITE_URL'];
         const missingProd = productionVars.filter(key => !process.env[key]);
 
         if (missingProd.length > 0) {
