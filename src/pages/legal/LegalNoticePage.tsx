@@ -1,7 +1,9 @@
 
 import './LegalPages.css';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 export default function LegalNoticePage() {
+    const { settings } = useSiteSettings();
     // ... (mevcut import ve component tanımı)
 
     return (
@@ -16,10 +18,10 @@ export default function LegalNoticePage() {
                         {/* Yasal Zorunlu Unvan: Şahıs şirketi sahibinin adı */}
                         <p><strong>Unvan:</strong> HÜSEYİN CEYLAN</p>
                         <p><strong>Marka Adı:</strong> BLVZEUNIT</p>
-                        <p><strong>Adres:</strong> 4562 Sokak No:31 Kat:2 Daire:2 Sevgi Mahallesi Karabağlar/İzmir</p>
-                        <p><strong>Email:</strong> <a href="mailto:blvzeunit@gmail.com">blvzeunit@gmail.com</a></p>
+                        <p><strong>Adres:</strong> {settings.contact_address}</p>
+                        <p><strong>Email:</strong> <a href={`mailto:${settings.contact_email}`}>{settings.contact_email}</a></p>
                         {/* Zorunlu Bilgiler */}
-                        <p><strong>Telefon:</strong> +90 539 812 60 60</p>
+                        {settings.contact_phone && <p><strong>Telefon:</strong> {settings.contact_phone}</p>}
                         <p><strong>Vergi Dairesi:</strong> Karabağlar Vergi Dairesi Müdürlüğü</p>
                         {/* VKN/TCKN yasal unvanın kim olduğunu belirtir */}
                         <p><strong>Vergi Numarası:</strong> 2080909268</p>

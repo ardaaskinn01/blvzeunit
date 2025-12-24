@@ -18,7 +18,7 @@ interface ProfileRow {
   created_at: string;
 }
 
-type Tab = 'stats' | 'products' | 'categories' | 'users' | 'discounts' | 'orders';
+type Tab = 'stats' | 'products' | 'categories' | 'users' | 'discounts' | 'orders' | 'settings';
 
 export default function AdminDashboard() {
   const { isAdmin, user, loading: authLoading, profile: _profile } = useAuth();
@@ -54,6 +54,13 @@ export default function AdminDashboard() {
     freeThreshold: 800
   });
 
+  // Site Settings
+  const [contactSettings, setContactSettings] = useState({
+    contact_email: '',
+    contact_phone: '',
+    contact_address: ''
+  });
+
   // Loading & Error states
   const [loading, setLoading] = useState(false); // Başlangıçta false, sadece fetchAllData çağrıldığında true olacak
   const [error, setError] = useState('');
@@ -67,6 +74,10 @@ export default function AdminDashboard() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [uploading, setUploading] = useState(false);
+
+  // Additional images upload states
+  const [additionalImageFiles, setAdditionalImageFiles] = useState<File[]>([]);
+  const [additionalImagePreviews, setAdditionalImagePreviews] = useState<string[]>([]);
 
   // 2. Cleanup useEffect: Bileşen kaldırıldığında bayrağı false yap
   useEffect(() => {
@@ -101,8 +112,9 @@ export default function AdminDashboard() {
     shipping_info: '',
     tags: [] as string[],
     size_options: [] as string[],
-    desi: null as number | null,          // Yeni
-    weight_kg: null as number | null,     // Yeni
+    desi: null as number | null,
+    weight_kg: null as number | null,
+    additional_images: [] as string[],
   });
 
   // Category editing
@@ -463,6 +475,76 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchContactSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('site_settings' as any)
+        .select('setting_value')
+        .eq('setting_key', 'contact')
+        .single();
+
+      if (error) {
+        console.warn('Could not fetch site settings:', error.message);
+        return;
+      }
+
+      if (data && 'setting_value' in data) {
+        const value = data.setting_value as any;
+        if (value) {
+          setContactSettings({
+            contact_email: value.contact_email || '',
+            contact_phone: value.contact_phone || '',
+            contact_address: value.contact_address || ''
+          });
+        }
+      }
+    } catch (err: any) {
+      console.error('Error fetching contact settings:', err);
+    }
+  };
+
+  const handleUpdateContactSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      // Upsert: Try to update, if not found (because of RLS or non-existence), it inserts? 
+      // Actually standard upsert in Supabase works with primary key or unique constraint.
+      // Since we don't know the ID, we first check if it exists.
+
+      // Let's rely on a simpler approach: Delete first then Insert is risky if deletion works and insertion fails.
+      // Better: Check existence -> Update or Insert.
+
+      const { data: existing } = await supabase
+        .from('site_settings' as any)
+        .select('id')
+        .eq('setting_key', 'contact')
+        .single();
+
+      let error;
+
+      if (existing) {
+        const { error: updError } = await supabase
+          .from('site_settings' as any)
+          .update({ setting_value: contactSettings, updated_at: new Date().toISOString() })
+          .eq('setting_key', 'contact');
+        error = updError;
+      } else {
+        const { error: insError } = await supabase
+          .from('site_settings' as any)
+          .insert({
+            setting_key: 'contact',
+            setting_value: contactSettings
+          });
+        error = insError;
+      }
+
+      if (error) throw error;
+
+      alert('İletişim bilgileri güncellendi.');
+    } catch (err: any) {
+      alert('Hata: ' + err.message);
+    }
+  };
+
   // Fetch all data - useCallback ile sarmalayalım ki dependency array'de kullanabilelim
   // fetchAllData fonksiyonunu bu şekilde değiştirin:
   // Fetch all data
@@ -524,6 +606,9 @@ export default function AdminDashboard() {
 
       // 6. Kargo ayarlarını çekme
       await fetchShippingSettings();
+
+      // 7. İletişim ayarlarını çekme
+      await fetchContactSettings();
 
 
       setHasFetched(true); // ✅ Başarılıysa bu bayrağı ayarla!
@@ -631,6 +716,37 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleAdditionalImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+
+    // Validate files
+    for (const file of files) {
+      if (!file.type.startsWith('image/')) {
+        setError('Lütfen sadece resim dosyaları seçin');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Dosya boyutu 5MB\'dan küçük olmalı');
+        return;
+      }
+    }
+
+    setAdditionalImageFiles(files);
+
+    // Create previews
+    const previews: string[] = [];
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        previews.push(reader.result as string);
+        if (previews.length === files.length) {
+          setAdditionalImagePreviews(previews);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleEditProduct = async (product: Product) => {
     setEditingProduct(product);
     const sizeOptions = product.size_options || [];
@@ -645,13 +761,19 @@ export default function AdminDashboard() {
       shipping_info: product.shipping_info || '',
       tags: product.tags || [],
       size_options: sizeOptions,
-      desi: (product as any).desi || null,  // Type assertion - veritabanında yoksa
-      weight_kg: (product as any).weight_kg || null, // Type assertion
+      desi: (product as any).desi || null,
+      weight_kg: (product as any).weight_kg || null,
+      additional_images: (product as any).additional_images || [],
     });
 
     // Set image preview if exists
     if (product.image_url) {
       setImagePreview(product.image_url);
+    }
+
+    // Set additional image previews if exist
+    if ((product as any).additional_images) {
+      setAdditionalImagePreviews((product as any).additional_images);
     }
 
     setSizeInput(sizeOptions.join(','));
@@ -669,6 +791,19 @@ export default function AdminDashboard() {
         if (uploadedUrl) {
           imageUrl = uploadedUrl;
         }
+      }
+
+      // Upload additional images if any
+      let additionalImagesUrls = newProduct.additional_images;
+      if (additionalImageFiles.length > 0) {
+        const uploadedUrls: string[] = [];
+        for (const file of additionalImageFiles) {
+          const uploadedUrl = await uploadImage(file);
+          if (uploadedUrl) {
+            uploadedUrls.push(uploadedUrl);
+          }
+        }
+        additionalImagesUrls = [...additionalImagesUrls, ...uploadedUrls];
       }
 
       if (!editingProduct) {
@@ -690,8 +825,9 @@ export default function AdminDashboard() {
             shipping_info: newProduct.shipping_info || null,
             tags: newProduct.tags.length > 0 ? newProduct.tags : null,
             size_options: newProduct.size_options.length > 0 ? newProduct.size_options : null,
-            desi: newProduct.desi,          // Yeni alan
-            weight_kg: newProduct.weight_kg, // Yeni alan
+            desi: newProduct.desi,
+            weight_kg: newProduct.weight_kg,
+            additional_images: additionalImagesUrls.length > 0 ? additionalImagesUrls : null,
             slug: slug,
           })
           .select()
@@ -728,8 +864,9 @@ export default function AdminDashboard() {
             shipping_info: newProduct.shipping_info || null,
             tags: newProduct.tags.length > 0 ? newProduct.tags : null,
             size_options: newProduct.size_options.length > 0 ? newProduct.size_options : null,
-            desi: newProduct.desi,          // Yeni alan
-            weight_kg: newProduct.weight_kg // Yeni alan
+            desi: newProduct.desi,
+            weight_kg: newProduct.weight_kg,
+            additional_images: additionalImagesUrls.length > 0 ? additionalImagesUrls : null
           })
           .eq('id', editingProduct.id);
 
@@ -750,11 +887,14 @@ export default function AdminDashboard() {
         shipping_info: '',
         tags: [],
         size_options: [],
-        desi: null,      // Yeni alan
-        weight_kg: null, // Yeni alan
+        desi: null,
+        weight_kg: null,
+        additional_images: [],
       });
       setImageFile(null);
       setImagePreview('');
+      setAdditionalImageFiles([]);
+      setAdditionalImagePreviews([]);
       setSizeInput('');
       setProductVariants([]);
     } catch (err: any) {
@@ -971,6 +1111,12 @@ export default function AdminDashboard() {
           >
             Sİparİşler
           </button>
+          <button
+            className={`tab-btn ${activeTab === 'settings' ? 'active' : ''}`}
+            onClick={() => setActiveTab('settings')}
+          >
+            Sİte Ayarları
+          </button>
         </div>
 
         {error && <div className="admin-error">{error}</div>}
@@ -1125,11 +1271,14 @@ export default function AdminDashboard() {
                     shipping_info: '',
                     tags: [],
                     size_options: [],
-                    desi: null,      // Yeni alan
-                    weight_kg: null, // Yeni alan
+                    desi: null,
+                    weight_kg: null,
+                    additional_images: [],
                   });
                   setImageFile(null);
                   setImagePreview('');
+                  setAdditionalImageFiles([]);
+                  setAdditionalImagePreviews([]);
                   setSizeInput('');
                   setProductVariants([]);
                   setShowProductForm(true);
@@ -1223,6 +1372,54 @@ export default function AdminDashboard() {
                             <span>Dosya Seç veya Sürükle</span>
                             <small>PNG, JPG, GIF (max 5MB)</small>
                           </label>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Additional Images Upload Section */}
+                  <div className="form-group full-width">
+                    <label>Ek Görseller (Galeri)</label>
+                    <div className="image-upload-container">
+                      <div className="image-upload-area">
+                        <label className="file-input-label">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleAdditionalImagesChange}
+                            className="file-input"
+                          />
+                          <span className="upload-icon">📸</span>
+                          <span>Birden Fazla Görsel Seç</span>
+                          <small>PNG, JPG, GIF (max 5MB her biri)</small>
+                        </label>
+                      </div>
+                      {additionalImagePreviews.length > 0 && (
+                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '10px' }}>
+                          {additionalImagePreviews.map((preview, index) => (
+                            <div key={index} className="image-preview" style={{ position: 'relative', width: '100px', height: '100px' }}>
+                              <img src={preview} alt={`Preview ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              <button
+                                type="button"
+                                className="remove-image-btn"
+                                onClick={() => {
+                                  const newPreviews = additionalImagePreviews.filter((_, i) => i !== index);
+                                  const newFiles = additionalImageFiles.filter((_, i) => i !== index);
+                                  setAdditionalImagePreviews(newPreviews);
+                                  setAdditionalImageFiles(newFiles);
+                                  // Also remove from newProduct if it's an existing URL
+                                  if (newProduct.additional_images[index]) {
+                                    const newUrls = newProduct.additional_images.filter((_, i) => i !== index);
+                                    setNewProduct({ ...newProduct, additional_images: newUrls });
+                                  }
+                                }}
+                                style={{ position: 'absolute', top: '5px', right: '5px' }}
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>
@@ -1845,6 +2042,52 @@ export default function AdminDashboard() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+        {activeTab === 'settings' && (
+          <div className="admin-section">
+            <h2>Site İletişim Ayarları</h2>
+            <div className="contact-settings-form" style={{ maxWidth: '600px', backgroundColor: 'white', padding: '2rem', borderRadius: '8px' }}>
+              <form onSubmit={handleUpdateContactSettings}>
+                <div className="form-group">
+                  <label>İletişim E-posta</label>
+                  <input
+                    type="email"
+                    value={contactSettings.contact_email}
+                    onChange={e => setContactSettings({ ...contactSettings, contact_email: e.target.value })}
+                    className="styled-input"
+                    placeholder="ornek@site.com"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>İletişim Telefon</label>
+                  <input
+                    type="text"
+                    value={contactSettings.contact_phone}
+                    onChange={e => setContactSettings({ ...contactSettings, contact_phone: e.target.value })}
+                    className="styled-input"
+                    placeholder="+90 555 555 55 55"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Adres</label>
+                  <textarea
+                    value={contactSettings.contact_address}
+                    onChange={e => setContactSettings({ ...contactSettings, contact_address: e.target.value })}
+                    className="styled-input"
+                    rows={4}
+                    placeholder="Adres bilgisi"
+                    style={{ width: '100%', minHeight: '100px' }}
+                  />
+                </div>
+
+                <button type="submit" className="save-btn" style={{ marginTop: '1rem' }}>
+                  Ayarları Kaydet
+                </button>
+              </form>
+            </div>
           </div>
         )}
       </div>

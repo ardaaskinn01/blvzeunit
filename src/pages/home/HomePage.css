@@ -490,7 +490,7 @@
 /* --- YENİ: Lookbook Banner Section --- */
 .lookbook-section {
   margin-bottom: 6rem;
-  height: 800px;
+  height: 850px;
   width: 100%;
   background-size: cover;
   background-position: center;
@@ -628,11 +628,11 @@
 @media (max-width: 768px) {
   .home-page {
     padding: 1rem 1rem;
-    /* Mobilde background'u sola hizala ve cover yerine contain kullan */
-    /* Yükseklik %100, genişlik otomatik */
-    background-position: 20% 50%;
-    background-repeat: repeat;
-    /* Fixed'ı kaldır, daha iyi performans */
+
+    background-position-x: 22%;
+    /* Fixed'ı kaldır, iOS için scroll yap */
+    background-attachment: fixed;
+    background-size: cover;
   }
 
   .hero-section h1 {
@@ -654,7 +654,9 @@
   }
 
   .lookbook-section {
-    height: 500px;
+    height: 460px;
+    background-position: top center;
+    /* Bannerın altı kırpılmış gibi yukarı hizala */
     border-width: 2px;
     box-shadow:
       0 0 0 4px rgba(255, 255, 255, 0.2),
@@ -662,16 +664,18 @@
   }
 
   .lookbook-content {
-    padding: 2rem;
-    margin: 1rem;
+    padding: 1.5rem;
+    margin: 0.5rem;
+    margin-top: 0;
+    /* İçeriği daha yukarı taşı */
   }
 
   .lookbook-content h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   .lookbook-content p {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   .scroll-button {

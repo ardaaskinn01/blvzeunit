@@ -1,6 +1,8 @@
 import './LegalPages.css';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 export default function PrivacyPolicyPage() {
+    const { settings } = useSiteSettings();
     return (
         <div className="legal-page-container">
             <div className="legal-content">
@@ -20,9 +22,9 @@ export default function PrivacyPolicyPage() {
                     <p>
                         <strong>Veri Sorumlusu:</strong> BLVZEUNIT
                         <br />
-                        <strong>Adres:</strong> 4562 Sokak No:31 Kat:2 Daire:2 Sevgi Mahallesi Karabağlar/İzmir
+                        <strong>Adres:</strong> {settings.contact_address}
                         <br />
-                        <strong>E-posta:</strong> <a href="mailto:blvzeunit@gmail.com">blvzeunit@gmail.com</a>
+                        <strong>E-posta:</strong> <a href={`mailto:${settings.contact_email}`}>{settings.contact_email}</a>
                         <strong>ETBİS Kayıt No:</strong> 6152243016
                     </p>
                 </section>
@@ -130,7 +132,7 @@ export default function PrivacyPolicyPage() {
                     </p>
                     <ol>
                         <li>
-                            <strong>E-posta:</strong> <a href="mailto:blvzeunit@gmail.com">blvzeunit@gmail.com</a> adresine yazılı başvuru ile
+                            <strong>E-posta:</strong> <a href={`mailto:${settings.contact_email}`}>{settings.contact_email}</a> adresine yazılı başvuru ile
                         </li>
                     </ol>
                     <p>
@@ -155,8 +157,8 @@ export default function PrivacyPolicyPage() {
                     </p>
                     <div className="contact-details">
                         <p><strong>Veri Sorumlusu:</strong> BLVZEUNIT</p>
-                        <p><strong>Adres:</strong> 4562 Sokak No:31 Kat:2 Daire:2 Sevgi Mahallesi Karabağlar/İzmir</p>
-                        <p><strong>E-posta:</strong> <a href="mailto:blvzeunit@gmail.com">blvzeunit@gmail.com</a></p>
+                        <p><strong>Adres:</strong> {settings.contact_address}</p>
+                        <p><strong>E-posta:</strong> <a href={`mailto:${settings.contact_email}`}>{settings.contact_email}</a></p>
                     </div>
                 </section>
 

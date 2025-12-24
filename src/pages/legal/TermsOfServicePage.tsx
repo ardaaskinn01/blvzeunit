@@ -1,6 +1,8 @@
 import './LegalPages.css';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 export default function TermsOfServicePage() {
+    const { settings } = useSiteSettings();
     return (
         <div className="legal-page-container">
             <div className="legal-content">
@@ -225,8 +227,8 @@ export default function TermsOfServicePage() {
                     <div className="company-details">
                         <p><strong>Ticari Ünvan (Marka):</strong> BLVZEUNIT</p>
                         <p><strong>Şirket Sahibi:</strong> HÜSEYİN CEYLAN</p>
-                        <p><strong>Adres:</strong> 4562 Sokak No:31 Kat:2 Daire:2 Sevgi Mahallesi Karabağlar/İzmir</p>
-                        <p><strong>E-posta:</strong> <a href="mailto:blvzeunit@gmail.com">blvzeunit@gmail.com</a></p>
+                        <p><strong>Adres:</strong> {settings.contact_address}</p>
+                        <p><strong>E-posta:</strong> <a href={`mailto:${settings.contact_email}`}>{settings.contact_email}</a></p>
                         <p><strong>ETBİS Kayıt No:</strong> 6152243016</p>
                     </div>
                 </section>

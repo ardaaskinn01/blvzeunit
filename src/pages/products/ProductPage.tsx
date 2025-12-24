@@ -33,6 +33,7 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [isSizeChartOpen, setIsSizeChartOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string>('');
 
   useEffect(() => {
     if (slug) {
@@ -82,6 +83,11 @@ export default function ProductPage() {
       }
 
       setProduct(productData);
+
+      // Set initial selected image
+      if (productData.image_url) {
+        setSelectedImage(productData.image_url);
+      }
 
       // 2. Varyantları çek - product_variants tablosu için özel sorgu
       // Tip güvenliği için any kullanıyoruz çünkü types güncel değil
@@ -252,9 +258,9 @@ export default function ProductPage() {
           {/* Galeri */}
           <div className="product-gallery">
             <div className="product-gallery-main">
-              {product.image_url ? (
+              {selectedImage || product.image_url ? (
                 <img
-                  src={product.image_url}
+                  src={selectedImage || product.image_url || ''}
                   alt={product.name}
                   style={{ maxWidth: '100%', maxHeight: '500px', objectFit: 'contain' }}
                 />
@@ -264,6 +270,54 @@ export default function ProductPage() {
                 </div>
               )}
             </div>
+
+            {/* Thumbnail Gallery */}
+            {(product as any).additional_images && (product as any).additional_images.length > 0 && (
+              <div style={{ display: 'flex', gap: '10px', marginTop: '15px', flexWrap: 'wrap' }}>
+                {/* Main image thumbnail */}
+                {product.image_url && (
+                  <div
+                    onClick={() => product.image_url && setSelectedImage(product.image_url)}
+                    style={{
+                      width: '80px',
+                      height: '80px',
+                      border: selectedImage === product.image_url ? '3px solid #000' : '2px solid #ddd',
+                      cursor: 'pointer',
+                      overflow: 'hidden',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    <img
+                      src={product.image_url}
+                      alt="Main"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                )}
+
+                {/* Additional images thumbnails */}
+                {(product as any).additional_images.map((imgUrl: string, index: number) => (
+                  <div
+                    key={index}
+                    onClick={() => setSelectedImage(imgUrl)}
+                    style={{
+                      width: '80px',
+                      height: '80px',
+                      border: selectedImage === imgUrl ? '3px solid #000' : '2px solid #ddd',
+                      cursor: 'pointer',
+                      overflow: 'hidden',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Gallery ${index + 1}`}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Detaylar */}

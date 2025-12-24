@@ -1,5 +1,20 @@
 import { Link } from 'react-router-dom';
 import './Footer.css';
+import { useSiteSettings } from '../hooks/useSiteSettings';
+
+function ContactInfo() {
+  const { settings, loading } = useSiteSettings();
+
+  if (loading) return <p>Yükleniyor...</p>;
+
+  return (
+    <>
+      <p>Email: {settings.contact_email}</p>
+      {settings.contact_phone && <p>Tel: {settings.contact_phone}</p>}
+      <p>Adres: {settings.contact_address}</p>
+    </>
+  );
+}
 
 export default function Footer() {
   return (
@@ -39,8 +54,7 @@ export default function Footer() {
 
           <div className="footer-section">
             <h4 className="bebas-font">İLETİŞİM</h4>
-            <p>Email: blvzeunit@gmail.com</p>
-            <p>Adres: 4562 Sokak No:31 Kat:2 Daire:2 Sevgi Mahallesi Karabağlar/İzmir</p>
+            <ContactInfo />
           </div>
         </div>
 

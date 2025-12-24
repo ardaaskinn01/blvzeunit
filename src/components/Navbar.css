@@ -407,18 +407,15 @@
 
   /* Logo boyutunu küçült */
   .navbar-logo {
-    /* Yeni logo stili/boyutu ile uyumlu hale getirildi */
-    font-size: 1.1rem;
-    /* Örn: Biraz daha küçük */
-    /* Gerekirse font-family veya color ekleyin */
+    /* Logo metni boyutunu artır */
+    font-size: 1.5rem;
     font-family: 'Bebas Neue', monospace;
-    /* */
     color: var(--color-black);
-    /* */
   }
 
   .navbar-logo-img {
-    height: 35px;
+    /* Logo görselini 1.5 kat (yaklaşık) büyüt: 35px -> 55px */
+    height: 55px;
   }
 
   /* Navbar content - Varsayılan olarak gizli */

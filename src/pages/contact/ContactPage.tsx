@@ -1,7 +1,9 @@
 import { useState, type FormEvent } from 'react';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 import './ContactPage.css';
 
 export default function ContactPage() {
+  const { settings } = useSiteSettings();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -68,11 +70,17 @@ export default function ContactPage() {
           <h2>İLETİŞİM</h2>
           <div className="contact-info-item">
             <h3>E-POSTA</h3>
-            <p>blvzeunit@gmail.com</p>
+            <p>{settings.contact_email}</p>
           </div>
+          {settings.contact_phone && (
+            <div className="contact-info-item">
+              <h3>TELEFON</h3>
+              <p>{settings.contact_phone}</p>
+            </div>
+          )}
           <div className="contact-info-item">
             <h3>ADRES</h3>
-            <p>4562 Sokak No:31 Kat:2 Daire:2<br />Sevgi Mahallesi<br />Karabağlar/İzmir</p>
+            <p style={{ whiteSpace: 'pre-line' }}>{settings.contact_address}</p>
           </div>
         </div>
 
