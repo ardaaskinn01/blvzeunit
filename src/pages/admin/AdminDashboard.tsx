@@ -465,7 +465,7 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteDiscount = async (id: string) => {
-    if (!confirm('İndirimi silmek istediğinizden emin misiniz?')) return;
+    if (!confirm('İndirimi SİLmek istediğinizden emin misiniz?')) return;
     try {
       const { error } = await supabase.from('discounts').delete().eq('id', id);
       if (error) throw error;
@@ -903,7 +903,7 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteProduct = async (productId: string) => {
-    if (!confirm('Bu ürünü silmek istediğinizden emin misiniz?')) return;
+    if (!confirm('Bu ürünü SİLmek istediğinizden emin misiniz?')) return;
 
     try {
       // Delete variants first
@@ -922,7 +922,7 @@ export default function AdminDashboard() {
 
       await fetchAllData();
     } catch (err: any) {
-      setError(err.message || 'Ürün silinemedi');
+      setError(err.message || 'Ürün SİLinemedi');
     }
   };
 
@@ -965,7 +965,7 @@ export default function AdminDashboard() {
         prevVariants.filter(v => v.id !== variantId)
       );
     } catch (err: any) {
-      setError(err.message || 'Beden silinemedi');
+      setError(err.message || 'Beden SİLinemedi');
     }
   };
 
@@ -1004,7 +1004,7 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteCategory = async (categoryId: number) => {
-    if (!confirm('Bu kategoriyi silmek istediğinizden emin misiniz?')) return;
+    if (!confirm('Bu kategoriyi SİLmek istediğinizden emin misiniz?')) return;
 
     try {
       const { error } = await supabase
@@ -1016,7 +1016,7 @@ export default function AdminDashboard() {
 
       await fetchAllData();
     } catch (err: any) {
-      setError(err.message || 'Kategori silinemedi');
+      setError(err.message || 'Kategori SİLinemedi');
     }
   };
 
@@ -1039,7 +1039,7 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteUser = async (userId: string) => {
-    if (!confirm('Bu kullanıcıyı silmek istediğinizden emin misiniz?')) return;
+    if (!confirm('Bu kullanıcıyı SİLmek istediğinizden emin misiniz?')) return;
 
     try {
       const { error } = await supabase
@@ -1051,7 +1051,7 @@ export default function AdminDashboard() {
 
       setProfiles(profiles.filter(p => p.id !== userId));
     } catch (err: any) {
-      setError(err.message || 'Kullanıcı silinemedi');
+      setError(err.message || 'Kullanıcı SİLinemedi');
     }
   };
 
@@ -1342,7 +1342,7 @@ export default function AdminDashboard() {
 
                   {/* Image Upload Section */}
                   <div className="form-group full-width">
-                    <label>Ürün Görseli</label>
+                    <label>Ürün Görselİ</label>
                     <div className="image-upload-container">
                       {imagePreview ? (
                         <div className="image-preview">
@@ -1379,7 +1379,7 @@ export default function AdminDashboard() {
 
                   {/* Additional Images Upload Section */}
                   <div className="form-group full-width">
-                    <label>Ek Görseller (Galeri)</label>
+                    <label>Ek Görseller (Galerİ)</label>
                     <div className="image-upload-container">
                       <div className="image-upload-area">
                         <label className="file-input-label">
@@ -1435,7 +1435,7 @@ export default function AdminDashboard() {
                     />
                   </div>
                   <div className="form-group full-width">
-                    <label>Bedenler (virgülle ayırın, örn: S,M,L,XL)</label>
+                    <label>Bedenler (vİrgülle ayırın, örn: S,M,L,XL)</label>
                     <input
                       type="text"
                       // 💡 Değeri string state'ten çek
@@ -1456,7 +1456,7 @@ export default function AdminDashboard() {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Desİ (Hacim)</label>
+                    <label>Desİ (Hacİm)</label>
                     <input
                       type="number"
                       step="0.01"
@@ -1468,7 +1468,7 @@ export default function AdminDashboard() {
                       })}
                       placeholder="Örn: 2.5"
                     />
-                    <small className="form-hint">Ürünün hacimsel büyüklüğü</small>
+                    <small className="form-hint">Ürünün hacİmsel büyüklüğü</small>
                   </div>
 
                   <div className="form-group">
@@ -1484,7 +1484,7 @@ export default function AdminDashboard() {
                       })}
                       placeholder="Örn: 0.8"
                     />
-                    <small className="form-hint">Kargo ağırlığı kilogram cinsinden</small>
+                    <small className="form-hint">Kargo ağırlığı kİlogram cİnsİnden</small>
                   </div>
                 </div>
                 <div className="form-actions">
@@ -1520,7 +1520,7 @@ export default function AdminDashboard() {
                         className="remove-btn"
                         onClick={() => handleRemoveVariant(variant.id)}
                       >
-                        Sil
+                        Sİl
                       </button>
                     </div>
                   ))}
@@ -1582,7 +1582,7 @@ export default function AdminDashboard() {
                             className="delete-btn"
                             onClick={() => handleDeleteProduct(product.id)}
                           >
-                            Sil
+                            Sİl
                           </button>
                         </td>
                       </tr>
@@ -1679,7 +1679,7 @@ export default function AdminDashboard() {
                             className="delete-btn"
                             onClick={() => handleDeleteCategory(category.id)}
                           >
-                            Sil
+                            SİL
                           </button>
                         </td>
                       </tr>
@@ -1731,9 +1731,9 @@ export default function AdminDashboard() {
                             className="delete-btn"
                             onClick={() => handleDeleteUser(profile.id)}
                             disabled={profile.id === user?.id}
-                            title={profile.id === user?.id ? 'Kendi hesabınızı silemezsiniz' : 'Sil'}
+                            title={profile.id === user?.id ? 'Kendi hesabınızı SİLemezsiniz' : 'SİL'}
                           >
-                            Sil
+                            SİL
                           </button>
                         </td>
                       </tr>
@@ -1884,7 +1884,7 @@ export default function AdminDashboard() {
                         }
                       </td>
                       <td>
-                        <button className="delete-btn" onClick={() => handleDeleteDiscount(d.id)}>Sil</button>
+                        <button className="delete-btn" onClick={() => handleDeleteDiscount(d.id)}>SİL</button>
                       </td>
                     </tr>
                   ))}
@@ -2046,11 +2046,11 @@ export default function AdminDashboard() {
         )}
         {activeTab === 'settings' && (
           <div className="admin-section">
-            <h2>Site İletişim Ayarları</h2>
+            <h2>Sİte İletİşİm Ayarları</h2>
             <div className="contact-settings-form" style={{ maxWidth: '600px', backgroundColor: 'white', padding: '2rem', borderRadius: '8px' }}>
               <form onSubmit={handleUpdateContactSettings}>
                 <div className="form-group">
-                  <label>İletişim E-posta</label>
+                  <label>İletİşİm E-posta</label>
                   <input
                     type="email"
                     value={contactSettings.contact_email}
@@ -2061,7 +2061,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="form-group">
-                  <label>İletişim Telefon</label>
+                  <label>İletİşİm Telefon</label>
                   <input
                     type="text"
                     value={contactSettings.contact_phone}
