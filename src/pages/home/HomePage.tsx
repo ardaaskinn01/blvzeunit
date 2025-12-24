@@ -221,6 +221,9 @@ export default function HomePage() {
 
   return (
     <div className="home-page">
+      {/* Fixed background layer for iOS compatibility */}
+      <div className="home-page-background"></div>
+
       <div className="home-container">
 
         {/* YENİ: Marquee (Kayan Yazı) Bölümü */}

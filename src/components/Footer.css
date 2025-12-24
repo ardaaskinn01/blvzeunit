@@ -3,6 +3,8 @@
   color: #ffffff;
   margin-top: auto;
   border-top: 1px solid #333333;
+  position: relative;
+  z-index: 10;
 }
 
 .footer-container {
