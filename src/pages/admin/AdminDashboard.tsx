@@ -360,21 +360,21 @@ export default function AdminDashboard() {
         forcedType: contentType
       });
 
-      // ÖNEMLİ: File objesini Blob'a çevirip tipini zorla ayarla
-      // Bu, tarayıcının yanlış tip göndermesini engeller
-      const fileBlob = new Blob([file], { type: contentType });
+      // ÖNEMLİ: File -> ArrayBuffer dönüşümü (Binary Safe Upload)
+      // Bu yöntem en güvenilir olanıdır, tarayıcının yanlış tip/encoding eklemesini engeller
+      const fileData = await file.arrayBuffer();
 
       // Session kontrolü
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error('Oturum kapalı');
 
-      // Upload with explicit options using Blob
+      // Upload with ArrayBuffer
       const { error: uploadError, data } = await supabase.storage
-        .from('products') // Bucket adını geri al: products
-        .upload(filePath, fileBlob, { // file yerine fileBlob kullanıyoruz
+        .from('products')
+        .upload(filePath, fileData, { // ArrayBuffer kullanıyoruz
           cacheControl: '3600',
-          upsert: true, // Aynı isimde varsa üzerine yazsın
-          contentType: contentType
+          upsert: true,
+          contentType: contentType // Kesinlikle bu type kullanılacak
         });
 
       if (uploadError) {
