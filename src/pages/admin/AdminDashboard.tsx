@@ -348,9 +348,9 @@ export default function AdminDashboard() {
         }
       }
 
-      // DOSYA YOLUNU SADELEŞTİR (Klasör tekrarını kaldır)
-      // Bucket zaten 'product-images' olduğu için başına tekrar yazmaya gerek yok
-      const filePath = `${fileName}`;
+      // DOSYA YOLUNU AYARLA
+      // products bucket'ı içinde product-images klasörüne kaydedelim
+      const filePath = `product-images/${fileName}`;
 
       console.log('📁 Dosya bilgileri:', {
         fileExt,
@@ -370,7 +370,7 @@ export default function AdminDashboard() {
 
       // Upload with explicit options using Blob
       const { error: uploadError, data } = await supabase.storage
-        .from('product-images')
+        .from('products') // Bucket adını geri al: products
         .upload(filePath, fileBlob, { // file yerine fileBlob kullanıyoruz
           cacheControl: '3600',
           upsert: true, // Aynı isimde varsa üzerine yazsın
@@ -396,7 +396,7 @@ export default function AdminDashboard() {
 
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
-        .from('product-images') // YENİ BUCKET
+        .from('products') // Bucket adını geri al: products
         .getPublicUrl(filePath);
 
       console.log('🔗 Public URL oluşturuldu:', publicUrl);
