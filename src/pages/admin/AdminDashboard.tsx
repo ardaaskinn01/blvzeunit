@@ -316,9 +316,9 @@ export default function AdminDashboard() {
         throw new Error('Sadece resim dosyaları yüklenebilir');
       }
 
-      // Dosya boyutunu kontrol et (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        throw new Error('Dosya boyutu 5MB\'dan küçük olmalı');
+      // Dosya boyutunu kontrol et (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        throw new Error('Dosya boyutu 10MB\'dan küçük olmalı');
       }
 
       // Create a unique file name - EXTENSION'ı koru
@@ -333,11 +333,22 @@ export default function AdminDashboard() {
         'png': 'image/png',
         'gif': 'image/gif',
         'webp': 'image/webp',
-        'svg': 'image/svg+xml'
+        'svg': 'image/svg+xml',
+        'bmp': 'image/bmp',
+        'ico': 'image/x-icon'
       };
 
-
-      const contentType = mimeTypes[fileExt] || file.type || 'image/jpeg';
+      // Extension'dan MIME type belirle, yoksa file.type kullan, o da yoksa image/jpeg
+      let contentType = mimeTypes[fileExt];
+      if (!contentType) {
+        // Extension bilinmiyor, file.type'a bak
+        if (file.type && file.type.startsWith('image/')) {
+          contentType = file.type;
+        } else {
+          // Hiçbiri yoksa default image/jpeg
+          contentType = 'image/jpeg';
+        }
+      }
 
       console.log('📁 Dosya bilgileri:', {
         fileExt,
