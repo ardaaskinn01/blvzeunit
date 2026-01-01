@@ -324,7 +324,7 @@ export default function AdminDashboard() {
       // Create a unique file name - EXTENSION'ı koru
       const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg';
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
-      const filePath = `product-images/${fileName}`;
+      // const filePath removed here, defined below
 
       // ÖNEMLİ: Content-Type'ı extension'dan belirle (file.type güvenilir değil)
       const mimeTypes: Record<string, string> = {
@@ -338,46 +338,43 @@ export default function AdminDashboard() {
         'ico': 'image/x-icon'
       };
 
-      // Extension'dan MIME type belirle, yoksa file.type kullan, o da yoksa image/jpeg
+      // Extension'dan MIME type belirle
       let contentType = mimeTypes[fileExt];
       if (!contentType) {
-        // Extension bilinmiyor, file.type'a bak
         if (file.type && file.type.startsWith('image/')) {
           contentType = file.type;
         } else {
-          // Hiçbiri yoksa default image/jpeg
           contentType = 'image/jpeg';
         }
       }
+
+      // DOSYA YOLUNU SADELEŞTİR (Klasör tekrarını kaldır)
+      // Bucket zaten 'product-images' olduğu için başına tekrar yazmaya gerek yok
+      const filePath = `${fileName}`;
 
       console.log('📁 Dosya bilgileri:', {
         fileExt,
         fileName,
         filePath,
-        originalMimeType: file.type,
-        usedContentType: contentType
+        originalType: file.type,
+        forcedType: contentType
       });
 
-      // ÖNEMLİ: Authentication token'ını kontrol et
+      // ÖNEMLİ: File objesini Blob'a çevirip tipini zorla ayarla
+      // Bu, tarayıcının yanlış tip göndermesini engeller
+      const fileBlob = new Blob([file], { type: contentType });
+
+      // Session kontrolü
       const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('Oturum kapalı');
 
-      if (!session) {
-        console.error('❌ Kullanıcı oturumu yok');
-        throw new Error('Oturum bulunamadı. Lütfen tekrar giriş yapın.');
-      }
-
-      console.log('🔑 Kullanıcı session:', {
-        userId: session.user.id,
-        accessToken: session.access_token.substring(0, 20) + '...'
-      });
-
-      // Upload with explicit options
+      // Upload with explicit options using Blob
       const { error: uploadError, data } = await supabase.storage
-        .from('products')
-        .upload(filePath, file, {
+        .from('product-images')
+        .upload(filePath, fileBlob, { // file yerine fileBlob kullanıyoruz
           cacheControl: '3600',
-          upsert: false,
-          contentType: contentType // ÖNEMLİ: Doğru Content-Type kullan
+          upsert: true, // Aynı isimde varsa üzerine yazsın
+          contentType: contentType
         });
 
       if (uploadError) {
@@ -399,7 +396,7 @@ export default function AdminDashboard() {
 
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
-        .from('products')
+        .from('product-images') // YENİ BUCKET
         .getPublicUrl(filePath);
 
       console.log('🔗 Public URL oluşturuldu:', publicUrl);
