@@ -115,6 +115,7 @@ export default function AdminDashboard() {
     desi: null as number | null,
     weight_kg: null as number | null,
     additional_images: [] as string[],
+    features: [] as { label: string; value: string }[],
   });
 
   // Category editing
@@ -699,9 +700,9 @@ export default function AdminDashboard() {
         return;
       }
 
-      // Check file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setError('Dosya boyutu 5MB\'dan küçük olmalı');
+      // Check file size (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        setError('Dosya boyutu 10MB\'dan küçük olmalı');
         return;
       }
 
@@ -725,8 +726,8 @@ export default function AdminDashboard() {
         setError('Lütfen sadece resim dosyaları seçin');
         return;
       }
-      if (file.size > 5 * 1024 * 1024) {
-        setError('Dosya boyutu 5MB\'dan küçük olmalı');
+      if (file.size > 10 * 1024 * 1024) {
+        setError('Dosya boyutu 10MB\'dan küçük olmalı');
         return;
       }
     }
@@ -764,6 +765,7 @@ export default function AdminDashboard() {
       desi: (product as any).desi || null,
       weight_kg: (product as any).weight_kg || null,
       additional_images: (product as any).additional_images || [],
+      features: (product as any).features || [],
     });
 
     // Set image preview if exists
@@ -828,6 +830,7 @@ export default function AdminDashboard() {
             desi: newProduct.desi,
             weight_kg: newProduct.weight_kg,
             additional_images: additionalImagesUrls.length > 0 ? additionalImagesUrls : null,
+            features: newProduct.features.length > 0 ? newProduct.features : null,
             slug: slug,
           })
           .select()
@@ -865,8 +868,8 @@ export default function AdminDashboard() {
             tags: newProduct.tags.length > 0 ? newProduct.tags : null,
             size_options: newProduct.size_options.length > 0 ? newProduct.size_options : null,
             desi: newProduct.desi,
-            weight_kg: newProduct.weight_kg,
-            additional_images: additionalImagesUrls.length > 0 ? additionalImagesUrls : null
+            additional_images: additionalImagesUrls.length > 0 ? additionalImagesUrls : null,
+            features: newProduct.features.length > 0 ? newProduct.features : null
           })
           .eq('id', editingProduct.id);
 
@@ -890,6 +893,7 @@ export default function AdminDashboard() {
         desi: null,
         weight_kg: null,
         additional_images: [],
+        features: [],
       });
       setImageFile(null);
       setImagePreview('');
@@ -1274,6 +1278,7 @@ export default function AdminDashboard() {
                     desi: null,
                     weight_kg: null,
                     additional_images: [],
+                    features: [],
                   });
                   setImageFile(null);
                   setImagePreview('');
@@ -1370,7 +1375,7 @@ export default function AdminDashboard() {
                             />
                             <span className="upload-icon">📁</span>
                             <span>Dosya Seç veya Sürükle</span>
-                            <small>PNG, JPG, GIF (max 5MB)</small>
+                            <small>PNG, JPG, GIF (max 10MB)</small>
                           </label>
                         </div>
                       )}
@@ -1392,7 +1397,7 @@ export default function AdminDashboard() {
                           />
                           <span className="upload-icon">📸</span>
                           <span>Birden Fazla Görsel Seç</span>
-                          <small>PNG, JPG, GIF (max 5MB her biri)</small>
+                          <small>PNG, JPG, GIF (max 10MB her biri)</small>
                         </label>
                       </div>
                       {additionalImagePreviews.length > 0 && (
@@ -1426,13 +1431,84 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="form-group full-width">
-                    <label>Açıklama *</label>
+                    <label style={{ fontFamily: "'Segoe UI', sans-serif", textTransform: 'none' }}>Açıklama *</label>
                     <textarea
                       value={newProduct.description}
                       onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
                       placeholder="Ürün açıklaması"
                       rows={4}
+                      style={{ fontFamily: "'Segoe UI', sans-serif", textTransform: 'none' }}
                     />
+                  </div>
+
+                  {/* Ürün Özellikleri Bölümü */}
+                  <div className="form-group full-width">
+                    <label style={{ fontFamily: "'Segoe UI', sans-serif", textTransform: 'none' }}>Ürün Özellikleri</label>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      {newProduct.features.map((feature, index) => (
+                        <div key={index} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                          <input
+                            type="text"
+                            placeholder="Özellik adı (örn: Kumaş)"
+                            value={feature.label}
+                            onChange={(e) => {
+                              const updated = [...newProduct.features];
+                              updated[index].label = e.target.value;
+                              setNewProduct({ ...newProduct, features: updated });
+                            }}
+                            style={{ flex: 1, fontFamily: "'Segoe UI', sans-serif", textTransform: 'none' }}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Değer (örn: %100 Pamuk)"
+                            value={feature.value}
+                            onChange={(e) => {
+                              const updated = [...newProduct.features];
+                              updated[index].value = e.target.value;
+                              setNewProduct({ ...newProduct, features: updated });
+                            }}
+                            style={{ flex: 1, fontFamily: "'Segoe UI', sans-serif", textTransform: 'none' }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = newProduct.features.filter((_, i) => i !== index);
+                              setNewProduct({ ...newProduct, features: updated });
+                            }}
+                            style={{
+                              padding: '0.5rem 0.75rem',
+                              background: '#ff4444',
+                              color: 'white',
+                              border: 'none',
+                              cursor: 'pointer',
+                              fontWeight: 'bold'
+                            }}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setNewProduct({
+                            ...newProduct,
+                            features: [...newProduct.features, { label: '', value: '' }]
+                          });
+                        }}
+                        style={{
+                          padding: '0.5rem 1rem',
+                          background: '#28a745',
+                          color: 'white',
+                          border: 'none',
+                          cursor: 'pointer',
+                          fontWeight: 'bold',
+                          alignSelf: 'flex-start'
+                        }}
+                      >
+                        + Özellik Ekle
+                      </button>
+                    </div>
                   </div>
                   <div className="form-group full-width">
                     <label>Bedenler (vİrgülle ayırın, örn: S,M,L,XL)</label>

@@ -262,10 +262,9 @@ export default function ProductPage() {
                 <img
                   src={selectedImage || product.image_url || ''}
                   alt={product.name}
-                  style={{ maxWidth: '100%', maxHeight: '500px', objectFit: 'contain' }}
                 />
               ) : (
-                <div style={{ fontSize: '4rem', padding: '4rem', background: '#f5f5f5', color: '#ccc' }}>
+                <div style={{ fontSize: '4rem', color: '#ccc' }}>
                   👕
                 </div>
               )}
@@ -273,19 +272,12 @@ export default function ProductPage() {
 
             {/* Thumbnail Gallery */}
             {(product as any).additional_images && (product as any).additional_images.length > 0 && (
-              <div style={{ display: 'flex', gap: '10px', marginTop: '15px', flexWrap: 'wrap' }}>
+              <div className="product-thumbnails">
                 {/* Main image thumbnail */}
                 {product.image_url && (
                   <div
+                    className={`thumbnail ${selectedImage === product.image_url ? 'active' : ''}`}
                     onClick={() => product.image_url && setSelectedImage(product.image_url)}
-                    style={{
-                      width: '80px',
-                      height: '80px',
-                      border: selectedImage === product.image_url ? '3px solid #000' : '2px solid #ddd',
-                      cursor: 'pointer',
-                      overflow: 'hidden',
-                      transition: 'all 0.2s'
-                    }}
                   >
                     <img
                       src={product.image_url}
@@ -299,15 +291,8 @@ export default function ProductPage() {
                 {(product as any).additional_images.map((imgUrl: string, index: number) => (
                   <div
                     key={index}
+                    className={`thumbnail ${selectedImage === imgUrl ? 'active' : ''}`}
                     onClick={() => setSelectedImage(imgUrl)}
-                    style={{
-                      width: '80px',
-                      height: '80px',
-                      border: selectedImage === imgUrl ? '3px solid #000' : '2px solid #ddd',
-                      cursor: 'pointer',
-                      overflow: 'hidden',
-                      transition: 'all 0.2s'
-                    }}
                   >
                     <img
                       src={imgUrl}
@@ -340,11 +325,38 @@ export default function ProductPage() {
               )}
             </div>
 
-            <p className="product-description">
-              {product.description || 'Ürün açıklaması bulunmuyor.'}
-            </p>
+            {/* Ürün Açıklaması */}
+            <div className="product-description-section">
+              <h3>Ürün Açıklaması</h3>
+              <p className="product-description">
+                {product.description || 'Ürün açıklaması bulunmuyor.'}
+              </p>
+            </div>
 
-            {/* Beden Seçimi */}
+            {/* Ürün Özellikleri */}
+            {((product as any).features && (product as any).features.length > 0) || product.category || product.color ? (
+              <div className="product-specs">
+                <h3>Ürün Bilgileri</h3>
+                {product.category && (
+                  <div className="spec-item">
+                    <span className="spec-label">Kategori</span>
+                    <span className="spec-value">{categoryName || product.category}</span>
+                  </div>
+                )}
+                {product.color && (
+                  <div className="spec-item">
+                    <span className="spec-label">Renk</span>
+                    <span className="spec-value">{product.color}</span>
+                  </div>
+                )}
+                {(product as any).features && (product as any).features.map((feature: { label: string; value: string }, index: number) => (
+                  <div className="spec-item" key={index}>
+                    <span className="spec-label">{feature.label}</span>
+                    <span className="spec-value">{feature.value}</span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
             {variants.length > 0 ? (
               <div className="size-selector">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
@@ -380,19 +392,6 @@ export default function ProductPage() {
 
               </div>
             ) : null}
-
-            {/* Özellikler */}
-            <div className="product-specs">
-              <h3>Ürün Bilgileri</h3>
-              <div className="spec-item">
-                <span className="spec-label">Kategori</span>
-                <span className="spec-value">{categoryName || product.category}</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">Renk</span>
-                <span className="spec-value">{product.color || '-'}</span>
-              </div>
-            </div>
 
             {/* Adet Seçimi */}
             <div className="quantity-selector">

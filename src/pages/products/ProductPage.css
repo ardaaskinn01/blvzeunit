@@ -45,19 +45,24 @@
 /* --- Product Detail Layout --- */
 .product-detail {
   display: flex;
-  gap: 3rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
   margin-bottom: 4rem;
 }
 
 .product-gallery {
-  flex: 1;
-  max-width: 50%;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .product-gallery-main {
   width: 100%;
+  max-width: 400px;
   aspect-ratio: 1/1;
-  /* Kare görsel */
   background: var(--color-light-gray);
   border: 2px solid var(--color-dark-gray);
   display: flex;
@@ -68,9 +73,17 @@
   margin-bottom: 1rem;
 }
 
+.product-gallery-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .product-thumbnails {
   display: flex;
   gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .thumbnail {
@@ -84,16 +97,24 @@
   justify-content: center;
   color: var(--color-dark-gray);
   transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .thumbnail.active,
 .thumbnail:hover {
   border-color: var(--color-black);
+  border-width: 3px;
 }
 
 .product-details {
-  flex: 1;
-  max-width: 50%;
+  width: 100%;
+  max-width: 600px;
 }
 
 /* --- Product Info Content --- */
@@ -133,14 +154,31 @@
   padding: 0.5rem 0;
   margin-bottom: 2rem;
   color: #008000;
-  /* Always green */
+}
+
+/* Ürün Açıklaması Bölümü */
+.product-description-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border: 2px solid var(--color-dark-gray);
+  background: var(--color-white);
+}
+
+.product-description-section h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  border-bottom: 1px dashed var(--color-dark-gray);
+  padding-bottom: 0.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .product-description {
   color: var(--color-medium-gray);
-  line-height: 1.6;
-  margin-bottom: 2rem;
+  line-height: 1.8;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.95rem;
+  margin: 0;
 }
 
 /* --- Specifications (Özellikler) --- */
@@ -150,6 +188,15 @@
   border: 2px solid var(--color-dark-gray);
   background: var(--color-white);
   border-radius: 0;
+}
+
+.product-specs h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  border-bottom: 1px dashed var(--color-dark-gray);
+  padding-bottom: 0.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .specs-title {
@@ -165,6 +212,12 @@
   justify-content: space-between;
   padding: 0.5rem 0;
   font-size: 0.9rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.spec-item:last-child {
+  border-bottom: none;
 }
 
 .spec-label {
@@ -454,12 +507,14 @@
 
 /* --- Responsive --- */
 @media (max-width: 900px) {
-  .product-detail {
-    flex-direction: column;
-    gap: 2rem;
+  .product-gallery {
+    max-width: 100%;
   }
 
-  .product-gallery,
+  .product-gallery-main {
+    max-width: 100%;
+  }
+
   .product-details {
     max-width: 100%;
   }
