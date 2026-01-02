@@ -740,20 +740,29 @@ export default function AdminDashboard() {
       }
     }
 
-    setAdditionalImageFiles(files);
+    // Append new files to existing ones
+    setAdditionalImageFiles(prev => [...prev, ...files]);
 
-    // Create previews
-    const previews: string[] = [];
+    // Create previews for new files and append them
+    const newPreviews: string[] = [];
+    let processedCount = 0;
+
     files.forEach(file => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        previews.push(reader.result as string);
-        if (previews.length === files.length) {
-          setAdditionalImagePreviews(previews);
+        newPreviews.push(reader.result as string);
+        processedCount++;
+
+        // Only update state when all new files are processed to avoid multiple re-renders
+        if (processedCount === files.length) {
+          setAdditionalImagePreviews(prev => [...prev, ...newPreviews]);
         }
       };
       reader.readAsDataURL(file);
     });
+
+    // Reset file input so checking the same file again triggers onChange
+    e.target.value = '';
   };
 
   const handleEditProduct = async (product: Product) => {
@@ -1417,13 +1426,28 @@ export default function AdminDashboard() {
                                 type="button"
                                 className="remove-image-btn"
                                 onClick={() => {
+                                  const previewToRemove = additionalImagePreviews[index];
+
+                                  // Remove from previews state
                                   const newPreviews = additionalImagePreviews.filter((_, i) => i !== index);
-                                  const newFiles = additionalImageFiles.filter((_, i) => i !== index);
                                   setAdditionalImagePreviews(newPreviews);
-                                  setAdditionalImageFiles(newFiles);
-                                  // Also remove from newProduct if it's an existing URL
-                                  if (newProduct.additional_images[index]) {
-                                    const newUrls = newProduct.additional_images.filter((_, i) => i !== index);
+
+                                  // If it's a base64 string (starts with data:), remove from new files
+                                  if (previewToRemove.startsWith('data:')) {
+                                    // Count how many base64 images appear before this index to find the correct file index
+                                    let fileIndex = 0;
+                                    for (let i = 0; i < index; i++) {
+                                      if (additionalImagePreviews[i].startsWith('data:')) {
+                                        fileIndex++;
+                                      }
+                                    }
+
+                                    const newFiles = additionalImageFiles.filter((_, i) => i !== fileIndex);
+                                    setAdditionalImageFiles(newFiles);
+                                  }
+                                  // If it's a URL, remove from product URLs
+                                  else {
+                                    const newUrls = newProduct.additional_images.filter(url => url !== previewToRemove);
                                     setNewProduct({ ...newProduct, additional_images: newUrls });
                                   }
                                 }}
