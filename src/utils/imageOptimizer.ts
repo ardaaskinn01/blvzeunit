@@ -99,12 +99,12 @@ export const optimizeImage = (file: File, options: OptimizationOptions = {}): Pr
                 );
             };
 
-            img.onerror = (err) => {
+            img.onerror = () => {
                 reject(new Error('Görsel yüklenirken hata oluştu.'));
             };
         };
 
-        reader.onerror = (err) => {
+        reader.onerror = () => {
             reject(new Error('Dosya okunamadı.'));
         };
     });
