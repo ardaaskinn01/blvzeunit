@@ -11,6 +11,7 @@ import {
 } from '../../utils/discount-utils';
 import './ProductPage.css';
 import Modal from '../../components/Modal';
+import ImageMagnifier from '../../components/ImageMagnifier';
 
 // Veritabanı tipleri
 type Product = Tables<'products'>;
@@ -37,6 +38,8 @@ export default function ProductPage() {
 
   useEffect(() => {
     if (slug) {
+      // Sayfa değiştiğinde en tepeye scroll et
+      window.scrollTo(0, 0);
       initPage();
     }
   }, [slug]);
@@ -259,9 +262,12 @@ export default function ProductPage() {
           <div className="product-gallery">
             <div className="product-gallery-main">
               {selectedImage || product.image_url ? (
-                <img
+                <ImageMagnifier
                   src={selectedImage || product.image_url || ''}
                   alt={product.name}
+                  width="100%"
+                  height="100%"
+                  zoomLevel={2} // 2 kat büyütme
                 />
               ) : (
                 <div style={{ fontSize: '4rem', color: '#ccc' }}>

@@ -95,6 +95,10 @@ export const handler: Handler = async (event, context) => {
         const emailResult = await emailService.sendOrderConfirmation(order);
         steps.push({ name: 'Email Notification', result: emailResult });
 
+        // 6. Admin'e Bilgilendirme Maili
+        const adminEmailResult = await emailService.sendAdminOrderNotification(order);
+        steps.push({ name: 'Admin Email Notification', result: adminEmailResult });
+
         // 5. Siparişi Güncelle
         const { error: updateError } = await supabase
             .from('orders')

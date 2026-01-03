@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabase';
 import type { Tables } from '../../types/database.types';
 import './AdminDashboard.css';
 import type { OrderWithItems } from '../../types/order.types';
+import { optimizeImage } from '../../utils/imageOptimizer';
 
 // Types
 type Product = Tables<'products'>;
@@ -304,11 +305,10 @@ export default function AdminDashboard() {
     try {
       setUploading(true);
 
-      console.log('📤 Görsel yükleniyor...', {
+      console.log('📤 Görsel yükleniyor (Ham):', {
         name: file.name,
         type: file.type,
-        size: file.size,
-        isImage: file.type.startsWith('image/')
+        size: (file.size / 1024 / 1024).toFixed(2) + ' MB'
       });
 
       // Dosya tipini kontrol et
@@ -316,37 +316,43 @@ export default function AdminDashboard() {
         throw new Error('Sadece resim dosyaları yüklenebilir');
       }
 
-      // Dosya boyutunu kontrol et (max 10MB)
+      // Dosya boyutunu kontrol et (max 10MB - ilk kontrol)
       if (file.size > 10 * 1024 * 1024) {
         throw new Error('Dosya boyutu 10MB\'dan küçük olmalı');
       }
 
-      // Create a unique file name - EXTENSION'ı koru
-      const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+      // 🔄 GÖRSEL OPTİMİZASYONU BAŞLIYOR
+      let fileToUpload = file;
+      try {
+        console.log('🔄 Görsel optimizasyonu başlatılıyor...');
+        fileToUpload = await optimizeImage(file, {
+          maxWidth: 1200,   // Maksimum genişlik 1200px
+          maxHeight: 1200,  // Maksimum yükseklik 1200px
+          quality: 0.8,     // %80 Kalite
+          format: 'image/jpeg' // Her zaman JPEG'e çevir (En iyi sıkıştırma/uyumluluk)
+        });
+
+        console.log('✅ Görsel optimize edildi:', {
+          originalSize: (file.size / 1024 / 1024).toFixed(2) + ' MB',
+          optimizedSize: (fileToUpload.size / 1024 / 1024).toFixed(2) + ' MB',
+          ratio: '%' + ((1 - fileToUpload.size / file.size) * 100).toFixed(1) + ' küçüldü'
+        });
+
+      } catch (optError) {
+        console.warn('⚠️ Görsel optimizasyonu başarısız oldu, orijinal dosya yükleniyor:', optError);
+        // Hata durumunda orijinal dosyayı kullanmaya devam et
+      }
+
+      const fileToUse = fileToUpload; // Artık fileToUse değişkenini kullanacağız
+
+      // Create a unique file name - EXTENSION'ı koru (veya JPEG yap)
+      // Optimizasyon JPEG'e çevirdiği için uzantıyı jpg yapıyoruz
+      const fileExt = 'jpg';
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
       // const filePath removed here, defined below
 
-      // ÖNEMLİ: Content-Type'ı extension'dan belirle (file.type güvenilir değil)
-      const mimeTypes: Record<string, string> = {
-        'jpg': 'image/jpeg',
-        'jpeg': 'image/jpeg',
-        'png': 'image/png',
-        'gif': 'image/gif',
-        'webp': 'image/webp',
-        'svg': 'image/svg+xml',
-        'bmp': 'image/bmp',
-        'ico': 'image/x-icon'
-      };
-
-      // Extension'dan MIME type belirle
-      let contentType = mimeTypes[fileExt];
-      if (!contentType) {
-        if (file.type && file.type.startsWith('image/')) {
-          contentType = file.type;
-        } else {
-          contentType = 'image/jpeg';
-        }
-      }
+      // Optimizasyon sonrası formatımız her zaman JPEG
+      const contentType = 'image/jpeg';
 
       // DOSYA YOLUNU AYARLA
       // products bucket'ı içinde product-images klasörüne kaydedelim
@@ -362,7 +368,8 @@ export default function AdminDashboard() {
 
       // ÖNEMLİ: File -> ArrayBuffer dönüşümü (Binary Safe Upload)
       // Bu yöntem en güvenilir olanıdır, tarayıcının yanlış tip/encoding eklemesini engeller
-      const fileData = await file.arrayBuffer();
+      // BURADA fileToUse (Optimize edilmiş dosya) kullanıyoruz!
+      const fileData = await fileToUse.arrayBuffer();
 
       // Session kontrolü
       const { data: { session } } = await supabase.auth.getSession();
