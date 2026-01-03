@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import type { Tables } from '../../types/database.types';
 import { getActiveDiscounts, calculateDiscountedPrice, formatDiscountLabel, type Discount } from '../../utils/discount-utils';
+import SEO from '../../components/SEO';
 import './HomePage.css';
 
 type Product = Tables<'products'>;
@@ -221,6 +222,7 @@ export default function HomePage() {
 
   return (
     <div className="home-page">
+      <SEO />
       {/* Fixed background layer for iOS compatibility */}
       <div className="home-page-background"></div>
 

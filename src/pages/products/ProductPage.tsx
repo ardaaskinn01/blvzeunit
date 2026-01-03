@@ -12,6 +12,7 @@ import {
 import './ProductPage.css';
 import Modal from '../../components/Modal';
 import ImageMagnifier from '../../components/ImageMagnifier';
+import SEO from '../../components/SEO';
 
 // Veritabanı tipleri
 type Product = Tables<'products'>;
@@ -245,6 +246,15 @@ export default function ProductPage() {
 
   return (
     <div className="product-page">
+      {product && (
+        <SEO
+          title={product.name}
+          description={product.description || undefined}
+          image={product.image_url || undefined}
+          canonical={`/products/${product.slug}`}
+          type="product"
+        />
+      )}
       <div className="product-container">
 
         {/* Breadcrumb */}

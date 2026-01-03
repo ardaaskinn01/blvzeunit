@@ -5,6 +5,7 @@ import type { Tables } from '../../types/database.types';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { getActiveDiscounts, calculateDiscountedPrice, formatDiscountLabel, type Discount } from '../../utils/discount-utils';
+import SEO from '../../components/SEO';
 import './CategoryProductsPage.css';
 
 type Product = Tables<'products'>;
@@ -246,6 +247,10 @@ export default function CategoryProductsPage() {
 
   return (
     <div className="category-products-page">
+      <SEO
+        title={categoryName}
+        canonical={`/categories/${slug || 'all'}`}
+      />
       <div className="category-products-container">
         <h1>{categoryName}</h1>
         <p>BLVZEUNIT - SOKAĞIN RUHU BURADA</p>
