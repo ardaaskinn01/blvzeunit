@@ -612,7 +612,10 @@ export default function AdminDashboard() {
         .from('orders')
         .select(`
               *,
-              items:order_items(*)
+              items:order_items(
+                *,
+                product:products(image_url)
+              )
           `)
         .order('created_at', { ascending: false });
 
@@ -1131,7 +1134,7 @@ export default function AdminDashboard() {
             className={`tab-btn ${activeTab === 'discounts' ? 'active' : ''}`}
             onClick={() => setActiveTab('discounts')}
           >
-            İndirİmler
+            İndİrİmler
           </button>
           <button
             className={`tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
@@ -1863,18 +1866,18 @@ export default function AdminDashboard() {
         {activeTab === 'discounts' && (
           <div className="admin-section">
             <div className="section-header">
-              <h2>İndirim Yönetİmİ</h2>
+              <h2>İndİrİm Yönetİmİ</h2>
               <button
                 className="add-btn"
                 onClick={() => setShowDiscountForm(true)}
               >
-                + Yeni İndirim Oluştur
+                + Yeni İndİrİm Oluştur
               </button>
             </div>
 
             {showDiscountForm && (
               <div className="category-form" style={{ maxWidth: '800px' }}>
-                <h3>Yeni İndirim Kampanyası</h3>
+                <h3>Yeni İndİrİm Kampanyası</h3>
                 <div className="form-grid">
                   <div className="form-group full-width">
                     <label>Kampanya Adı</label>
@@ -1886,7 +1889,7 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="form-group">
-                    <label>İndirim Tipi</label>
+                    <label>İndİrİm Tipi</label>
                     <select
                       value={newDiscount.discount_type}
                       onChange={e => setNewDiscount({ ...newDiscount, discount_type: e.target.value })}
@@ -2068,19 +2071,24 @@ export default function AdminDashboard() {
                       <div>
                         <h4 style={{ marginBottom: '0.5rem', color: '#444' }}>Ürünler</h4>
                         <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                          {order.items.map((item, idx) => (
-                            <div key={idx} style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem', alignItems: 'center' }}>
-                              {item.image_url && (
-                                <img src={item.image_url} alt="" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 4 }} />
-                              )}
-                              <div>
-                                <div>{item.product_name}</div>
-                                <div style={{ fontSize: '0.85rem', color: '#666' }}>
-                                  {item.size} - {item.quantity} adet
+                          {order.items.map((item, idx) => {
+                            // Önce product'tan gelen image_url'i kullan, yoksa item'daki image_url'i kullan
+                            const imageUrl = (item as any).product?.image_url || item.image_url;
+
+                            return (
+                              <div key={idx} style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem', alignItems: 'center' }}>
+                                {imageUrl && (
+                                  <img src={imageUrl} alt="" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 4 }} />
+                                )}
+                                <div>
+                                  <div>{item.product_name}</div>
+                                  <div style={{ fontSize: '0.85rem', color: '#666' }}>
+                                    {item.size} - {item.quantity} adet
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
 
                       </div>
