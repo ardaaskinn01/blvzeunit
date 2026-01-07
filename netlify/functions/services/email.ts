@@ -116,9 +116,21 @@ export class EmailService {
     const adminEmail = 'blvzeunit@gmail.com';
 
     try {
+      console.log('🔔 Attempting to send admin notification for order:', order.id);
+
       const fullName = order.shipping_address?.full_name || 'Bilinmiyor';
       const customerEmail = order.contact_info?.email || 'Bilinmiyor';
       const customerPhone = order.contact_info?.phone || 'Bilinmiyor';
+
+      // Safe date formatting
+      let orderDate = 'Bilinmiyor';
+      try {
+        if (order.created_at) {
+          orderDate = new Date(order.created_at).toLocaleString('tr-TR');
+        }
+      } catch (dateError) {
+        console.warn('Date formatting error:', dateError);
+      }
 
       // Sipariş ürünlerini listele
       let itemsHtml = '';
@@ -140,7 +152,7 @@ export class EmailService {
           <div style="padding: 20px; background: #f9f9f9;">
             <h2>Sipariş Detayları</h2>
             <p><strong>Sipariş No:</strong> #${order.id.slice(0, 8)}</p>
-            <p><strong>Tarih:</strong> ${new Date(order.created_at).toLocaleString('tr-TR')}</p>
+            <p><strong>Tarih:</strong> ${orderDate}</p>
             <p><strong>Toplam Tutar:</strong> ${order.total_amount} ${order.currency || 'TRY'}</p>
             <p><strong>Ödeme Durumu:</strong> ${order.payment_status === 'paid' ? '✅ Ödendi' : '⏳ Beklemede'}</p>
           </div>
@@ -183,6 +195,8 @@ export class EmailService {
         </div>
       `;
 
+      console.log('📧 Sending admin email to:', adminEmail);
+
       const data = await this.resend.emails.send({
         from: this.fromEmail,
         to: adminEmail,
@@ -190,10 +204,16 @@ export class EmailService {
         html: htmlContent,
       });
 
-      console.log('Admin order notification email sent:', data.data?.id);
+      console.log('✅ Admin order notification email sent successfully:', data.data?.id);
       return data;
-    } catch (error) {
-      console.error('Failed to send admin order notification email:', error);
+    } catch (error: any) {
+      console.error('❌ CRITICAL: Failed to send admin order notification email');
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        orderId: order?.id,
+        adminEmail
+      });
       // Hata fırlatmıyoruz ki sipariş akışı bozulmasın
       return null;
     }
